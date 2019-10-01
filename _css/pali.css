@@ -1,0 +1,57 @@
+
+
+@font-face {
+    font-family: "Pali";
+    src: url(http://furoma.com/_css/BuddhawajanaPali.otf) format("truetype");
+}
+
+@font-face {
+    font-family: "Pali2";
+    src: url(BuddhawajanaPali.otf) format("truetype");
+}
+
+@font-face {
+    font-family: "Thai";
+    src: url(http://furoma.com/_css/Buddhawajana.otf) format("truetype");
+}
+
+@font-face {
+    font-family: "Thai2";
+    src: url(../_css/Buddhawajana.otf) format("truetype");
+}
+
+/*
+@font-face {
+    font-family: "Bro1";
+    src: url(http://pali.peterthinks.com/game/css/browa.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "Bro2";
+    src: url(browa.ttf) format("truetype");
+}*/
+
+BODY, TABLE, #MainPage, #MainPage TABLE, .ui-btn, #MainPage textarea, select option {
+    font-family: "Pali2", "Pali", "Verdana", "MS Sans Serif", "sans-serif", "Tahoma";
+    font-size: 12pt;
+    line-height: 200%;
+}
+
+BODY {
+    text-align: center;
+    font-weight:normal;
+    background-color: #3c3c3c;
+
+    /*
+    font-size: 100%;
+    line-height: 100%;*/
+    /*-moz-transform-origin:0 0;*/
+}
+
+TABLE {
+    text-align: left;
+
+}
+
+HR {width: 50%;}
+

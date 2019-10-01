@@ -1,0 +1,76 @@
+@media only screen and (min-width: 600px) {
+    .ui-page {
+        width: 600px !important;
+        margin: 0 auto !important;
+        position: relative !important;
+        border-right: 1px #666666 solid !important;
+        border-left: 1px #666666 solid !important;
+        background-color: #d3d3d3;
+        text-shadow: none !important;
+    }
+}
+
+
+#Meaning, #Gender {
+    font-size:50%;
+    text-decoration:none;
+    font-family:  "Tahoma", "MS Sans Serif", "Verdana", "sans-serif";
+}
+
+#Gender {
+    font-weight:bolder;
+}
+
+.ui-page-theme-a a {
+    font-weight: normal;
+}
+
+.ui-overlay-a {
+    background-color: #999999;
+}
+
+.ui-page-theme-a .ui-btn {
+    font-size: 80%;
+    line-height: 80%;
+    font-weight: normal;
+}
+
+
+.ui-select .ui-btn, select option {
+
+    color: green;
+    line-height:120%;
+}
+
+.ui-card {
+    background-color: #DDD !important;
+    border: 1px black solid !important;
+    height: 40px !important;
+    min-width: 60px;
+}
+
+.ui-card-turned {
+    background-color: #fffadf !important;
+    transition: 0.3s;
+}
+
+.ui-card-turned-correct {
+    background-color: greenyellow !important;
+    transition: 0.5s;
+}
+
+.ui-card-hiding {
+    opacity:0;
+    transition: 2.5s;
+}
+
+.ui-card-hidden {
+    width: 60px !important;
+}
+/*visibility:hidden;*/
+
+
+.matching_gender {
+    font-size: 80%;
+}
+
