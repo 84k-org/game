@@ -1,2 +1,3 @@
-include: _js
-include: _css
+include: 
+- _js
+- _css
