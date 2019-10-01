@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+    <SCRIPT>
+        function PrepareVerb () {
+
+            /*
+            var Elements = {
+                val1 : 'text1',
+                val2 : 'text2'
+            };
+            var mySelect = $('#select_element');
+
+            $.each(Elements, function(val, text) {
+                mySelect.append(
+                        $('<option></option>').val(val).html(text)
+                );
+            });
+            */
+
+            if ($('#select_element > option').length)
+                return;
+
+
+
+            $('#select_element').append(
+                $('<option></option>').val(0).html(Elements[0][0])
+            );
+            $('select').selectmenu('refresh');
+
+            for (i=1;i<Elements.length;i++)
+                $('#select_element').append(
+                    $('<option></option>').val(i).html(Elements[i][0])
+                );
+
+        }
+
+        var Elements = [
+            ["ภู", "สตฺตายํ", 0, ["ความมี", "ความเป็น"]],
+            ["หู", "สตฺตายํ", 0, ["ความมี", "ความเป็น"]]
+        ];
+
+
+
+        function DoVerb () {
+
+            var text ="<TR><TD>";
+
+            var cElements = $('#select_element').prop("selectedIndex"),
+                cElementGroup = Elements[cElements][2],
+                cVibhatti = $('#select_vibhatti').prop("selectedIndex"),
+                cPada = $('#select_pada').prop("selectedIndex"),
+                cGender = $('#select_gender').prop("selectedIndex"),
+                cForm = $('#select_form').prop("selectedIndex");
+
+
+            var ElementGroupFormula = [["ภูวาทโย ธาตโว", "ภูวาทิโต อ", ["อ"]]];
+
+            var VibhattiFormula = [["วัตตมานา", "วตฺตมานา ปจฺจุปนฺเน"],
+                ["ปัญจมี", "อาณตฺยาสิฏฺเฐ'นุตฺตกาเล ปญฺจมี"],
+                ["สัตตมี", "อนุมติ-ปริกปฺปตฺเถสุ สตฺตมี"],
+                ["ปโรกขา", "อปจจกฺเข ปโรกฺขา'ตีเต"],
+                ["หิยยัตตนี", "หิยฺโย-ปภุติ ปจฺจกฺเข หิยตฺตนี"],
+                ["อัชชตนี", "สมีเป'ชฺชตนี"],
+                ["ภวิสสันตี", "อนาคเต ภวิสฺสนฺตี"],
+                ["กาลาติปัตติ", "กฺริยาติปนฺเน'ตีเต กาลาติปตฺติ"]
+            ];
+
+            var PadaFormula = [["ปรัสสบทในอรรถกัตตา", "ปรัสสบท", "กตฺตริ ปรสฺสปทํ"],
+                ["อัตตโนบทในอรรถกัตตา", "อัตตโนบท", "กตฺตริ จ"],
+                ["อัตตโนบทในอรรถกรรม/ภาวะ", "อัตตโนบท", "อตฺตโนปทานิ ภาเว กมฺมนิ"]];
+
+            var VibhattiList = [["ติ", "อนฺติ", "สิ", "ถ", "มิ", "ม", "เต", "อนฺเต", "เส", "วฺเห", "เอ", "มฺเห"],
+                ["ตุ", "อนฺตุ", "หิ", "ถ", "มิ", "ม", "ตํ", "อนฺตํ", "สฺสุ", "วฺโห", "เอ", "อามเส"],
+                ["เอยฺย", "เอยฺยุํ", "เอยฺยาสิ", "เอยฺยาถ", "เอยฺยามื", "เอยฺยาม", "เอถ", "เอรํ", "เอโถ", "เอยฺยาวฺโห", "เอยฺยํ", "เอยฺยามฺเห"],
+                ["อ", "อุ", "เอ", "ตฺถ", "อํ", "มฺห", "ตฺถ", "เร", "ตฺโถ", "วฺโห", "อึ", "มฺเห"],
+                ["อา", "อู", "โอ", "ตฺถ", "อํ", "มฺหา", "ตฺถ", "ตฺถุํ", "เส", "วฺหํ", "อึ", "มฺหเส"],
+                ["อี", "อุํ", "โอ", "ตฺถ", "อึ", "มฺหา", "อา", "อู", "เส", "วฺหํ", "อํ", "มฺเห"],
+                ["สฺสติ", "สฺสนฺติ", "สฺสสิ", "สฺสถ", "สฺสามิ", "สฺสาม", "สฺสเต", "สฺสนฺเต", "สฺสเส", "สฺสวเห", "สฺสํ", "สฺสามฺเห"],
+                ["สฺสา", "สฺสํสุ", "สฺเส", "สฺสถ", "สฺสํ", "สฺสามฺหา", "สฺสถ", "สฺสิสุ", "สฺสเส", "สฺสวเห", "สฺสึ", "สฺสามฺหเส"]
+            ];
+
+            var GenderFormula = [["ปฐม", "นามมฺหิ ปยุชฺชมาเนปิ ตุลฺยาธิกรเณ ปฐโม"],
+                ["มัชฌิม", "ตุมฺเห มชฺฌิโม"],
+                ["อุตตม", "อมฺเห อุตฺตโม"]];
+
+            var FormList = ["เอก", "พหุ"];
+
+            var Vibhatti = Math.min(1, cPada);
+
+
+            var TuaRoop = new Array();
+
+            Vibhatti = VibhattiList[cVibhatti][Vibhatti*6+cGender*2+cForm];
+
+
+            text+=  "<TD>ศัพท์เดิมคือ<TD>"+Elements[cElements][0]+" "+Elements[cElements][1]+" ใน "+Elements[cElements][3]+
+                "<TR><TD>ตั้ง "+Elements[cElements][0]+" ชื่อธาตุ"+"<TD>"+Elements[cElements][0]+"<TD>"+ElementGroupFormula[cElementGroup][0];
+
+            // ลบสระที่สุดของธาตุ
+
+
+            text+=  "<TR><TD>ลง"+VibhattiFormula[cVibhatti][0]+"วิภัตติ<TD>"+Elements[cElements][0]+"+"+VibhattiFormula[cVibhatti][0]+"<TD>"+VibhattiFormula[cVibhatti][1]+
+                "<TR><TD>ลง"+PadaFormula[cPada][0]+"<TD>"+Elements[cElements][0]+"+"+PadaFormula[cPada][1]+"<TD>"+PadaFormula[cPada][2]+
+                "<TR><TD>ลง "+Vibhatti+" "+GenderFormula[cGender][0]+"บุรุษ "+FormList[cForm]+"วจนะ<TD>"+Elements[cElements][0]+"+"+Vibhatti+"<TD>"+GenderFormula[cGender][1];
+
+            TuaRoop.push(Vibhatti);
+
+            if (cVibhatti<3 || cVibhatti==4) {
+                text += "<TR><TD>เพราะวิภัตติ ลง " + ElementGroupFormula[cElementGroup][2] + "ปัจจัยหลังจากธาตุ<TD>" + Elements[cElements][0] + "+" + ElementGroupFormula[cElementGroup][2] + "+" + Vibhatti + "<TD>" + ElementGroupFormula[cElementGroup][1];
+                TuaRoop.push(ElementGroupFormula[cElementGroup][2]);
+            }
+
+
+
+
+            //for (i=3631; i<3666; i++)
+            //console.log(String.fromCharCode(i) + " = "+ i); //"ฮ".charCodeAt(0));
+
+            //ก 3585
+            //ฮ 3630
+
+            text+=  "</TABLE>";
+
+            console.log(CountSyllable("มส"));
+
+
+            $('#table_verb').html(text);
+
+        }
+    </SCRIPT>
+</head>
+<body>
+
+
+<DIV id="VerbPage" data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href="#MenuPage" data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        ทำตัวรูปอาขยาต
+    </DIV>
+    <DIV role="main">
+
+
+        <form>
+            <fieldset data-role="controlgroup" data-type="horizontal">
+                <!--<legend>Horizontal controlgroup:</legend>-->
+                <label for="select_element">ธาตุ</label>
+                <select name="select_element" id="select_element"  onchange="DoVerb();">
+                </select>
+
+                <label for="select_vibhatti">วิภัตติ</label>
+                <select name="select_vibhatti" id="select_vibhatti" onchange="DoVerb();" >
+                    <option value="0">วตฺตมานา</option>
+                    <option value="1">ปญฺจมี</option>
+                    <option value="2">สตฺตมี</option>
+                    <option value="3">ปโรกฺขา</option>
+                    <option value="4">หิยตฺตนี</option>
+                    <option value="5">อชฺชตนี</option>
+                    <option value="6">ภวิสฺสนฺตี</option>
+                    <option value="7">กาลาติปตฺติ</option>
+                </select>
+
+                <label for="select_pada">บท</label>
+                <select name="select_pada" id="select_pada" onchange="DoVerb();" data-mini="true">
+                    <option value="0">ปรสฺส</option>
+                    <option value="1">อตฺตโน (กตฺตุ)</option>
+                    <option value="1">อตฺตโน (กมฺม)</option>
+                </select>
+
+                <label for="select_gender">บุรุษ</label>
+                <select name="select_gender" id="select_gender" onchange="DoVerb();" data-mini="true">
+                    <option value="0">ปฐม</option>
+                    <option value="1">มชฺฌิม</option>
+                    <option value="2">อุตฺตม</option>
+
+                </select>
+
+                <label for="select_form">วจนะ</label>
+                <select name="select_form" id="select_form" onchange="DoVerb();" data-mini="true">
+                    <option value="0">เอก</option>
+                    <option value="1">พหุ</option>
+                </select>
+
+            </fieldset>
+        </form>
+
+        <TABLE id="table_verb" align="center" border="1" cellspacing="0" cellpadding="5" style="font-size:80%;"></TABLE>
+
+    </DIV>
+</DIV>
+
+</body>
+</html>

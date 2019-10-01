@@ -1,0 +1,640 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>เกมสัมปยุตต์ 2: จักกะ</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script>
+        $(document).on("mobileinit", function () {
+            $.mobile.hashListeningEnabled = false;
+            $.mobile.pushStateEnabled = false;
+        });
+    </script>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+        .ui-btn {line-height:100% !important;}
+        .red {color:red; font-weight:bold; }
+        .orange {color:#DD6600; font-weight:bold;}
+        .green {color:#00AA00; font-weight:bold;}
+        .poppy A {font-weight: normal;}
+        .d1, .d2, .poppy .selected {color:yellow; background:blue;
+             padding-left: 2px; padding-right: 2px; padding-top: 1px; padding-bottom: 1px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            border:2px solid black;
+            text-shadow: none;}
+        .poppy .selected:hover {color:orange; background:darkblue; cursor: pointer;}
+        .ar {text-align: right;}
+        .ar a {font-weight:normal;}
+
+    </STYLE>
+    <SCRIPT src="../_js/cice.js?ver=6"></SCRIPT>
+    <SCRIPT>
+
+        var SelectCe = [];
+        var key, ci89;
+
+
+        function selectce (i1, i2, nonaction) {
+
+
+            //if (SelectCe.find (mem => mem==i1+"_"+i2))
+            if (SelectCe.find (function (mem) { return (mem==i1+"_"+i2); }))
+                return;
+
+            console.log (i1+ "_" + i2 + " " + ce[i1].e[i2]);
+
+            SelectCe.push (i1+"_"+i2);
+            $("#l"+ i1+"_"+i2).removeAttr("href");
+            $("#l"+ i1+"_"+i2).addClass("selected");
+
+            if (SelectCe.length==3) {
+                var tmp = "#l" + SelectCe.shift();
+                $(tmp).attr("href", "");
+                $(tmp).removeClass("selected");
+            }
+
+
+
+            if (nonaction)
+                return;
+
+            var d1name, d2name,
+                isnana = false, isnana_do = false, isnana_ti = false, isnana_ap = false, isnana_tiap;
+            key =  [[], [], [], [], [], [], [], [], []];
+            //var key_plus = [false, false, false, false, false, false, false, false, false];
+            var keynana_ti = [[], [], [], [], [], [], [], [], []];
+            var keynana_ap = [[], [], [], [], [], [], [], [], []];
+
+
+            if (SelectCe.length!=2)
+                return;
+
+            var sc0 = SelectCe[0].split("_"),
+                sc1 = SelectCe[1].split("_");
+            sc0[0] = parseInt(sc0[0]);
+            sc0[1] = parseInt(sc0[1]);
+            sc1[0] = parseInt(sc1[0]);
+            sc1[1] = parseInt(sc1[1]);
+            if (sc0[0]>sc1[0]) {
+                var tmp = sc0[0];
+                sc0[0] = sc1[0];
+                sc1[0] = tmp;
+                tmp = sc0[1];
+                sc0[1] = sc1[1];
+                sc1[1] = tmp;
+            } else if (sc0[0]==sc1[0] && sc0[1]>sc1[1]) {
+                var tmp = sc0[1];
+                sc0[1] = sc1[1];
+                sc1[1] = tmp;
+            }
+
+            document.location.hash = sc0[0]+"|"+sc0[1]+"|"+sc1[0]+"|"+sc1[1];
+
+            if (sc0[0]==sc1[0] &&
+                    ((sc0[0]==4 && sc0[1]!=0 && sc1[1]!=0) ||
+                        sc0[0]==8 || sc0[0]==9))
+                isnana = true;                  // นานากทาจิ ทั้งคู่
+            else if (sc0[0]==8 && sc1[0]==9)
+                isnana = true;
+
+            if (sc0[0]==8 || sc1[0]==8)
+                isnana_ti = true; //วิรตี 3
+
+            if ((sc0[0]==4 && sc0[1]!=0) || (sc1[0]==4 && sc1[1]!=0))
+                isnana_do = true;
+
+            if (sc0[0]==9 || sc1[0]==9)
+                isnana_ap = true;
+
+            isnana_tiap = isnana_ti || isnana_ap;
+
+            console.log ("nana both = "+isnana);
+            console.log ("ti = "+isnana_ti);
+            console.log ("do = "+isnana_do);
+            console.log ("ap = "+isnana_ap);
+
+            d1name = nice(ce[sc0[0]].e[sc0[1]]);
+            d2name = nice(ce[sc1[0]].e[sc1[1]]);
+
+            $(".d1").text(d1name);
+            $(".d2").text(d2name);
+
+            var ce_del = [2,2,1,2,2,1,1,1,0];
+
+            if (isnana_do) {
+                if (isnana)
+                    ce_del[4] +=1;
+                else {
+                    if (sc0[0] == 4 && sc0[1] != 0) {
+                        ce_del[3] +=2;
+                        ce_del[4] +=2;
+                        ce_del[5] +=2;
+                    } else {
+                        ce_del[1] +=2;
+                        ce_del[4] +=2;
+                        ce_del[7] +=2;
+                    }
+                }
+            }
+
+
+            ci89 = ((sc0[0]!=1 || (sc0[1]!=0 && sc0[1]!=1 && sc0[1]!=4)) &&
+                        (sc1[0]!=1 || (sc1[1]!=0 && sc1[1]!=1 && sc1[1]!=4)));
+
+
+            // ถ้ามี วิตก วิจาก ปีติ ใช้จิต 121 เท่านั้น
+            if (ci89)
+                $("#ci89").text(89);
+            else
+                $("#ci89").text(121);
+
+
+            for (var i=0, cont; i<121; i++) {
+                //console.log (i+"("+ ci[i].cer.length+") : " + ci[i].cer);
+
+                if (sc0[0] == 0 || search_cer(i, sc0[0], sc0[1]))
+                    key[0].push(i);
+                    //console.log (i);
+
+
+                else if (search_unc(i, sc0[0], sc0[1]))
+                    key[3].push(i);
+
+                else
+                    key[6].push(i);
+
+                if (ci89 && i==88)//&& i==81) // ถ้านับจิต 89 จบที่ โส.มัค
+                    break;
+            }
+
+
+
+            for (var i=0; i<9; i+=3) {
+                for (var j=0; j<key[i].length; j++) {
+                    if (search_unc(key[i][j], sc1[0], sc1[1])) {
+                        key[i+1].push(key[i][j]);
+                        //console.log ("because "+nice(ce[sc1[0]].e[sc1[1]])+", move "+ ci[key[i][j]].nick +" from "+i+" to "+(i+1))
+                        /*if (ci89 && key[i][j]==81) {
+                            key_plus[i+1] = true;
+                        }
+                        else */if (isnana_tiap && key[i][j]>29 && key[i][j]<38) {// มกุ
+                            keynana_ti[i+1].push(key[i][j]);
+                        }
+                        else if (isnana_ap && key[i][j]>45 && key[i][j]<66) {
+                            keynana_ap[i+1].push(key[i][j]);
+                        }
+                        key[i].splice(j--, 1);
+
+                    } else if (sc1[0]!=0 && !search_cer(key[i][j], sc1[0], sc1[1])) {
+
+                        key[i+2].push(key[i][j]);
+                        //console.log ("because "+nice(ce[sc1[0]].e[sc1[1]])+", move "+ ci[key[i][j]].nick +" from "+i+" to "+(i+2))
+                        /*if (ci89 && key[i][j]==81) {
+                            key_plus[i+2] = true;
+                        }
+                        else */if (isnana_tiap && key[i][j]>29 && key[i][j]<38) {// มกุ
+                            keynana_ti[i+2].push(key[i][j]);
+                        }
+                        else if (isnana_ap && key[i][j]>45 && key[i][j]<66) {
+                            keynana_ap[i+2].push(key[i][j]);
+                        }
+                        key[i].splice(j--, 1);
+                    }
+                    else {
+                        /*if (ci89 && key[i][j]==81)
+                            key_plus[i] = true;*/
+
+                        if (isnana_tiap && key[i][j]>29 && key[i][j]<38) {// มกุ
+                            keynana_ti[i].push(key[i][j]);
+
+                        }
+                        else if (isnana_ap && key[i][j]>45 && key[i][j]<66) {
+                            keynana_ap[i].push(key[i][j]);
+                        }
+
+                    }
+                }
+            }
+
+
+            //console.log (keynana_ti);
+            //console.log (keynana_ap);
+
+            //key = $.merge(key, keynana_ti, keynana_ap);
+            key = key.concat(keynana_ti, keynana_ap);
+            //console.log (key);
+
+
+            for (var i=0; i<9; i++) {
+                if (keynana_ti[i].length!=0) // ตี เดี้ยว หรือ ตี คู่ หรือ ตี อัป
+                    ce_del[i] += isnana? 3:4;
+                else if (keynana_ap[i].length!=0)
+                    ce_del[i] += ((sc0[0]==9)? 0:1) + ((sc1[0]==9)? 0:1);
+
+            }
+
+
+
+            if (sc0[0]==5 & sc1[0]!=5)  // ตัวหน้า ถีน หรือ มิทธ
+                for (var i=3; i<6; i++) {
+                    ce_del[i]++;
+                }
+
+            if (sc1[0]==5 & sc0[0]!=5)  // ตัวหลัง ถีน หรือ มิทธ
+                for (var i=1; i<10; i+=3) {
+                    ce_del[i]++;
+                }
+
+
+            for (var i=0; i<9; i++) {
+                if (key[i].length==0) {
+                    $("#a" + i).text("-");
+                    //$("#a" + i).removeAttr("href");
+                }
+                else {
+                    for (var j=1, cecnt=7; j<ce.length; j++)
+                        for (var k=0; k<ce[j].e.length; k++)
+                            for (var l=0; l<key[i].length; l++) {
+                                if (search_cer(key[i][l], j, k) || search_unc(key[i][l], j, k)) {
+                                    if (j==7) {
+                                        cecnt+=19;
+                                        k=100;
+                                    }
+                                    else
+                                        cecnt++;
+
+                                    break;
+                                }
+                            }
+
+
+
+
+                    $("#a" + i).html("<A href=javascript:showkey(["+i+"],"+cecnt+","+ce_del[i]+");>"+
+                        key[i].length+
+                        //((ci89 && key_plus[i])? (key[i].length+7) /*+"/"+ (key[i].length+39)*/ : (key[i].length)) +
+                        " +" + (cecnt - ce_del[i])
+                    );
+                }
+            }
+
+
+
+            if (sc0[0]==5 & sc1[0]!=5) {  // ตัวหน้า ถีน หรือ มิทธ
+                for (var i = 3; i < 6; i++) {
+
+                    if (key[i].length!=0)
+                        $("#a" + (i - 3)).append(",  <NOBR>" + nice(ce[5].e[1 - sc0[1]]) +
+                            "<A href=javascript:showkey([" + (i) + "]);>" + "ที่ใน " +
+                            (key[i].length /*+ (key_plus[i] ? 7 : 0)*/)
+                            + "</A></NOBR>"
+                        );
+
+                    if($("#a"+(i-3)).html().slice(0,3)=="-, ")
+                        $("#a"+(i-3)).html( $("#a"+(i-3)).html().slice(4));
+
+                }
+
+            }
+
+
+            if (sc1[0]==5 & sc0[0]!=5) { // ตัวหลัง ถีน หรือ มิทธ
+                for (var i = 1; i < 10; i += 3) {
+
+                    if (key[i].length!=0)
+                        $("#a" + (i - 1)).append(",  <NOBR>" + nice(ce[5].e[1 - sc1[1]]) +
+                            "<A href=javascript:showkey([" + (i) + "]);>" + "ที่ใน " +
+                            (key[i].length /*+ (key_plus[i] ? 7 : 0)*/)
+                            + "</A></NOBR>"
+                        );
+
+                    if($("#a"+(i-1)).html().slice(0,3)=="-, ")
+                        $("#a"+(i-1)).html( $("#a"+(i-1)).html().slice(4));
+
+                }
+
+            }
+
+
+
+
+            //if (isnana_ti && (sc0[0]==8 || sc0[0]==9))
+            //    d1name = "วิรตี3 อปฺ2 ";
+
+
+            if (true) {
+                var tmp;
+                if (sc0[0]==8 || sc0[0]==9) {
+                    [6, 7, 8].forEach(function (i) {
+                        if (key[i - 6].length != 0)
+                            $("#a" + i).append(",  " + d1name +
+                                "<A href=javascript:showkey([" + (i - 6) + "]);>" + "ที่ใน " +
+                                (key[i - 6].length /*+(key_plus[i - 6] ? 7 : 0)*/)
+                                + "</A></NOBR>"
+                            );
+                        tmp = (i==7 && isnana)? 8:i;
+                        if (keynana_ti[i - 3].length != 0)
+                            $("#a" + tmp).append(",  <NOBR>วิรตี3 อปฺ2 " +
+                                "<A href=javascript:showkey([" + (i + 6) + "]);>" + "ที่ใน " +
+                                key[i + 6].length
+                                + "</A></NOBR>"
+                            );
+                        if ($("#a" + i).html().slice(0, 3) == "-, ")
+                            $("#a" + i).html($("#a" + i).html().slice(4));
+                    });
+                }
+                if (sc0[0]==9) {
+                    [6, 7, 8].forEach(function (i) {
+
+                        tmp = (i==7 && isnana)? 8:i;
+                        if (keynana_ap[i - 3].length != 0)
+                            $("#a" + tmp).append(",  <NOBR>อปฺ2 " +
+                                "<A href=javascript:showkey([" + (i + 15) + "]);>" + "ที่ใน " +
+                                key[i + 15].length
+                                + "</A></NOBR>"
+                            );
+                        if ($("#a" + i).html().slice(0, 3) == "-, ")
+                            $("#a" + i).html($("#a" + i).html().slice(4));
+                    });
+                }
+
+                if (sc1[0]==8 || sc1[0]==9) {
+                    [2, 5, 8].forEach(function (i) {
+                        if (key[i - 2].length != 0)
+                            $("#a" + i).append(",  " + d2name +
+                                "<A href=javascript:showkey([" + (i - 2) + "]);>" + "ที่ใน " +
+                                (key[i - 2].length /*+ (key_plus[i - 2] ? 7 : 0)*/)
+                                + "</A></NOBR>"
+                            );
+
+                        tmp = (i==5 && isnana)? 8:i;
+                        if (keynana_ti[i - 1].length != 0 && !(i==5 && isnana))
+                            $("#a" + tmp).append(",  <NOBR>วิรตี3 อปฺ2 " +
+                                "<A href=javascript:showkey([" + (i + 8) + "]);>" + "ที่ใน " +
+                                key[i + 8].length
+                                + "</A></NOBR>"
+                            );
+                        if ($("#a" + i).html().slice(0, 3) == "-, ")
+                            $("#a" + i).html($("#a" + i).html().slice(4));
+                    });
+                }
+
+                if (sc1[0]==9) {
+                    [2, 5, 8].forEach(function (i) {
+
+                        tmp = (i==5 && isnana)? 8:i;
+                        if (keynana_ap[i - 1].length != 0 && !(i==5 && isnana))
+                            $("#a" + tmp).append(",  <NOBR>อปฺ2 " +
+                                "<A href=javascript:showkey([" + (i + 17) + "]);>" + "ที่ใน " +
+                                key[i + 17].length
+                                + "</A></NOBR>"
+                            );
+                        if ($("#a" + i).html().slice(0, 3) == "-, ")
+                            $("#a" + i).html($("#a" + i).html().slice(4));
+                    });
+                }
+
+
+
+            }
+
+
+
+
+            if (sc0[0]!=8 && sc0[0]!=9) {
+
+
+
+
+
+                if (isnana_do && sc0[0] == 4 && sc0[1] != 0)
+                    d1name = "อิสฺ มจฺ กุกฺ";
+
+
+                [6, 7, 8].forEach(function (i) {
+
+
+
+                    var tmp=0;
+
+                    if (key[i - 6].length == 0) {
+                        if (key[i - 3].length != 0) {//&& !(i==7 && isnana_tiap))
+
+
+                            if (sc0[0]==5 && sc1[0]==5)     // ถีน และ มิทธ
+                                tmp = -1;
+
+                            $("#a" + (i+tmp)).append(",  <NOBR>" + d1name +
+                                "<A href=javascript:showkey([" + (i - 3) + "]);>" + "ที่ใน " +
+                                (key[i - 3].length /*+ (key_plus[i - 3] ? 7 : 0)*/)
+                                + "</A></NOBR>"
+                            );
+
+
+                        }
+
+                    } else if (key[i - 3].length == 0) {
+                        $("#a" + i).append(",  <NOBR>" + d1name +
+                            "<A href=javascript:showkey([" + (i - 6) + "]);>" + "ที่ใน " +
+                            (key[i - 6].length /*+ (key_plus[i - 6] ? 7 : 0)*/)
+                            + "</A></NOBR>"
+                        );
+                    } else
+                        $("#a" + i).append(",  <NOBR>" + d1name +
+                            "<A href=javascript:showkey([" + (i - 6) + "," + (i - 3) + "]);>" + "ที่ใน " +
+                            (key[i - 6].length + key[i - 3].length /*+ (key_plus[i - 6] ? 7 : 0) + (key_plus[i - 3] ? 7 : 0)*/)
+                            + "</A></NOBR>");
+
+                    //console.log (i+tmp);
+
+                    if ($("#a" + (i+tmp)).html().slice(0, 3) == "-, ")
+                        $("#a" + (i+tmp)).html($("#a" + (i+tmp)).html().slice(4));
+
+                });
+            }
+
+            if (sc1[0]!=8 && sc1[0]!=9) {
+
+                if (isnana_do && sc1[0]==4 && sc1[1]!=0)
+                    d2name = "อิสฺ มจฺ กุกฺ";
+                //if (isnana_ti && (sc1[0]==8 || sc1[0]==9))
+                //    d1name = "วิรตี3 อปฺ2 ";
+
+
+                [2, 5, 8].forEach(function (i) {
+
+                    var tmp = 0;
+
+                    if (key[i - 2].length == 0 ) {
+                        if (key[i - 1].length != 0) {// && !(i==5 && isnana_tiap))
+
+                            if (sc0[0]==5 && sc1[0]==5) // ถีน และ มิทธ
+                                tmp = -3;
+
+                            $("#a" + (i+tmp)).append(",  <NOBR>" + d2name +
+                                "<A href=javascript:showkey([" + (i - 1) + "]);>" + "ที่ใน " +
+                                (key[i - 1].length /*+ (key_plus[i - 1] ? 7 : 0)*/)
+                                + "</A></NOBR>"
+                            );
+                        }
+                    }
+                    else if (key[i - 1].length == 0) {
+                        $("#a" + i).append(",  <NOBR>" + d2name +
+                            "<A href=javascript:showkey([" + (i - 2) + "]);>" + "ที่ใน " +
+                            (key[i - 2].length /*+ (key_plus[i - 2] ? 7 : 0)*/)
+                            +"</A></NOBR>"
+                        );
+                    }
+                    else
+                        $("#a" + i).append(",  <NOBR>" + d2name +
+                            "<A href=javascript:showkey([" + (i - 1) + "," + (i - 2) + "]);>" + "ที่ใน " +
+                            (key[i - 1].length + key[i - 2].length /*+ (key_plus[i - 1] ? 7 : 0) + (key_plus[i - 2] ? 7 : 0)*/)
+                            +"</A></NOBR>"
+                        );
+
+
+                    if( $("#a"+(i+tmp)).html().slice(0,3)=="-, ")
+                        $("#a"+(i+tmp)).html( $("#a"+(i+tmp)).html().slice(4) );
+                });
+
+            }
+
+        }
+
+        function showkey (ar, n_ce, ndel_ce) {
+
+            $("#ShowKeyContent").html(combine_ans (ar, n_ce, ndel_ce));
+
+            $('#ShowKey').popup();
+            $('#ShowKey').popup('open');
+
+        }
+
+
+
+        function randy () {
+            var qce1 = randomise(0, ce.length),
+            qce2 = randomise(0, ce[qce1].e.length), qce3, qce4;
+
+            selectce (qce1, qce2, true);
+
+            do {
+                qce3 = randomise(0, ce.length);
+                qce4 = randomise(0, ce[qce3].e.length);
+            } while (qce1==qce3 && qce2==qce4);
+
+            selectce (qce3, qce4);
+        }
+
+        function setup () {
+
+            /*
+            ce.map(i => i.e).map(i => {
+                $('#ce1')
+                .append($('<option>', {value: i})
+                    .text(i));
+            }); */
+
+            var t="";
+
+            for (i1=0; i1<ce.length; i1++) {
+                for (i2 = 0; i2 < ce[i1].e.length; i2++) {
+                    t += "<A id=l"+ i1+"_"+i2+ " "+"href='' onclick=\"selectce(" + i1 + "," + i2 + ");\">" + nice(ce[i1].e[i2]) + "</A> ";
+                }
+                t += " || ";
+            }
+
+            $("#CeSelectData").html(t);
+
+            t = document.location.hash.substring(1).replace(/%7C/g,"|").split("|");
+
+            if (t.length!=4) {
+                randy();
+                return;
+            }
+
+            selectce (parseInt(t[0]), parseInt(t[1]), true);
+            selectce (parseInt(t[2]), parseInt(t[3]));
+
+        }
+
+
+        $(document).ready(function() {
+
+            setup();
+
+        });
+
+
+
+    </SCRIPT>
+
+</head>
+<body>
+
+<DIV id="ShowKey" class="ui-page-theme-a poppy" data-role="popup" data-dismissible="true" data-history="false" data-overlay-theme="a"> <!-- onclick="$(this).popup('close');"> -->
+    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+    <div data-role="header" id="ShowKeyHeader">
+    </div>
+    <div class="ui-content" role="main">
+        <div id="ShowKeyContent"></div>
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-inline" style="line-height:120%; height:20px; font-weight:bold !important;">ตกลง</a>
+    </div>
+</DIV>
+
+<DIV id="CeSelect" class="ui-page-theme-a poppy" data-role="popup" data-dismissible="true" data-history="false" data-overlay-theme="a"> <!-- onclick="$(this).popup('close');"> -->
+    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+    <div data-role="header" >
+        กรุณาเลือกเจตสิก 1 คู่
+    </div>
+    <div class="ui-content" role="main">
+        <div id="CeSelectData"></div>
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-inline" style="line-height:120%; height:20px; font-weight:bold !important;">ตกลง</a>
+    </div>
+</DIV>
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เกมสัมปยุตต์ 2 : จักกะ
+    </DIV>
+
+    <DIV role="main" class="ui-content">
+        <TABLE border="1" cellpadding="7" cellspacing="0" align="center">
+
+            <TR><TH><A data-role="button" class="ui-btn ui-btn-inline ui-shadow butty" onclick="$('#CeSelect').popup();$('#CeSelect').popup('open');">เลือกเจตสิกเอง</A>
+                <A data-role="button" class=" ui-btn ui-btn-inline ui-shadow butty" onclick="randy();">โปรแกรมสุ่มให้</A></TH>
+                <TH class="ar">อธ. <SPAN id="ci89">89</SPAN> +52</TH></TR>
+
+            <TR><TD>1. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN> <NOBR>และประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN></NOBR><TD class="ar" id="a0"></TD></TR>
+            <TR><TD>2. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN> <NOBR>แต่ประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN></NOBR><TD class="ar" id="a1"></TD></TR>
+            <TR><TD>3. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN> <NOBR>แต่<SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d2"></SPAN> เจ. แน่นอน</NOBR><TD class="ar" id="a2"></TD></TR>
+            <TR><TD>4. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN> <NOBR>แต่ประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN></NOBR><TD class="ar" id="a3"></TD></TR>
+            <TR><TD>5. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN> <NOBR>และประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN></NOBR><TD class="ar" id="a4"></TD></TR>
+            <TR><TD>6. ประกอบกับ <SPAN class="d1"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN> <NOBR>แต่<SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d2"></SPAN> เจ. แน่นอน</NOBR><TD class="ar" id="a5"></TD></TR>
+            <TR><TD>7. <SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d1"></SPAN> เจ. แน่นอน <NOBR>แต่ประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="green">แน่นอน</SPAN></NOBR><TD class="ar" id="a6"></TD></TR>
+            <TR><TD>8. <SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d1"></SPAN> เจ. แน่นอน <NOBR>แต่ประกอบกับ <SPAN class="d2"></SPAN> เจ. <SPAN class="orange">ไม่แน่นอน</SPAN></NOBR><TD class="ar" id="a7"></TD></TR>
+            <TR><TD>9. <SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d1"></SPAN> เจ. แน่นอน <NOBR>และ<SPAN class="red">ไม่ประกอบ</SPAN>กับ <SPAN class="d2"></SPAN> เจ. แน่นอน</NOBR><TD class="ar" id="a8"></TD></TR>
+        </TABLE>
+    </DIV>
+</DIV>
+
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>เกมสัมปยุตต์</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+
+        .b {color:blue; font-weight:bold;}
+        .ui-ans {line-height:120%;width:auto !important;}
+        .WrongBttn {
+            background-color: #941d1d !important; text-shadow: none !important; color: lightgrey !important; /*text-wrap:normal; max-width: 150px;*/
+        }
+        .RightBttn {
+            background-color: #4dc146 !important; text-shadow: none !important; color: black !important; /*max-width: 150px;*/
+        }
+    </STYLE>
+    <SCRIPT src="../_js/cice.js?ver=6"></SCRIPT>
+    <SCRIPT>
+
+
+
+        var key;
+
+        function setup2 () {
+
+
+            $("#SurrenderBttn").text("เฉลย");
+            $("#SurrenderBttn").removeClass("ui-icon-forward");
+            $("#SurrenderBttn").addClass("ui-icon-search");
+
+            var tmp;
+
+            for (tmp = 0; tmp < 3; tmp++) {
+
+                if (!$("#a" + tmp ).hasClass("ui-icon-carat-r")) {
+                    $("#a" + tmp ).addClass("ui-icon-carat-r ui-alt-icon");
+                    $("#a" + tmp ).removeClass("ui-icon-delete ui-icon-check WrongBttn RightBttn");
+                }
+            }
+
+            tmp = randomise(0, 100);
+
+            if (tmp<4) { // จิตสองดวง ไม่สัม แน่นอน
+                var qci1, qci2;
+
+                qci1 = randomise(0, ci.length);
+                qci2 = randomise(0, ci.length);
+
+                $("#d1").html (ci[qci1].name);
+                $("#d2").html (ci[qci2].name);
+
+                return 2;
+            }
+
+            if (tmp<50) { // ถามเจตสิกสองดวง
+                var qce1, qce2, qce3, qce4;
+
+                qce1 = randomise(0, ce.length);
+                qce2 = randomise(0, ce[qce1].e.length);
+                qce3 = randomise(0, ce.length);
+                qce4 = randomise(0, ce[qce3].e.length);
+
+                $("#d1").html(nice(ce[qce1].e[qce2]) + "เจตสิกํ");
+                $("#d2").html(nice(ce[qce3].e[qce4]) + "เจตสิกํ");
+
+
+                if (qce1==qce3) {
+                    if (qce2==qce4)
+                        return 2;
+
+                    if (qce1==0 || qce1==2 || qce1==5 || qce1==7)
+                        return 0;
+                    if (qce2>qce4) {
+                        tmp = qce4;
+                        qce4 = qce2;
+                        qce2 = tmp;
+                    }
+                    if (qce1==3 && qce2!=0) // ทิฏ มาน
+                        return 2;
+                    if (qce1==4 && qce2!=0) // อิสสา มจฺ กุก
+                        return 2;
+                    if (qce1==1 || qce1==3 || qce1==4 || qce1==8)
+                        return 1;
+
+                    return 2;
+                }
+
+                if (qce1>qce3) {
+                    tmp = qce1;
+                    qce1 = qce3;
+                    qce3 = tmp;
+                    tmp = qce2;
+                    qce2 = qce4;
+                    qce4 = tmp;
+                }
+
+                if (qce1==1 && qce2==2 && qce3==6) // อธิโมก วิจิ
+                    return 2;
+
+                if (qce1==1 && qce2==4 && (qce3==4 || qce3==6)) // ปีติ
+                    return 2;
+
+                if (qce1==1 && qce2==5 && qce3==6) // ฉันทะ วิจิ
+                    return 2;
+
+                if (qce1<2)    //สัพพ ปกิณ
+                    return 1;
+
+                if (qce1==2 && qce3>2 && qce3<7)  // โมหจตุก
+                    return 1;
+
+                if ((qce1==3 || qce1==4) && qce3==5) // โล หรือ โท และ ถีทุก
+                    return 1;
+
+                if (qce1==7 && qce3>7)  //โสภณสาธา
+                    return 1;
+
+                if (qce1>7 && qce3==10) //ปัญ
+                    return 1;
+
+                return 2;
+
+            }
+            // ถาม จิ เจ
+
+            var qce1, qce2, qce_group, qce_name, qci;
+
+            qce1 = randomise(0, ce.length);
+            qce2 = randomise(0, ce[qce1].e.length); //*/
+                /*qce1 = 5,
+                qce2 = 1, //*/
+            qce_group = ce[qce1].group;
+            qce_name = ce[qce1].e[qce2];
+            qci = randomise(0, ci.length);
+
+            //if (randomise(0,2)) {
+                $("#d1").html(ci[qci].name)
+                $("#d2").html(nice(qce_name) + "เจตสิกที่ประกอบ");
+            /*}
+            else {
+                $("#d2").html(ci[qci].name)
+                $("#d1").html(nice(qce_name) + "เจตสิกํ");
+            }*/
+
+            //console.log (ci[qci].cer);
+            console.log (ci[qci].name + " & " + qce_name + "(" + qce_group + ")");
+
+
+            if (qce_group=="sab")
+                return 0;
+
+
+            if (!ci[qci].hasOwnProperty("cer")) // ทวิ 10
+                return 2;
+
+            // tmp = ci[qci].cer.find( mem => mem[0]===qce_group );
+            tmp = ci[qci].cer.find( function (mem) { return (mem[0]===qce_group); });
+
+            /*
+            console.log ("cer:")
+            console.log (tmp);
+            if (tmp!=null && tmp.length!=1) {
+                console.log ("searching.. qce2="+qce2);
+                console.log (tmp[1]);
+                console.log (tmp[1].find( e => e===qce2 ) );
+            }*/
+
+            //if (tmp!=null && ( tmp.length==1 || typeof tmp[1].find(e => e===qce2) != 'undefined' ) )
+            if (tmp!=null && ( tmp.length==1 || typeof tmp[1].find(function (e) { return (e===qce2); }) != 'undefined' ) )
+                return 0;
+
+
+            if (! (ci[qci].hasOwnProperty("unc_nana") || ci[qci].hasOwnProperty("unc_saha")))
+                return 2;
+
+            //tmp = ci[qci].unc.find( mem => mem[0]===qce_group );
+            tmp = ci[qci].unc_nana.find( function (mem) { return (mem[0]===qce_group); });
+
+            //console.log ("unc:")
+            //console.log (tmp)
+
+            //if (tmp!=null && ( tmp.length==1 || typeof tmp[1].find(e => e===qce2) != 'undefined' ) )
+            if (tmp!=null && ( tmp.length==1 || typeof tmp[1].find(function (e) {return (e===qce2); }) != 'undefined' ) )
+                return 1;
+
+            tmp = ci[qci].unc_saha.find( function (mem) { return (mem[0]===qce_group); });
+            if (tmp!=null && ( tmp.length==1 || typeof tmp[1].find(function (e) {return (e===qce2); }) != 'undefined' ) )
+                return 1;
+
+
+            return 2;
+
+        }
+
+        function setup (k) {
+            key = setup2();
+        }
+
+        function ans (i) {
+
+            if (!$("#a" + i).hasClass("ui-icon-carat-r"))
+                return;
+
+            $("#a" + i).removeClass("ui-icon-carat-r ui-alt-icon");
+
+            if (key==i) {
+                $("#a" + i).addClass("RightBttn ui-icon-check");
+                $("#SurrenderBttn").removeClass("ui-icon-search");
+                $("#SurrenderBttn").addClass("ui-icon-forward");
+                $("#SurrenderBttn").text("ข้อต่อไป");
+
+            }
+            else {
+                $("#a" + i).addClass("WrongBttn ui-icon-delete");
+            }
+
+        }
+
+        function surrender () {
+
+            if ($("#SurrenderBttn").text()=="เฉลย") {
+                ans(key);
+                return;
+            }
+            setup ();
+        }
+
+
+
+        $(document).ready(function() {
+
+            setup();
+            $("#SurrenderBttn").click(surrender);
+
+        });
+
+    </SCRIPT>
+
+</head>
+<body>
+
+
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เกมสัมปยุตต์
+        <BUTTON id="SurrenderBttn" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-search ui-alt-icon">เฉลย</BUTTON>
+    </DIV>
+
+    <DIV role="main">
+        <SPAN style="color:darkblue;"><SPAN id="d1" class="b"></SPAN> กับ <SPAN id="d2" class="b"></SPAN> ?</SPAN>
+<BR>
+
+        <BUTTON id="a0" onclick="ans(0);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ประกอบ (แน่นอน)</BUTTON>
+        <BUTTON id="a1" onclick="ans(1);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ประกอบ (ตามสมควร)</BUTTON>
+        <BUTTON id="a2" onclick="ans(2);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ไม่ประกอบ (แน่นอน)</BUTTON>
+
+
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1013 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>สี่แสนล้าน: โปรแกรมปุจฉาวาระ</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <link href="css/patthana_puccha.css?ver=2" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <SCRIPT>
+        var _TIKA = [ [],
+            ["กุสลตฺติก", "กุสล*,อกุสล*,อพฺยากต*"],
+            ["เวทนาตฺติก", "สุขาย เวทนาย สมฺปยุตฺต*,ทุกฺขาย เวทนาย สมฺปยุตฺต*,อทุกฺขมสุขาย เวทนาย สมฺปยุตฺต*"],
+            ["วิปากตฺติก", "วิปาก*,วิปากธมฺมธมฺม#,เนววิปากนวิปากธมฺมธมฺม#"],
+            ["อุปาทินฺนตฺติก", "อุปาทินฺนุปาทานิย*,อนุปาทินฺนุปาทานิย*,อนุปาทินฺนอนุปาทานิย*"],
+            ["สํกิลิฏฺฐตฺติก", "สํกิลิฏฺฐสํกิเลสิก*,อสํกิลิฏฺฐสํกิเลสิก*,อสํกิลิฏฺฐอสํกิเลสิก*"],
+            ["วิตกฺกตฺติก", "สวิตกฺกสวิจาร*,อวิตกฺกวิจารมตฺต*,อวิตกฺกอวิจาร*"],
+            ["ปีติตฺติก", "ปีติสหคต*,สุขสหคต*,อุเปกฺขาสหคต*"],
+            ["ทสฺสเนนปหาตพฺพตฺติก", "ทสฺสเนน ปหาตพฺพ*,ภาวนาย ปหาตพฺพ*,เนว ทสฺสเนน น ภาวนาย ปหาตพฺพ*"],
+            ["ทสฺสเนนปหาตพฺพเหตุกตฺติก", "ทสฺสเนน ปหาตพฺพเหตุก*,ภาวนาย ปหาตพฺพเหตุก*,เนว ทสฺสเนน น ภาวนาย ปหาตพฺพเหตุก*"],
+            ["อาจยคามิตฺติก", "อาจยคามิ*,อปจยคามิ*,เนวาจยคามินาปจยคามิ*"], // อีการันต์
+            ["เสกฺขตฺติก", "เสกฺข*,อเสกฺข*,เนวเสกฺขนาเสกฺข*"],
+            ["ปริตฺตตฺติก", "ปริตฺต*,มหคฺคต*,อปฺปมาณ*"],
+            ["ปริตฺตารมฺมณตฺติก", "ปริตฺตารมฺมณ*,มหคฺคตารมฺมณ*,อปฺปมาณารมฺมณ*"],
+            ["หีนตฺติก", "หีน*,มชฺฌิม*,ปณีต*"],
+            ["มิจฺฉตฺตนิยตตฺติก", "มิจฺฉตฺตนิยต*,สมฺมตฺตนิยต*,อนิยต*"],
+            ["มคฺคารมฺมณตฺติก", "มคฺคารมฺมณ*,มคฺคเหตุก*,มคฺคาธิปติ*"], // อธิปติ
+            ["อุปฺปนฺนตฺติก", "อุปฺปนฺน*,อนุปฺปนฺน*,อุปฺปาทิ*"],
+            ["อตีตตฺติก", "อตีต*,อนาคต*,ปจฺจุปฺปนฺน*"],
+            ["อตีตารมฺมณตฺติก", "อตีตารมฺมณ*,อนาคตารมฺมณ*,ปจฺจุปฺปนฺนารมฺมณ*"],
+            ["อชฺฌตฺตตฺติก", "อชฺฌตฺต*,พหิทฺธา ,อชฺฌตฺตพหิทฺธ*"], // พหิทฺธา นิบาต
+            ["อชฺฌตฺตารมฺมณตฺติก", "อชฺฌตฺตารมฺมณ*,พหิทฺธารมฺมณ*,อชฺฌตฺตพหิทฺธารมฺมณ*"],
+            ["สนิทสฺสนสปฺปฏิฆตฺติก", "สนิทสฺสนสปฺปฏิฆ*,อนิทสฺสนสปฺปฏิฆ*,อนิทสฺสนอปฺปฏิฆ*"],
+            ["เหตุทุก", "เหตุ*,นเหตุ*"],
+            ["สเหตุกทุก", "สเหตุก*,อเหตุก*"],
+            ["เหตุสมฺปยุตฺตทุก", "เหตุสมฺปยุตฺต*,เหตุวิปฺปยุตฺต*"],
+            ["เหตุสเหตุกทุก", "เหตุ*เจว-สเหตุก*จ,สเหตุก*เจว-นจเหตุ*", "นเหตุ*เจว-นอเหตุก*จ,นอเหตุก*เจว-นนเหตุ*จ"], // ends with จ
+            ["เหตุเหตุสมฺปยุตฺตทุก", "เหตุ*เจว-เหตุสมฺปยุตฺต*จ,เหตุสมฺปยุตฺต*เจว-นจเหตุ*", "นเหตุ*เจว-นเหตุวิปฺปยุตฺต*จ,นเหตุวิปฺปยุตฺต*เจว-น นเหตุ*จ"],
+            ["นเหตุสเหตุกทุก", "นเหตุ*-สเหตุก*,นเหตุ*-อเหตุก*", "นเหตุ*-นสเหตุก*,นเหตุ*-นอเหตุก*"],
+            ["สปฺปจฺจยทุก", "สปฺปจฺจย*,อปฺปจฺจย*"],
+            ["สงฺขตทุก", "สงฺขต*,อสงฺขต*"],
+            ["สนิทสฺสนทุก", "สนิทสฺสน*,อนิทสฺสน*"],
+            ["สปฺปฏิฆทุก","สปฺปฏิฆ*,อปฺปฏิฆ*"],
+            ["รูปีทุก", "รูปิ*,อรูปิ*"], // อีการันต์
+            ["โลกิยทุก", "โลกิย*,โลกุตฺตร*"],
+            ["เกนจิวิเญฺญยฺยทุก", "เกนจิ-วิญฺเญยฺย*,นเกนจิ-วิญฺเญยฺย*", "นเกนจิ-วิญฺเญยฺย*,นนเกนจิ-วิญฺเญยฺย*"],
+
+            ["อาสวทุก", "อาสว*,โนอาสว*", "โนอาสว*,นโนอาสว*"],
+            ["สาสวทุก", "สาสว*,อนาสว*"],
+            ["อาสวสมฺปยุตฺตทุก", "อาสวสมฺปยุตฺต*,อาสววิปฺปยุตฺต*"],
+            ["อาสวสาสวทุก", "อาสว*เจว-สาสว*จ,สาสว*เจว-โน จ อาสว*", "นอาสว*เจว-นอนาสว*จ,นอนาสว*เจว-นโน จ อาสว*"],
+            ["อาสวอาสวสมฺปยุตฺตทุก", "อาสว*เจว-อาสวสมฺปยุตฺต*จ,อาสวสมฺปยุตฺต*เจว-โน จ อาสว*","นอาสว*เจว-นอาสววิปฺปยุตฺต*จ,นอาสววิปฺปยุตฺต*เจว-นโน จ อาสว*"],
+            ["อาสววิปฺปยุตฺตสาสวทุก", "อาสววิปฺปยุตฺต* สาสว*,อาสววิปฺปยุตฺต* อนาสว*", "อาสววิปฺปยุตฺต* นสาสว*,อาสววิปฺปยุตฺต* นอนาสว*"],
+
+            ["สญฺโญชนทุก", "สญฺโญชน*,โนสญฺโญชน*", "โนสญฺโญชน*,นโนสญฺโญชน*"],
+            ["สญฺโญชนิยทุก", "สญฺโญชนิย*,อสญฺโญชนิย*"],
+            ["สญฺโญชนสมฺปยุตฺตทุก", "สญฺโญชนสมฺปยุตฺต*,สญฺโญชนวิปฺปยุตฺต*"],
+            ["สญฺโญชนสญฺโญชนิยทุก", "สญฺโญชน*เจว-สญฺโญชนิย*จ,สญฺโญชนิย*เจว-โน จ สญฺโญชน*","นสญฺโญชน*เจว-นอสญฺโญชนิย*จ,นอสญฺโญชนิย*เจว-นโน จ สญฺโญชน*"],
+            ["สญฺโญชนสญฺโญชนสมฺปยุตฺตทุก", "สญฺโญชน*เจว-สญฺโญชนสมฺปยุตฺต*จ,สญฺโญชนสมฺปยุตฺต*เจว-โน จ สญฺโญชน*", "นสญฺโญชน*เจว นสญฺโญชนวิปฺปยุตฺต*จ,นสญฺโญชนวิปฺปยุตฺต*เจว-นโน จ สญฺโญชน*"],
+            ["สญฺโญชนวิปฺปยุตฺตสญฺโญชนิยทุก", "สญฺโญชนวิปฺปยุตฺต* สญฺโญชนิย*,สญฺโญชนวิปฺปยุตฺต* อสญฺโญชนิย*", "สญฺโญชนวิปฺปยุตฺต* นสญฺโญชนิย*,สญฺโญชนวิปฺปยุตฺต* นอสญฺโญชนิย*"],
+
+            ["คนฺถทุก", "คนฺถ*,โนคนฺถ*", "โนคนฺถ*,นโนคนฺถ*"],
+            ["คนฺถนิยทุก", "คนฺถนิย*,อคนฺถนิย*"],
+            ["คนฺถสมฺปยุตฺตทุก", "คนฺถสมฺปยุตฺต*,คนฺถวิปฺปยุตฺต*"],
+            ["คนฺถคนฺถนิยทุก", "คนฺถ*เจว-คนฺถนิย*จ,คนฺถนิย*เจว-โน จ คนฺถ*","นคนฺถ*เจว-นอคนฺถนิย*จ,นอคนฺถนิย*เจว-นโน จ คนฺถ*"],
+            ["คนฺถคนฺถสมฺปยุตฺตทุก", "คนฺถ*เจว-คนฺถสมฺปยุตฺต*จ,คนฺถสมฺปยุตฺต*เจว-โน จ คนฺถ*", "นคนฺถ*เจว นคนฺถวิปฺปยุตฺต*จ,นคนฺถวิปฺปยุตฺต*เจว-นโน จ คนฺถ*"],
+            ["คนฺถวิปฺปยุตฺตคนฺถนิยทุก", "คนฺถวิปฺปยุตฺต* คนฺถนิย*,คนฺถวิปฺปยุตฺต* อคนฺถนิย*", "คนฺถวิปฺปยุตฺต* นคนฺถนิย*,คนฺถวิปฺปยุตฺต* นอคนฺถนิย*"],
+
+            ["โอฆทุก", "โอฆ*,โนโอฆ*", "โนโอฆ*,นโนโอฆ*"],
+            ["โอฆนิยทุก", "โอฆนิย*,อโนฆนิย*"],
+            ["โอฆสมฺปยุตฺตทุก", "โอฆสมฺปยุตฺต*,โอฆวิปฺปยุตฺต*"],
+            ["โอฆโอฆนิยทุก", "โอฆ*เจว-โอฆนิย*จ,โอฆนิย*เจว-โน จ โอฆ*","นโอฆ*เจว-นอโนฆิย*จ,นอโนฆิย*เจว-นโน จ โอฆ*"],
+            ["โอฆโอฆสมฺปยุตฺตทุก", "โอฆ*เจว-โอฆสมฺปยุตฺต*จ,โอฆสมฺปยุตฺต*เจว-โน จ โอฆ*", "นโอฆ*เจว นโอฆวิปฺปยุตฺต*จ,นโอฆวิปฺปยุตฺต*เจว-นโน จ โอฆ*"],
+            ["โอฆวิปฺปยุตฺตโอฆนิยทุก", "โอฆวิปฺปยุตฺต* โอฆนิย*,โอฆวิปฺปยุตฺต* อโนฆิย*", "โอฆวิปฺปยุตฺต* นโอฆนิย*,โอฆวิปฺปยุตฺต* นอโนฆนิย*"],
+
+            ["โยคทุก", "โยค*,โนโยค*", "โนโยค*,นโนโยค*"],
+            ["โยคนิยทุก", "โยคนิย*,อโยคนิย*"],
+            ["โยคสมฺปยุตฺตทุก", "โยคสมฺปยุตฺต*,โยควิปฺปยุตฺต*"],
+            ["โยคโยคนิยทุก", "โยค*เจว-โยคนิย*จ,โยคนิย*เจว-โน จ โยค*","นโยค*เจว-นอโยคนิย*จ,นอโยคนิย*เจว-นโน จ โยค*"],
+            ["โยคโยคสมฺปยุตฺตทุก", "โยค*เจว-โยคสมฺปยุตฺต*จ,โยคสมฺปยุตฺต*เจว-โน จ โยค*", "นโยค*เจว นโยควิปฺปยุตฺต*จ,นโยควิปฺปยุตฺต*เจว-นโน จ โยค*"],
+            ["โยควิปฺปยุตฺตโยคนิยทุก", "โยควิปฺปยุตฺต* โยคนิย*,โยควิปฺปยุตฺต* อโยคนิย*", "โยควิปฺปยุตฺต* นโยคนิย*,โยควิปฺปยุตฺต* นอโยคนิย*"],
+
+            ["นีวรณทุก", "นีวรณ*,โนนีวรณ*", "โนนีวรณ*,นโนนีวรณ*"],
+            ["นีวรณิยทุก", "นีวรณิย*,อนีวรณิย*"],
+            ["นีวรณสมฺปยุตฺตทุก", "นีวรณสมฺปยุตฺต*,นีวรณวิปฺปยุตฺต*"],
+            ["นีวรณนีวรณิยทุก", "นีวรณ*เจว-นีวรณิย*จ,นีวรณิย*เจว-โน จ นีวรณ*","นนีวรณ*เจว-นอนีวรณิย*จ,นอนีวรณิย*เจว-นโน จ นีวรณ*"],
+            ["นีวรณนีวรณสมฺปยุตฺตทุก", "นีวรณ*เจว-นีวรณสมฺปยุตฺต*จ,นีวรณสมฺปยุตฺต*เจว-โน จ นีวรณ*", "นนีวรณ*เจว นนีวรณวิปฺปยุตฺต*จ,นนีวรณวิปฺปยุตฺต*เจว-นโน จ นีวรณ*"],
+            ["นีวรณวิปฺปยุตฺตนีวรณิยทุก", "นีวรณวิปฺปยุตฺต* นีวรณิย*,นีวรณวิปฺปยุตฺต* อนีวรณิย*", "นีวรณวิปฺปยุตฺต* นนีวรณิย*,นีวรณวิปฺปยุตฺต* นอนีวรณิย*"],
+
+            ["ปรามาสทุก", "ปรามาส*,โนปรามาส*", "โนปรามาส*,นโนปรามาส*"],
+            ["ปรามฏฺฐทุก", "ปรามฏฺฐ*,อปรามฏฺฐ*"],
+            ["ปรามาสสมฺปยุตฺตทุก", "ปรามาสสมฺปยุตฺต*,ปรามาสวิปฺปยุตฺต*"],
+            ["ปรามาสปรามฏฺฐทุก", "ปรามาส*เจว-ปรามฏฺฐ*จ,ปรามฏฺฐ*เจว-โน จ ปรามาส*","นปรามาส*เจว-นอปรามฏฺฐ*จ,นอปรามฏฺฐ*เจว-นโน จ ปรามาส*"],
+            ["ปรามาสวิปฺปยุตฺตปรามฏฺฐทุก", "ปรามาสวิปฺปยุตฺต* ปรามฏฺฐ*,ปรามาสวิปฺปยุตฺต* อปรามฏฺฐ*", "ปรามาสวิปฺปยุตฺต* นปรามฏฺฐ*,ปรามาสวิปฺปยุตฺต* นอปรามฏฺฐ*"],
+
+            ["สารมฺมณทุก", "สารมฺมณ*,อนารมฺมณ*"],
+            ["จิตฺตทุก", "จิตฺต*,โนจิตฺต*"],
+            ["เจตสิกทุก", "เจตสิก*,อเจตสิก*"],
+            ["จิตฺตสมฺปยุตฺตทุก", "จิตฺตสมฺปยุตฺต*,จิตฺตวิปฺปยุตฺต*"],
+            ["จิตฺตสํสฏฺฐทุก", "จิตฺตสํสฏฺฐ*,จิตฺตวิสํสฏฺฐ*"],
+            ["จิตฺตสมุฏฺฐานทุก", "จิตฺตสมุฏฺฐาน*,โนจิตฺตสมุฏฺฐาน*"],
+            ["จิตฺตสหภูทุก", "จิตฺตสหภุ*,โนจิตฺตสหภุ*"],
+            ["จิตฺตานุปริวตฺติทุก", "จิตฺตานุปริวตฺติ*,โน จิตฺตานุปริวตฺติ*"],
+            ["จิตฺตสํสฏฺฐสมุฏฺฐานทุก", "จิตฺตสํสฏฺฐสมุฏฺฐาน*,โนจิตฺตสํสฏฺฐสมุฏฺฐาน*"],
+            ["จิตฺตสํสฏฺฐสมุฏฺฐานสหภูทุก", "จิตฺตสํสฏฺฐสมุฏฺฐานสหภุ*,โนจิตฺตสํสฏฺฐสมุฏฺฐานสหภุ*"],
+            ["จิตฺตสํสฏฺฐสมุฏฺฐานานุปริวตฺติทุก", "จิตฺตสํสฏฺฐสมุฏฺฐานานุปริวตฺติ*,โนจิตฺตสํสฏฺฐสมุฏฺฐานานุปริวตฺติ*"],
+            ["อชฺฌตฺติกทุก", "อชฺฌตฺติก*,พาหิร*"],
+            ["อุปาทาทุก", "อุปาทา ,โนอุปาทา "], //นิบาต
+            ["อุปาทินฺนทุก", "อุปาทินฺน*,อนุปาทินฺน*"],
+
+            ["อุปาทานทุก", "อุปาทาน*,โนอุปาทาน*"],
+            ["อุปาทานิยทุก", "อุปาทานิย*,อนุปาทานิย*"],
+            ["อุปาทานสมฺปยุตฺตทุก", "อุปาทานสมฺปยุตฺต*,อุปาทานวิปฺปยุตฺต*"],
+            ["อุปาทานอุปาทานิยทุก", "อุปาทาน*เจว-อุปาทานิย*จ,อุปาทานิย*เจว-โน จ อุปาทาน*", "นอุปาทาน*เจว-นอนุปาทานิย*จ,นอนุปาทานิย*เจว-นโน จ อุปาทาน*"], // TO CHECK
+            ["อุปาทานอุปาทานสมฺปยุตฺตทุก", "อุปาทาน*เจว-อุปาทานสมฺปยุตฺต*จ,อุปาทานสมฺปยุตฺต*เจว-โน จ อุปาทาน*", "นอุปาทาน*เจว นอุปาทานวิปฺปยุตฺต*จ,นอุปาทานวิปฺปยุตฺต*เจว-นโน จ อุปาทาน*"],
+            ["อุปาทานวิปฺปยุตฺตอุปาทานิยทุก", "อุปาทานวิปฺปยุตฺต* อุปาทานิย*,อุปาทานวิปฺปยุตฺต* อนุปาทานิย*", "อุปาทานวิปฺปยุตฺต* นอุปาทานิย*,อุปาทานวิปฺปยุตฺต* นอนุปาทานิย*"],
+
+            ["กิเลสทุก", "กิเลส*,โนกิเลส*", "โนกิเลส*,นโนกิเลส*"],
+            ["สํกิเลสิกทุก", "สํกิเลสิก*,อสํกิเลสิก*"],
+            ["สํกิลิฏฺฐทุก", "สํกิลิฏฺฐ*,อสํกิลิฏฺฐ*"],
+            ["กิเลสสมฺปยุตฺตทุก", "กิเลสสมฺปยุตฺต*,กิเลสวิปฺปยุตฺต*"],
+            ["กิเลสสํกิเลสิกทุก", "กิเลส*เจว-สํกิเลสิก*จ,สํกิเลสิก* เจว-โน จ กิเลส*", "นกิเลส*เจว-นอสํกิเลสิก*จ,นอสํกิเลสิก*เจว-นโน จ กิเลส*"],
+            ["กิเลสสํกิลิฏฺฐทุก", "กิเลส*เจว-สํกิลิฏฺฐ*จ","สํกิลิฏฺฐ* เจว-โน จ กิเลส*", "นกิเลส*เจว นอสํกิลิฏฺฐ*จ,นอสํกิลิฏฺฐ*เจว-นโน จ กิเลส*"],
+            ["กิเลสกิเลสสมฺปยุตฺตทุก", "กิเลส*เจว-กิเลสสมฺปยุตฺต*จ,กิเลสสมฺปยุตฺต*เจว-โน จ กิเลส*", "นกิเลส*เจว นกิเลสวิปฺปยุตฺต*จ,นกิเลสวิปฺปยุตฺต*เจว-นโน จ กิเลส*"],
+            ["กิเลสวิปฺปยุตฺตสํกิเลสิกทุก", "กิเลสวิปฺปยุตฺต* สํกิเลสิก*,กิเลสวิปฺปยุตฺต* อสํกิเลสิก*", "กิเลสวิปฺปยุตฺต* นสํกิเลสิก*,กิเลสวิปฺปยุตฺต* นอสํกิเลสิก*"],
+
+            ["ทสฺสเนนปหาตพฺพทุก", "ทสฺสเนน ปหาตพฺพ*,นทสฺสเนน ปหาตพฺพ*"],
+            ["ภาวนายปหาตพฺพทุก", "ภาวนาย ปหาตพฺพ*,นภาวนาย ปหาตพฺพ*"],
+            ["ทสฺสเนนปหาตพฺพเหตุกทุก", "ทสฺสเนน ปหาตพฺพเหตุก*,นทสฺสเนน ปหาตพฺพเหตุก*"],
+            ["ภาวนายปหาตพฺพเหตุกทุก", "ภาวนาย ปหาตพฺพเหตุก*,นภาวนาย ปหาตพฺพเหตุก*"],
+
+            ["สวิตกฺกทุก", "สวิตกฺก*,อวิตกฺก*"],
+            ["สวิจารทุก", "สวิจาร*,อวิจาร*"],
+            ["สปฺปีติกทุก", "สปฺปีติก*,อปฺปีติก*"],
+            ["ปีติสหคตทุก", "ปีติสหคต*,นปีติสหคต*"],
+            ["สุขสหคตทุก", "สุขสหคต*,นสุขสหคต*"],
+            ["อุเปกฺขาสหคตทุก", "อุเปกฺขาสหคต*,นอุเปกฺขาสหคต*"],
+
+            ["กามาวจรทุก", "กามาวจร*,นกามาวจร*"],
+            ["รูปาวจรทุก", "รูปาวจร*,นรูปาวจร*"],
+            ["อรูปาวจรทุก", "อรูปาวจร*,นอรูปาวจร*"],
+            ["ปริยาปนฺนทุก", "ปริยาปนฺน*,อปริยาปนฺน*"],
+            ["นิยฺยานิกทุก", "นิยฺยานิก*,อนิยฺยานิก*"],
+            ["นิยตทุก", "นิยต*,อนิยต*"],
+            ["สอุตฺตรทุก", "สอุตฺตร*,อนุตฺตร*"],
+            ["สรณทุก", "สรณ*,อสรณ*"]
+
+        ];
+        //เหตุสเหตุกทุก "เหตู เจว ธมฺมา สเหตุกา จ","สเหตุกา เจว ธมฺมา น จ เหตู"
+
+        var _VARA = [" ปฏิจฺจ "," สหชาโต "," ปจฺจยา "," นิสฺสาย "," สํสฏฺโฐ "," สมฺปยุตฺโต "];
+        var _VARApl = [" ปฏิจฺจ "," สหชาตา "," ปจฺจยา "," นิสฺสาย "," สํสฏฺฐา "," สมฺปยุตฺตา "];
+
+
+        var _SATTI = ["เหตุ","อารมฺมณ","อธิปติ","อนนฺตร","สมนนฺตร","สหชาต","อญฺญมญฺญ","นิสฺสย","อุปนิสฺสย","ปุเรชาต",
+            "ปจฺฉาชาต","อาเสวน","กมฺม","วิปาก","อาหาร","อินฺทฺริย","ฌาน","มคฺค","สมฺปยุตฺต","วิปฺปยุตฺต","อตฺถิ","นตฺถิ","วิคต","อวิคต"];
+
+        var no_SATTI = ["น","น","น","น","น","น","น","น","น","น",
+            "น","น","น","น","น","น","น","น","น","น","โน","โน","โน","โน"];
+
+        for (var z=0; z<24; z++)
+            no_SATTI[z] = no_SATTI[z]+_SATTI[z];
+
+        //console.log (no_SATTI);
+
+        var _dhammaMode = -1, _tikaMode = 0, _tika2Mode = 0, _varaMode = -1, _paccayaMode = -1, _sattiMode = -1, _mulaMode = -1;
+
+
+        function addCommas(nStr) {
+            nStr += '';
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function max (a, b) {
+            return (a>b)? a:b;
+        }
+
+        function permute () {
+
+            var h, i, j, k, t, tt, _tikaPada, _tikaPadaN, _tika2PadaMula = [], _tika2PadaMuli = [], _tika2PadaN,
+                MulaOrder, MuliOrder, MMOrder = [], MN;
+
+            var _tika2PadaMula_ca = [], _tika2PadaMuli_ca = [];
+
+            $('#setX').html("");
+            $('#supersetX').html("");
+            $('#status').html("");
+
+            document.location.hash = $("#dhammaSelect").prop('selectedIndex') + "|" +
+                _tikaMode + "|" + _tika2Mode + "|" +
+                $("#varaSelect").prop('selectedIndex') + "|" +
+                $("#paccayaSelect").prop('selectedIndex') + "|" +
+                $("#sattiSelect").prop('selectedIndex') + "|" +
+                $("#mulaSelect").prop('selectedIndex');
+
+            /*if (history.pushState) {
+                window.history.pushState("Puccha", "Haha", "?" +
+                    $("#dhammaSelect").prop('selectedIndex') + "|" +
+                    _tikaMode  + "|" +
+                    $("#varaSelect").prop('selectedIndex') + "|" +
+                    $("#paccayaSelect").prop('selectedIndex') + "|" +
+                    $("#sattiSelect").prop('selectedIndex') + "|" +
+                    $("#mulaSelect").prop('selectedIndex'));
+            }*/
+
+
+            if (_dhammaMode == -1 || _tikaMode == 0 || _varaMode == -1 ||
+                _paccayaMode == -1 || _sattiMode == -1 || _mulaMode == -1)
+                return;
+
+
+            if (_paccayaMode[0] != _paccayaMode[1] && _mulaMode == 1) {
+                $('#set0').html("'" + $("#paccayaSelect option:selected").text() + "นย' ไม่มี 'เอกมูลก'! กรุณาเลือกใหม่");
+                return;
+            }
+
+            if (_tikaMode == _tika2Mode) {
+                $('#set0').html("ในหมวด ติกติก ท่านไม่สามารถเลือก ติกะ เดียวกันได้. <br>ในหมวด ทุกทุก ท่านไม่สามารถเลือก ทุกะ เดียวกันได้. <br>กรุณาเลือกใหม่");
+                return;
+            }
+
+            if (_tika2Mode == 0) {
+                if (_tikaMode < 23) {
+                    i = "ติก (49)";
+                    j = 49;
+                } else {
+                    i = "ทุก (9)";
+                    j = 9;
+                }
+            } else if (_tika2Mode < 23) {
+                if (_tikaMode < 23) {
+                    i = "ติกติก (49x3)";
+                    j = 49 * 3;
+                } else {
+                    i = "ทุกติก (9x3)";
+                    j = 9 * 3;
+                }
+            } else {
+                if (_tikaMode < 23) {
+                    i = "ติกทุก (49x2)";
+                    j = 49 * 2;
+                } else {
+                    i = "ทุกทุก (9x2)";
+                    j = 9 * 2;
+                }
+            }
+
+            k = (_mulaMode == 1) ? 1 : 25 - _mulaMode;
+
+
+            $('#status').html("ท่านกำลังเลือก " +
+                $("#dhammaSelect option:selected").text() + ", " +
+                _TIKA [_tikaMode][0] +
+                ((_tika2Mode > 0) ? "-" + _TIKA [_tika2Mode][0] + ", " : ", ") +
+                $("#varaSelect option:selected").text() + ", " +
+                $("#paccayaSelect option:selected").text() + ", " +
+                $("#sattiSelect option:selected").text() + ", " +
+                $("#mulaSelect option:selected").text() +
+                "<BR>" +
+                "นับได้ <B>" + i + "</B> x <B>" + $("#mulaSelect option:selected").text() + " (" + k + ")</B>" +
+                " = <B style='color:blue;'>" + addCommas(j * k) + "</B> คำถาม"
+            );
+
+            //$('#loader').fadeTo('fast','1.0');
+
+            if (_tika2Mode) {
+                if (_tikaMode < 23) {// ติก
+                    MulaOrder = "0^|1^|2^|0^จ 2^จ&|1^จ 2^จ&|0^จ 1^จ&|0^จ 1^จ 2^จ&|";
+                    MN = 7;
+                }
+                //else if (_tikaMode < 23)
+                //MulaOrder = "0|1|2|0จ 1จ&|0จ 2จ&|1จ 2จ&|0จ 1จ 2จ&|";
+                else {
+                    MulaOrder = "0^|1^|0^จ 1^จ&|";
+                    MN = 3;
+                }
+            }
+            else {
+                if (_tikaMode < 23) {// ติก
+                    MulaOrder = "0|1|2|0จ 2จ&|1จ 2จ&|0จ 1จ&|0จ 1จ 2จ&|";
+                    MN = 7;
+                }
+            //else if (_tikaMode < 23)
+            //MulaOrder = "0|1|2|0จ 1จ&|0จ 2จ&|1จ 2จ&|0จ 1จ 2จ&|";
+                else {
+                    MulaOrder = "0|1|0จ 1จ&|";
+                    MN = 3;
+                }
+            }
+
+            MuliOrder = MulaOrder;
+
+            _tikaPada = _TIKA [_tikaMode][1].split(",");
+            _tikaPadaN = (_TIKA[_tikaMode][2])? _TIKA [_tikaMode][2].split(","): null;
+
+            if (_tika2Mode) {
+                _tika2PadaMula = _TIKA [_tika2Mode][1].split(",");
+                _tika2PadaMuli = _TIKA [_tika2Mode][1].split(",");
+
+                _tika2PadaN = (_TIKA[_tika2Mode][2]) ? _TIKA [_tika2Mode][2].split(",") : null;
+                _tika2PadaHeader = _TIKA [_tika2Mode][1].replace(/\*/g, "").replace(/#/g,"").replace(/ /g, "-").split(",");
+            }
+
+
+            for (i=0; i<_tikaPada.length; i++) {
+                MMOrder [i] = [];
+                MMOrder [i][0] = i;
+                for (j = 1, k=0; j<MN; j++) {
+                    if (k==i)
+                        k++;
+                    MMOrder [i][j] = k++;
+                }
+            }
+            for (i=_tikaPada.length; i<MN; i++) {
+                MMOrder [i] = [];
+                for (j = 0; j<MN; j++)
+                    MMOrder [i][j] = j;
+            }
+
+            //alert (MMOrder);
+
+
+            //alert (_tikaPadaN)
+
+
+            if (_varaMode < 6) { //ไม่ใช่ปัญหาวาระ
+
+
+
+                for (i = 0; i < _tika2PadaMula.length; i++) {
+                    _tika2PadaMula[i] = (_tika2PadaN!=null && _dhammaMode[0] == 'น')?
+                        _tika2PadaN[i] : _dhammaMode[0] + _tika2PadaMula[i];
+
+                    _tika2PadaMuli[i] = (_tika2PadaN!=null && _dhammaMode[1] == 'น')?
+                        _tika2PadaN[i] : _dhammaMode[1] + _tika2PadaMuli[i];
+
+
+                    _tika2PadaMula_ca[i] =
+                        _tika2PadaMula[i].replace(/\*/g, 'ญฺจ').replace(/\#/g, 'ญฺจ');
+
+                    _tika2PadaMula[i] =
+                        _tika2PadaMula[i].replace(/\*/g, 'ํ').replace(/\#/g, 'ํ').replace(/ํจ/g, "ญฺจ").replace(/ํเจ/g, "ญฺเจ") ;
+
+
+
+                    _tika2PadaMuli[i] =
+                        _tika2PadaMuli[i].replace(/ธิปติ\*/g, 'ธิปติ').replace(/ิ\*/g, 'ี').replace(/ุ\*/g, 'ุ').replace(/(\S)\#/g, 'โ$1') .replace(/(\S)\*/g, 'โ$1') ;
+                    _tika2PadaMuli_ca[i] =
+                        _tika2PadaMuli[i]+" จ";
+                }
+
+                //console.log (_tika2PadaMula);
+
+                for (i = 0; i < _tikaPada.length; i++) {
+                    j = new RegExp(i, "g");
+
+                    k = (_dhammaMode[0] == 'น' && _tikaPadaN)?
+                        _tikaPadaN[i] : _dhammaMode[0] + _tikaPada[i];
+
+                    k = "<span class=d" + i + ">" + k + "</span>";
+
+                    //alert ("MulaOrder = " + MulaOrder+"\ni = "+ i+"\nk = "+k);
+
+                    MulaOrder = MulaOrder.replace(j, k);
+
+
+                    k = (_dhammaMode[1] == 'น' && _tikaPadaN)?
+                        _tikaPadaN[i] : _dhammaMode[1] + _tikaPada[i];
+
+                    k = "<span class=d" + i + ">" + k + "</span>";
+
+                    //alert ("MuliOrder = " + MuliOrder+"\ni = "+ i+"\nk = "+k);
+                    MuliOrder = MuliOrder.replace(j, k); //.replace(/(\S)#จ/g, "โ$1 จ");
+
+                }
+
+                MulaOrder = (_tika2Mode)?
+                    MulaOrder.replace(/&/g,'').replace(/#/g, "ํ").replace(/<\/span>\^(จ?)/g,"^$1</span>").replace(/\*/g, 'ํ')
+                        .replace(/ํจ/g, "ญฺจ").replace(/ํเจ/g, "ญฺเจ").replace(/จจ/g,'จ'):
+
+                    MulaOrder.replace(/&/g,'').replace(/#/g, "ํ").replace(/<\/span>จ/g,"จ</span>").replace(/\*/g, 'ํ')
+                        .replace(/ํจ/g, "ญฺจ").replace(/ํเจ/g, "ญฺเจ").replace(/จจ/g,'จ');
+
+                //MulaOrder = (_tika2Mode)?
+                    //MulaOrder.replace(/\#<\/span>\|/g, "ํ</span> <span class='tika2 mula'></span> ธมฺมํ,").replace(/\|/g, " <span class='tika2 mula'></span> ธมฺมํ,").slice(0, -1).split(",") :
+
+                if (_tika2Mode) {
+                    MulaOrder = MulaOrder.replace(/\^จ/g, "<span class='tika2 mulaca'></span>")
+                        .replace(/\^/g, "<span class='tika2 mula'></span>");
+                }
+
+                //console.log (MulaOrder);
+
+                MulaOrder=MulaOrder.replace(/ธมฺมํ<\/span>\|/g, "ธมฺมํ</span>,").replace(/\|/g, " <span class='dhamma'>ธมฺมํ</span>,").slice(0, -1).split(",");
+
+
+                MuliOrder = (_tika2Mode)?
+                    MuliOrder.replace(/ธิปติ\*/g, 'ธิปติ ').replace(/<\/span>\^(จ?)/g,"^$1</span>").replace(/ิ\*/g, 'ี ').replace(/ุ\*/g, 'ุ ').replace(/(\S)\*/g, 'โ$1 ')
+                        .replace(/(\S)\#จ/g, "โ$1 จ").replace(/จจ/g,'จ') :
+
+                    MuliOrder.replace(/ธิปติ\*/g, 'ธิปติ ').replace(/<\/span>จ/g,"จ</span>").replace(/ิ\*/g, 'ี ').replace(/ุ\*/g, 'ุ ').replace(/(\S)\*/g, 'โ$1 ')
+                        .replace(/(\S)\#จ/g, "โ$1 จ").replace(/จจ/g,'จ');
+
+                //MuliOrder = (_tika2Mode)?
+                    //MuliOrder.replace(/(\S)\#<\/span>\|/g, "โ$1</span> <span class='tika2 muli'></span> ธมฺโม,").replace(/&\|/g, " <span class='tika2 muli'></span> ธมฺมา,").replace(/\|/g, " <span class='tika2 muli'></span> ธมฺโม,").slice(0, -1).split(",") :
+                if (_tika2Mode) {
+                    MuliOrder = MuliOrder.replace(/\^จ/g, "<span class='tika2 mulica'></span>")
+                        .replace(/\^/g, "<span class='tika2 muli'></span>");
+                }
+                MuliOrder=MuliOrder.replace(/(\S)\#<\/span>\|/g, "โ$1</span>,").replace(/&\|/g, " ธมฺมา,").replace(/\|/g, " <span class='dhamma'>ธมฺโม</span>,").slice(0, -1).split(",");
+
+
+
+                //alert (MulaOrder+"\n"+MuliOrder);
+                //alert (_tika2Pada);
+                $('#set0').html("<H1>" + ((_tika2Mode==0)? "1<H1>": _tika2PadaHeader[0]+"ปท/1</H1>"));
+
+
+                for (k=0, tt=""; k<_mulaMode-1; k++) {
+                    tt += (_paccayaMode[0]=='น')? no_SATTI[(_sattiMode + k) % 24] : _SATTI[(_sattiMode + k) % 24];
+                    tt +=  "ปจฺจยา ";
+                }
+                tt += "<SPAN class=lastpaccaya>";
+
+                tt += (_paccayaMode[1]=='น')? no_SATTI[(_sattiMode+k)%24] : _SATTI[(_sattiMode+k)%24];
+                tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
+
+
+                for (i=0; i<MulaOrder.length; i++)
+                    for (j=0; j<MuliOrder.length; j++) {
+
+                        t = (j<_tikaPada.length)?
+                            "สิยา " + MulaOrder [i] + _VARA[_varaMode]  + MuliOrder [ MMOrder[i][j]] + " อุปฺปชฺเชยฺย " :
+                            "สิยา " + MulaOrder [i] + _VARApl[_varaMode]  + MuliOrder [ MMOrder[i][j]] + " อุปฺปชฺเชยฺยุํ ";
+                        t += tt;
+
+                        $('#set0').append($('<li>').html(t));
+                    }
+
+                if (_mulaMode!=1) {
+
+                    for (i=_mulaMode;i<24;i++)
+                        $('#setX').append($('#set0').clone());
+
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
+
+                    var ii=1;
+
+                    //$('#setX').append(jQuery(Array(25-_mulaMode).join('<OL></OL>')));
+                    $('#setX').children('OL').each(function () {
+                        $(this).attr ('id', 'set'+(++i)); // "this" is the current element in the loop
+                        //$(this).html ($('#set0').html());
+                        //$(this).html ($('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k+i)%24]+"ปจฺจยา"));
+
+                        if (i==_sattiMode)
+                            i+=_mulaMode-1;
+
+                        $(this).find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]:_SATTI[i%24]) + "ปจฺจยา");
+
+                        ii++;
+
+                        $(this).children(":first").text(
+                            (_tika2Mode==0)? ii : _tika2PadaHeader[0]+"ปท/" + (ii)
+                        ); // change header
+                    });
+
+                    //$('#set0').html( $('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k)%24]+"ปจฺจยา") );
+
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
+
+                    $('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]: _SATTI[i]) +"ปจฺจยา");
+
+                }
+
+
+                if (_tika2Mode) {
+
+
+                    //$('#supersetX').append(jQuery(Array(_tika2PadaMula.length).join('<SPAN></SPAN>')));
+                    for (i=_tika2PadaMula.length-1;i>0;i--)
+                        $('#supersetX').append($('#superset0').clone());
+
+                    // Now i=0
+
+                    //console.log (_tika2Mode+_tika2PadaMula);
+
+                    $('#supersetX').children('SPAN').each(function () {
+
+
+                        $(this).attr ('id', 'superset'+(++i));
+                        //console.log (i);
+                        //$(this).html ($('#superset0').html());
+                        //$(this).html ($('#superset0').html().replace(/@/g, _tika2PadaMula[i]).replace(/%/g, _tika2PadaMuli[i]) );
+                        $('#superset'+i+' .tika2.mula').each(function () {
+                            $(this).text(_tika2PadaMula[i]);
+                        });
+
+                        $('#superset'+i+' .tika2.mulaca').each(function () {
+                            $(this).text(_tika2PadaMula_ca[i]);
+                        });
+
+
+                        $('#superset'+i+' .tika2.muli').each(function () {
+                            $(this).text(_tika2PadaMuli[i]);
+                        });
+
+                        $('#superset'+i+' .tika2.mulica').each(function () {
+                            $(this).text(_tika2PadaMuli_ca[i]);
+                        });
+
+                        if (_tika2Mode==3)
+                            $('#superset'+i+' .dhamma').each(function () {
+                                $(this).hide();
+                            });
+
+                        $(this).find("H1").each(function () {
+                            $(this).text(
+                                $(this).text().replace(/\S+\//, _tika2PadaHeader[i]+"ปท/")
+                            );
+
+                        }); // change header
+                    });
+
+                    //$('#superset0').html ($('#superset0').html().replace(/@/g, _tika2PadaMula[0]).replace(/%/g, _tika2PadaMuli[0]) );
+
+                    $('#superset0 .tika2.mula').each(function () {
+                        $(this).html(_tika2PadaMula[0]);
+                    });
+                    $('#superset0 .tika2.mulaca').each(function () {
+                        $(this).html(_tika2PadaMula_ca[0]);
+                    });
+
+                    $('#superset0 .tika2.muli').each(function () {
+                        $(this).html(_tika2PadaMuli[0]);
+                    });
+
+                    $('#superset0 .tika2.mulica').each(function () {
+                        $(this).html(_tika2PadaMuli_ca[0]);
+                    });
+                }
+
+
+            }
+
+
+            else { // ปัญหาวาระ
+
+                for (i = 0; i < _tika2PadaMula.length; i++) {
+                    _tika2PadaMula[i] = (_tika2PadaN!=null && _dhammaMode[0] == 'น')?
+                        _tika2PadaN[i] : _dhammaMode[0] + _tika2PadaMula[i];
+
+                    _tika2PadaMuli[i] = (_tika2PadaN!=null && _dhammaMode[1] == 'น')?
+                        _tika2PadaN[i] : _dhammaMode[1] + _tika2PadaMuli[i];
+
+
+                    _tika2PadaMula[i] =
+                        _tika2PadaMula[i].replace(/ธิปติ\*/g, 'ธิปติ').replace(/ิ\*/g, 'ี').replace(/ุ\*/g, 'ุ').replace(/(\S)\#/g, 'โ$1') .replace(/(\S)\*/g, 'โ$1') ;
+                    _tika2PadaMula_ca[i] =
+                        _tika2PadaMula[i]+" จ";
+
+                    _tika2PadaMuli[i] =
+                        _tika2PadaMuli[i].replace(/\*/g, 'สฺส').replace(/\#/g, 'สฺส');
+                    _tika2PadaMuli_ca[i]= _tika2PadaMuli[i].replace(/\#/g, 'สฺส')+" จ";
+                }
+
+                for (i = 0; i < _tikaPada.length; i++) {
+
+                    j = new RegExp(i, "g");
+
+                    k = (_dhammaMode[0] == 'น' && _tikaPadaN)?
+                        _tikaPadaN[i] : _dhammaMode[0]+_tikaPada[i];
+
+                    k = "<span class=d" + i + ">" + k + "</span>";
+
+                    //alert ("MulaOrder = " + MulaOrder+"\ni = "+ i+"\nk = "+k);
+
+                    MulaOrder = MulaOrder.replace(j, k); //.replace(/(\S)#จ/g, "โ$1 จ");
+
+                    k = (_dhammaMode[1] == 'น' && _tikaPadaN)?
+                        _tikaPadaN[i] : _dhammaMode[1] + _tikaPada[i];
+
+                    k = "<span class=d" + i + ">" + k + "</span>";
+
+                    //alert ("MuliOrder = " + MuliOrder+"\ni = "+ i+"\nk = "+k);
+                    MuliOrder = MuliOrder.replace(j, k); //.replace(/#จ/g, "สฺส จ");
+
+                }
+
+            //.replace(/<\/span>\^(จ?)/g,"^$1</span>")
+
+                MulaOrder = MulaOrder.replace(/<\/span>(\^?)(จ?)/g,"$1$2</span>").replace(/จจ/g,'จ')
+                    .replace(/ธิปติ\*/g, 'ธิปติ ').replace(/ิ\*/g, 'ี ').replace(/ุ\*/g, 'ุ ').replace(/(\S)\*/g, 'โ$1 ').replace(/(\S)\#จ/g, "โ$1 จ");
+
+
+                if (_tika2Mode) {
+                    MulaOrder = MulaOrder.replace(/\^จ/g, "<span class='tika2 mulaca'></span>")
+                        .replace(/\^/g, "<span class='tika2 mula'></span>");
+                }
+
+                //MulaOrder = (_tika2Mode)?
+                    //MulaOrder.replace(/(\S)\#<\/span>\|/g, "โ$1</span> <span class='tika2 mula'></span> ธมฺโม ,").replace(/&\|/g, " <span class='tika2 mula'></span> ธมฺมา ,").replace(/\|/g, " <span class='tika2 mula'></span> ธมฺโม ,").slice(0, -1).split(",") :
+                MulaOrder=MulaOrder.replace(/(\S)\#<\/span>\|/g, "โ$1</span> ,").replace(/&\|/g, " ธมฺมา ,").replace(/\|/g, " <span class='dhamma'>ธมฺโม</span> ,").slice(0, -1).split(",");
+
+                MuliOrder = MuliOrder.replace(/<\/span>(\^?)(จ?)/g,"$1$2</span>").replace(/&/g,'').replace(/จจ/g,'จ')
+                    .replace(/\*/g, 'สฺส ').replace(/\#จ/g, "สฺส จ");
+
+
+                if (_tika2Mode) {
+                    MuliOrder = MuliOrder.replace(/\^จ/g, "<span class='tika2 mulica'></span>")
+                        .replace(/\^/g, "<span class='tika2 muli'></span>");
+                }
+
+                //MuliOrder = (_tika2Mode)?
+                    //MuliOrder.replace(/\#<\/span>\|/g, "สฺส </span> <span class='tika2 muli'></span> ธมฺมสฺส ,").replace(/จ\|/g, "จ <span class='tika2 muli'></span> ธมฺมสฺส ,").replace(/\|/g, " <span class='tika2 muli'></span> ธมฺมสฺส ,").slice(0, -1).split(",") :
+                MuliOrder=MuliOrder.replace(/\#<\/span>\|/g, "สฺส </span>,").replace(/จ\|/g, "จ <span class='dhamma'>ธมฺมสฺส</span> ,").replace(/\|/g, " <span class='dhamma'>ธมฺมสฺส</span> ,").slice(0, -1).split(",");
+
+
+                //alert (MulaOrder+"\n"+MuliOrder);
+
+
+                //alert (_tika2Pada);
+
+
+                $('#set0').html("<H1>" + ((_tika2Mode==0)? "1<H1>": _tika2PadaHeader[0]+"ปท/1</H1>"));
+
+
+                for (k=0, tt=""; k<_mulaMode-1; k++) {
+                    tt += (_paccayaMode[0]=='น')? no_SATTI[(_sattiMode + k) % 24] : _SATTI[(_sattiMode + k) % 24] ;
+                    tt += "ปจฺจเยน ";
+                }
+
+
+                tt += "<SPAN class=lastpaccaya>";
+                tt += (_paccayaMode[1]=='น') ? no_SATTI[(_sattiMode+k)%24] : _SATTI[(_sattiMode+k)%24];
+                tt += (_mulaMode==1)? "ปจฺจเยน</SPAN>" : "^</SPAN>";
+
+
+                for (i=0; i<MulaOrder.length; i++)
+                    for (j=0; j<MuliOrder.length; j++) {
+
+                        t = "สิยา " + MulaOrder [i] + MuliOrder [ MMOrder[i][j] ];
+                        t += tt + " ปจฺจโย?";
+
+                        $('#set0').append($('<li>').html(t));
+                    }
+
+                if (_mulaMode!=1) {
+
+
+                    for (i=_mulaMode;i<24;i++)
+                        $('#setX').append($('#set0').clone());
+
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
+
+                    var ii=1;
+
+
+                    //$('#setX').append(jQuery(Array(25-_mulaMode).join('<OL></OL>')));
+
+                    $('#setX').children('OL').each(function () {
+                        $(this).attr ('id', 'set'+(++i)); // "this" is the current element in the loop
+                        //$(this).html ($('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k+i)%24]+"ปจฺจเยน"));
+                        //$(this).html ($('#set0').html());
+
+                        if (i==_sattiMode)
+                            i+=_mulaMode-1;
+
+                        ii++;
+
+                        $(this).find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]:_SATTI[i%24]) +"ปจฺจเยน");
+                        $(this).children(":first").text(
+                            (_tika2Mode==0)? ii : _tika2PadaHeader[0]+"ปท/" + (ii)
+                        ); // change header
+                    });
+
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
+
+                    //$('#set0').html( $('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k)%24]+"ปจฺจเยน") );
+                    $('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i]:_SATTI[i]) +"ปจฺจเยน");
+
+                }
+
+                if (_tika2Mode) {
+
+
+                    //$('#supersetX').append(jQuery(Array(_tika2PadaMula.length).join('<SPAN></SPAN>')));
+
+                    for (i=_tika2PadaMula.length-1;i>0;i--)
+                        $('#supersetX').append($('#superset0').clone());
+
+                    // Now i=0
+
+                    $('#supersetX').children('SPAN').each(function () {
+                        $(this).attr ('id', 'superset'+(++i));
+                        //$(this).html ($('#superset0').html());
+                        //$(this).html ($('#superset0').html().replace(/@/g, _tika2PadaMula[i]).replace(/%/g, _tika2PadaMuli[i]) );
+
+                        $('#superset'+i+' .tika2.mula').each(function () {
+                            $(this).text(_tika2PadaMula[i]);
+                        });
+
+                        $('#superset'+i+' .tika2.mulaca').each(function () {
+                            $(this).text(_tika2PadaMula_ca[i]);
+                        });
+
+                        $('#superset'+i+' .tika2.muli').each(function () {
+                            $(this).text(_tika2PadaMuli[i]);
+                        });
+
+                        $('#superset'+i+' .tika2.mulica').each(function () {
+                            $(this).text(_tika2PadaMuli_ca[i]);
+                        });
+
+                        if (_tika2Mode==3)
+                            $('#superset'+i+' .dhamma').each(function () {
+                                $(this).hide();
+                            });
+
+                        $(this).find("H1").each(function () {
+                            $(this).text(
+                                $(this).text().replace(/\S+\//, _tika2PadaHeader[i]+"ปท/")
+                            );
+
+                        }); // change header
+                    });
+
+                    //$('#superset0').html ($('#superset0').html().replace(/@/g, _tika2PadaMula[0]).replace(/%/g, _tika2PadaMuli[0]) );
+                    $('#superset0 .tika2.mula').each(function () {
+                        $(this).text(_tika2PadaMula[0]);
+                    });
+
+                    $('#superset0 .tika2.mulaca').each(function () {
+                        $(this).text(_tika2PadaMula_ca[0]);
+                    });
+
+                    $('#superset0 .tika2.muli').each(function () {
+                        $(this).text(_tika2PadaMuli[0]);
+                    });
+
+                    $('#superset0 .tika2.mulica').each(function () {
+                        $(this).text(_tika2PadaMuli_ca[0]);
+                    });
+                }
+
+            }
+
+            //$('#loader').fadeTo('fast','0.0');
+
+        }
+
+
+        $(document).ready(function(){
+
+
+
+            $("#dhammaSelect").change(function () {
+                _dhammaMode = $("#dhammaSelect").val().split("");
+                permute();
+            });
+
+            $("#tikaSelect").change(function () {
+                _tikaMode = $("#tikaSelect").prop("selectedIndex"); //.val().split(",");
+                permute();
+            });
+
+            $("#tika2Select").change(function () {
+                _tika2Mode = $("#tika2Select").prop("selectedIndex") - 1; //.val().split(",");
+                permute();
+            });
+
+            $("#varaSelect").change(function () {
+                _varaMode= $("#varaSelect").val();
+                permute();
+            });
+            $("#paccayaSelect").change(function () {
+                _paccayaMode= $("#paccayaSelect").val().split("");
+                permute();
+            });
+            $("#sattiSelect").change(function () {
+                _sattiMode= parseInt($("#sattiSelect").val());
+                permute();
+            });
+            $("#mulaSelect").change(function () {
+                _mulaMode= parseInt($("#mulaSelect").val());
+                permute();
+            });
+
+
+
+
+
+            i = document.location.hash.substring(1).replace(/%7C/g,"|").split("|");
+
+
+            if (i.length < 6)
+                return;
+
+            for (j=0, k= [4, 122, 123, 7, 4, 24, 24]; j<i.length; j++) {
+                i[j] = parseInt(i[j]);
+                if (i[j]<0 || i[j]>k[j])
+                    i[j] = 0;
+            }
+
+            //alert (i.length)
+
+            $("#dhammaSelect").prop("selectedIndex",i[0]).selectmenu("refresh", true);
+            $("#tikaSelect").prop("selectedIndex",i[1]).selectmenu("refresh", true);
+            $("#tika2Select").prop("selectedIndex",i[2]+1).selectmenu("refresh", true);
+            $("#varaSelect").prop("selectedIndex",i[3]).selectmenu("refresh", true);
+            $("#paccayaSelect").prop("selectedIndex",i[4]).selectmenu("refresh", true);
+            $("#sattiSelect").prop("selectedIndex",i[5]).selectmenu("refresh", true);
+            $("#mulaSelect").prop("selectedIndex",i[6]).selectmenu("refresh", true);
+
+            if (i[0]!=0)    _dhammaMode = $("#dhammaSelect").val().split("");
+            _tikaMode = $("#tikaSelect").prop("selectedIndex");
+            _tika2Mode = $("#tika2Select").prop("selectedIndex")-1;
+            _varaMode= $("#varaSelect").val();
+            if (i[4]!=0)    _paccayaMode= $("#paccayaSelect").val().split("");
+            _sattiMode= parseInt($("#sattiSelect").val());
+            _mulaMode= parseInt($("#mulaSelect").val());
+
+
+            //$('#loader').fadeTo('fast','0.0');
+            permute();
+
+
+        });
+
+    </SCRIPT>
+</head>
+<body>
+
+
+
+<DIV id="MenuPage" data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        <SPAN style="color:darkblue;">สี่แสนล้าน</SPAN> <SPAN style="font-size:80%;line-height:80%;">โปรแกรมปุจฉาวาระ
+        <BR><SPAN style="color:#335533;font-weight:normal;">ถวายหลวงพ่อสุมนต์เป็นอาจริยบูชา มี.ค. 2562</SPAN></SPAN>
+    </DIV>
+
+    <DIV role="main">
+
+        <!--<div id="loader"><img src="wait.gif" alt="Wait" /></div>-->
+
+        <select id="dhammaSelect">
+            <option value="-1" disabled selected>== ธมฺมนย? ==</option>
+            <option value="  ">ธมฺมานุโลม</option>
+            <option value="นน">ธมฺมปจฺจนีย</option>
+            <option value=" น">ธมฺมานุโลมปจฺจนีย</option>
+            <option value="น ">ธมฺมปจฺจนียานุโลม</option>
+        </select>
+
+        <select id="tikaSelect">
+
+            <script>
+                /*$.each(_TIKA, function(key, value) {
+
+                    $('#tikaSelect')
+                        .append($('<option>', {value: value})
+                            .text(key));
+
+                }); */
+
+
+
+                for (i=1; i<_TIKA.length; i++) {
+
+                    $('#tikaSelect')
+                        .append($('<option>', {value: _TIKA[i][1]})
+                            .text( ((i>22)? i-22: i) + ". " + _TIKA[i][0]));
+                }
+
+            </script>
+            <!--<option value="-1" disabled>(กำลังดำเนินการ)</option>-->
+        </select>
+
+
+            <script>
+                $('#tikaSelect').clone().prop("id","tika2Select").insertAfter($('#tikaSelect'));
+                //$('#tikaSelect2 option:first').text("");
+
+                $('#tikaSelect').prepend("<option value='-1' disabled selected>== ติกาทิ (1) ==</option>");
+
+                $('#tika2Select').prepend("<option value='-1' disabled selected>== ติกาทิ (2) ==</option><option value='0'>0. ไม่มี (สำหรับ ติก หรือ ทุก เลือกข้อนี้)</option>");
+            </script>
+
+
+        <select id="varaSelect">
+            <option value="-1" disabled selected>== มหาวาร? ==</option>
+            <option value="0">ปฏิจฺจวาร</option>
+            <option value="1">สหชาตวาร</option>
+            <option value="2">ปจฺจยวาร</option>
+            <option value="3">นิสฺสยวาร</option>
+            <option value="4">สํสฏฺฐวาร</option>
+            <option value="5">สมฺปยุตฺตวาร</option>
+            <option value="6">ปญฺหาวาร</option>
+        </select>
+
+        <select id="paccayaSelect">
+            <option value="-1" disabled selected>== ปจฺจยนย? ==</option>
+            <option value="  ">ปจฺจยานุโลม</option>
+            <option value="นน">ปจฺจยปจฺจนีย</option>
+            <option value=" น">ปจฺจยานุโลมปจฺจนีย</option>
+            <option value="น ">ปจฺจยปจฺจนียานุโลม</option>
+        </select>
+
+        <select id="sattiSelect">
+            <option value="-1" disabled selected>== ปจฺจยสตฺติ? ==</option>
+            <option value="0">เหตุปจฺจย</option>
+            <option value="1">อารมฺมณปจฺจย</option>
+            <option value="2">อธิปติปจฺจย</option>
+            <option value="3">อนนฺตรปจฺจย</option>
+            <option value="4">สมนนฺตรปจฺจย</option>
+            <option value="5">สหชาตปจฺจย</option>
+            <option value="6">อญฺญมญฺญปจฺจย</option>
+            <option value="7">นิสฺสยปจฺจย</option>
+            <option value="8">อุปนิสฺสยปจฺจย</option>
+            <option value="9">ปุเรชาตปจฺจย</option>
+            <option value="10">ปจฺฉาชาตปจฺจย</option>
+            <option value="11">อาเสวนปจฺจย</option>
+            <option value="12">กมฺมปจฺจย</option>
+            <option value="13">วิปากปจฺจย</option>
+            <option value="14">อาหารปจฺจย</option>
+            <option value="15">อินฺทฺริยปจฺจย</option>
+            <option value="16">ฌานปจฺจย</option>
+            <option value="17">มคฺคปจฺจย</option>
+            <option value="18">สมฺปยุตฺตปจฺจย</option>
+            <option value="19">วิปฺปยุตฺตปจฺจย</option>
+            <option value="20">อตฺถิปจฺจย</option>
+            <option value="21">นตฺถิปจฺจย</option>
+            <option value="22">วิคตปจฺจย</option>
+            <option value="23">อวิคตปจฺจย</option>
+        </select>
+
+
+        <select id="mulaSelect">
+            <option value="-1" disabled selected>== มูลก? ==</option>
+            <option value="1">เอกมูลก</option>
+            <option value="2">ทุมูลก</option>
+            <option value="3">ติมูลก</option>
+            <option value="4">จตุมูลก</option>
+            <option value="5">ปญฺจมูลก</option>
+            <option value="6">ฉมูลก</option>
+            <option value="7">สตฺตมูลก</option>
+            <option value="8">อฏฺฐมูลก</option>
+            <option value="9">นวมูลก</option>
+            <option value="10">ทสมูลก</option>
+            <option value="11">เอกาทสมูลก</option>
+            <option value="12">ทฺวาทสมูลก</option>
+            <option value="13">เตรสมูลก</option>
+            <option value="14">จุทฺทสมูลก</option>
+            <option value="15">ปณฺณรสมูลก</option>
+            <option value="16">โสฬสมูลก</option>
+            <option value="17">สตฺตรสมูลก</option>
+            <option value="18">อฏฺฐารสมูลก</option>
+            <option value="19">เอกูนวีสติมูลก</option>
+            <option value="20">วีสติมูลก</option>
+            <option value="21">เอกวีสติมูลก</option>
+            <option value="22">ทฺวาวีสติมูลก</option>
+            <option value="23">เตวีสติมูลก</option>
+            <option value="24">จตุวีสติมูลก</option>
+        </select>
+
+        <SPAN style="text-align:left" id="status"></SPAN>
+        <SPAN style="text-align:left" id="superset0">
+
+                <OL id="set0"></OL>
+                <SPAN id="setX"><SPAN style="font-size:12pt;">โปรแกรมนี้ แสดง 4 แสนล้านกว่าคำถาม ในคำภีร์ปัฏฐานได้อย่างสมบูรณ์
+                <BR>กรุณาเลือก ธัมมนัย, หมวด, มหาวาร, ปัจจยนัย, ปัจจยสัตติ และ มูลก ที่ต้องการ
+                <BR>หากประสงค์หมวด ติก หรือ ทุก กรุณาเลือกตัวเลือก 0 สำหรับเงื่อนไข ติกาทิ (2)
+                <BR>แต่หากประสงค์ ทุกติก, ติกทุก, ติกติก หรือ ทุกทุก กรุณาเลือกทั้ง ติกาทิ (1) และ (2)</SPAN></SPAN>
+        </SPAN>
+        <SPAN style="text-align:left" id="supersetX">
+
+        </SPAN>
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>แนะนำยมก</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+        A {font-weight:normal !important;}
+        tr.butt td {border-top:1pt solid black;}
+        .ui-ans {line-height:120%;width:auto !important;}
+        .WrongBttn {
+            background-color: #941d1d !important; text-shadow: none !important; color: lightgrey !important; /*text-wrap:normal; max-width: 150px;*/
+        }
+        .RightBttn {
+            background-color: #4dc146 !important; text-shadow: none !important; color: black !important; /*max-width: 150px;*/
+        }
+    </STYLE>
+    <SCRIPT>
+
+        //alert( $("#r11").attr("display","inline"))
+
+        function randomise(minNumber, maxNumber) {
+
+            return Math.floor(Math.random() * (maxNumber-minNumber + 1) + minNumber); // la fonction magique
+
+        }
+        var key;
+
+        function setup () {
+
+            var r11 , r10, r01, r00, q, mula_li /*อธ บทเดียว*/, muli /*อธ สองบท*/;
+
+            do {
+                r11 = randomise(0,1), r10 = randomise(0,1), r01 = randomise(0,1), r00 = randomise(0,1);
+            }
+            while (r11==0 && r10==0 && r01==0 && r00==0);
+
+            if (r11 == 0)
+                $(".r11").hide();
+            else
+                $(".r11").show();
+            if (r10 == 0)
+                $(".r10").hide();
+            else
+                $(".r10").show();
+            if (r01 == 0)
+                $(".r01").hide();
+            else
+                $(".r01").show();
+
+            if (r00 == 0)
+                $(".r00").hide();
+            else
+                $(".r00").show();
+
+
+            q = randomise(0,3);
+
+            if (q==0)
+                {$("#Q").text("A B"); mula_li=r10, muli=r11; $("#paligati").text("น B");}
+            else if (q==1)
+                {$("#Q").text("B A"); mula_li=r01, muli=r11; $("#paligati").text("น A");}
+            else if (q==2)
+                {$("#Q").text("น A น B"); mula_li=r01, muli=r00; $("#paligati").text("B");}
+            else
+                {$("#Q").text("น B น A"); mula_li=r10, muli=r00; $("#paligati").text("A");}
+
+            if (mula_li == 0 && muli == 0) // A-B = 0 && B = 0
+                key = 3; //นตฺถิ
+            else if (mula_li == 0 && muli == 1)
+                key = 1; //อามนฺตา
+            else if (mula_li == 1 && muli == 0)
+                key = (q>1)? 0: 4;
+            else
+                key = 2;
+
+            $("#SurrenderBttn").text("เฉลย");
+            $("#SurrenderBttn").removeClass("ui-icon-forward");
+            $("#SurrenderBttn").addClass("ui-icon-search");
+
+
+            for (i = 0; i < 5; i++) {
+
+                if (!$("#a" + i ).hasClass("ui-icon-carat-r")) {
+                    $("#a" + i ).addClass("ui-icon-carat-r ui-alt-icon");
+                    $("#a" + i ).removeClass("ui-icon-delete ui-icon-check WrongBttn RightBttn");
+                }
+            }
+
+            console.log ("mula_li="+mula_li);
+            console.log ("muli="+muli);
+            console.log ("r11="+r11);
+            console.log ("r10="+r10);
+            console.log ("r01="+r01);
+            console.log ("r00="+r00);
+            console.log ("-------")
+
+        }
+
+        function ans (i) {
+
+            if (!$("#a" + i).hasClass("ui-icon-carat-r"))
+                return;
+
+            $("#a" + i).removeClass("ui-icon-carat-r ui-alt-icon");
+
+            if (key==i) {
+                $("#a" + i).addClass("RightBttn ui-icon-check");
+                $("#SurrenderBttn").removeClass("ui-icon-search");
+                $("#SurrenderBttn").addClass("ui-icon-forward");
+                $("#SurrenderBttn").text("ข้อต่อไป");
+
+            }
+            else {
+                $("#a" + i).addClass("WrongBttn ui-icon-delete");
+            }
+
+        }
+
+        function surrender () {
+            if ($("#SurrenderBttn").text()=="เฉลย") {
+                ans(key);
+                return;
+            }
+            setup ();
+
+        }
+
+
+        $(document).ready(function() {
+
+            setup();
+            $("#SurrenderBttn").click(surrender);
+
+        });
+    </SCRIPT>
+
+</head>
+<body>
+
+
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        <SPAN style="color:darkblue;"><SPAN id="Q"></SPAN>ติ?</SPAN>
+
+        <BUTTON id="SurrenderBttn" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-search ui-alt-icon">เฉลย</BUTTON>
+
+    </DIV>
+
+    <DIV role="main">
+
+
+
+        <TABLE id=TOT align=center style="line-height:125%;" border="0" cellpadding="5" cellspacing="0">
+
+            <THEAD><TR valign=center style="text-align:center;"><TH></TH><TH id="show_mul" style="border-bottom:1pt solid black;">A B</TH></TR></THEAD>
+            <TBODY id="OT">
+            <TR id="11" class="r11"><TD>องค์ธรรมบางอย่าง</TD><TD>&radic;&radic;</TD></TR>
+            <TR id="10" class="r10"><TD>องค์ธรรมบางอย่าง</TD><TD>&radic;X</TD></TR>
+            <TR id="01" class="r01"><TD>องค์ธรรมบางอย่าง</TD><TD>X&radic;</TD></TR>
+            <TR id="00" class="r00"><TD>องค์ธรรมบางอย่าง</TD><TD>XX</TD></TR>
+            </TBODY>
+        </TABLE>
+
+        <BUTTON id="a0" onclick="ans(0);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ปุเรปญฺโห - ปาลิคติยา วิสชฺชนํ (<SPAN id="paligati"></SPAN>)</BUTTON>
+        <BUTTON id="a1" onclick="ans(1);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ปจฺฉาปญฺโห - ปฏิวจนวิสชฺชนํ (อามนฺตา)</BUTTON>
+        <BUTTON id="a2" onclick="ans(2);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">ปริปุณณปญฺโห - สรูปทสฺสเนน วิสชฺชนํ</BUTTON>
+        <BUTTON id="a3" onclick="ans(3);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">โมฆปญฺโห - ปฏิกฺเขเปน วิสชฺชนํ (นตฺถิ)</BUTTON>
+        <BUTTON id="a4" onclick="ans(4);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">โมฆปญฺโห - ปฏิเสเธน วิสชฺชนํ (โน)</BUTTON>
+
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <TITLE>Pali Game</TITLE>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="เกมบาลี เรียนได้ เล่นได้ ความรู้ได้ ทักษะได้">
+
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <!--<link href="../_css/paligame.css" rel="stylesheet">-->
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+
+    <STYLE>
+
+        #Poem_6_1_Page {
+            font-family: "Verdana", "MS Sans Serif", "sans-serif", "Tahoma";
+            font-size:14pt;
+        }
+        BODY {
+            text-align: center;
+            font-weight:normal;
+            background-color: #3c3c3c;
+
+            /*
+            font-size: 100%;
+            line-height: 100%;*/
+            /*-moz-transform-origin:0 0;*/
+        }
+
+        TABLE {
+            text-align: left;
+
+        }
+
+        .bhead {color:royalblue;}
+        .or {color:orangered;}
+        .combi {font-weight:bold;text-align:right;}
+        .table_row {font-weight:normal;text-align:right;color:#555555;}
+        .table_link {font-weight:normal;font-size:75%;color:slategrey;}
+        .highlight_lahu {color:darkgreen; background-color:gold; border: 1pt solid black;}
+        .karu {color:darkgreen;}
+        .plus_one {color:darkslateblue;}
+
+        .pascal_desc {color:slategrey;}
+
+        .selected_lahu1 { background-color:gold;}
+        .selected_lahu2 {background-color:sandybrown;}
+
+        #SummaryWindow .ui-bar-inherit, #SummaryWindow2 .ui-bar-inherit {background-color:palegreen !important;}
+
+
+        .bordy {border-right:black 1pt solid; border-top:black 1pt solid; text-align:center; min-width:10px;}
+        .bordy_left {border-left:black 1pt solid;}
+        .bordy_bottom {border-bottom:black 1pt solid;}
+
+
+        #SummaryWindow-screen, #SummaryWindow2-screen  {opacity: 0.7; background-color: black;}
+
+
+
+
+
+
+    </STYLE>
+
+    <SCRIPT>
+
+        var syl=-1, rows, row_ID, red_stop, results_text;
+
+
+        /*
+
+        $.fn.digits = function(){
+            return this.each(function(){
+                $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+            })
+        }
+        */
+
+        function calc_6_1 () {
+
+
+
+            row_ID = 0;
+            red_stop = -1;
+            results_text= "";
+
+            syl = parseInt($("#Q").val());
+
+
+
+            if (isNaN(syl) || syl<=0) // || syl>15)
+                    return;
+
+            $(".syl_2").text(syl);
+
+            var ptext = "2", i, j, k, combi, n_row=Math.pow(2,syl), pas=new Array();
+
+            for (i=1;i<syl;i++)
+                ptext+="x2";
+
+            $("#show_pow").text(ptext);
+
+            $(".show_n_row").text( sep(n_row));
+
+
+            ptext = "<TR><TD>พยางค์ที่";
+
+            for (i=1;i<=syl;i++)
+                ptext+= "<TD>"+i;
+
+            ptext += "<TR><TD>เลขกำลังสอง";
+
+            for (i=0,j=1;i<syl;i++,j+=j)
+                ptext+= "<TD>"+(j);
+
+            ptext += "<TR><TD>ผลรวมของเลขกำลังสอง<TD colspan="+syl+" align=center>";
+
+            for (i=0,j=1;i<syl;i++,j+=j)
+                ptext+= "+"+(j);
+            ptext+=" = "+(j-1);
+
+
+            ptext += "<TR><TD>เพิ่มอีก 1 เป็น<TD colspan="+syl+" align=center style='font-weight:bold;'>"+sep(j);
+
+            $("#show_n_row2").html(ptext);
+
+            $("#show_width").text (sep(syl+syl-1));
+            $("#show_length").text( sep(n_row+n_row-1) );
+
+            ptext = "<TABLE align='center'><TR><TD>ครุทั้งหมด<TD class='or'>หรือ<TD>ลหุทั้งหมด<TD><TD><TD>=<TD class='combi'>1<TD>คาถา";
+
+            i=syl-1;
+            j=1;
+
+            for (k= 1, combi=""; i+i>=syl; i--) {
+
+
+                j *= (i+1);
+                k *= (syl-i);
+                combi += "x(" + (i+1) + "/" + (syl-i) + ")"
+
+
+                if (i+i== syl)
+                        ptext += "<TR><TD>ครุ " + i + " ลหุ " + (syl - i) + "<TD><TD>";
+                else
+                    ptext += "<TR><TD>ครุ " + i + " ลหุ " + (syl - i) + "<TD class='or'>หรือ<TD>ครุ " + (syl - i) + " ลหุ " + i;
+
+                ptext += "<TD>=<TD>"+combi.substr(1)+"<TD>=<TD class='combi'>" + sep(j/k) + "<TD>คาถา";
+            }
+
+
+
+            $("#combination").html(ptext);
+
+
+
+
+            for (i=0; i<=syl; i++)
+                pas.push(Array());
+
+            for (i=0; i<=syl; i++) {
+                pas[syl].push(1);
+                pas[i].push(1);
+            }
+
+            for (i=syl-1; i>0; i--)
+                for (j=0; j<i; j++)
+                {
+                pas[i].push(pas[i][j]+pas[i+1][j+1]);
+            }
+
+
+
+
+
+
+            combi = "1";
+
+            ptext="<TR><TD class='bordy bordy_left selected_lahu1'>1";
+            ptext+="<TD colspan="+(syl+1)+" class='pascal_desc'>ครุทั้งหมด";
+
+            for (i=1; i<syl; i++) {
+                ptext+="<TR>";
+
+                ptext+="<TD class='bordy bordy_left'>"+pas[i][0];
+
+
+                for (j=1; j<i; j++) {
+                    ptext+="<TD class='bordy'>"+pas[i][j];
+
+                }
+                ptext+="<TD class='bordy selected_lahu1'>"+pas[i][i];
+                combi+= "+"+pas[i][i];
+
+                ptext+="<TD colspan="+(syl+1-i)+" class=pascal_desc>ครุ "+(syl-i)+" ลหุ "+(i);
+            }
+
+            ptext+="<TR>";
+
+            ptext+="<TD class='bordy bordy_left bordy_bottom'>1";
+
+            for (j=1; j<syl; j++) {
+                ptext+="<TD class='bordy bordy_bottom'>1";
+            }
+
+            ptext+="<TD class='bordy bordy_bottom selected_lahu1'>1";
+            ptext+="<TD class='pascal_desc'>ลหุทั้งหมด";
+
+            combi += "+1";
+
+            $("#pascal").html(ptext);
+            $("#sum_pascal").html(combi);
+
+
+
+
+
+
+
+            //console.log("syl = " & syl);
+
+
+            rows = new Array();
+
+
+
+            for (i=0; i<syl; i++)
+                rows.push(2);
+
+            publish_row ();
+
+
+
+            for(;;) {
+                i=0;
+                while (rows[i]==1 && i<syl) {
+                    i++;
+                }
+
+
+                if (i==syl)
+                        break;
+
+                rows[i]=1;
+                red_stop = i;
+
+                for (j=0; j<i; j++)
+                     rows[j]=2;
+
+                publish_row();
+
+                //$("#progress").show().text(Math.ceil(100*row_ID/n_row));
+
+            }
+
+            $("#analysis").html(results_text);
+
+
+        }
+
+        function sep (t) {
+            return t.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+        }
+
+        function publish_row () {
+
+            ++row_ID;
+
+            var html_text = "<TR><TD class='table_row'>("+ sep(row_ID) + ")";
+
+
+            for (var i=0; i<red_stop; i++) {
+                html_text += "<TD class='karu'>"+rows[i];
+            }
+
+            if (red_stop>=0)
+                html_text += "<TD class='highlight_lahu'>"+rows[i];
+
+            for (var i=red_stop+1; i<syl; i++) {
+                html_text += "<TD class='karu'>"+rows[i];
+            }
+
+
+            results_text+=html_text+"<TD class='table_link'>[<A href='javascript:rrr("+row_ID+");'>นัฏฐนัย</A> | <A href='javascript:rawrr("+row_ID+");'>อุททิฏฐนัย</A>]";
+
+
+
+
+        }
+
+        $(document).ready(function(){
+            calc_6_1();
+
+            $("#Q").bind("input propertychange",calc_6_1);
+
+        });
+
+        function rrr (r) {
+
+            var rtext = "<B class='bhead'>แถวที่ "+r+"</B><BR><TABLE>", result=r, remainder, i=0;
+
+            while (result > 1) {
+
+                rtext += "<TR><TD>" + result +"<TD>/2<TD>=<TD>";
+                remainder = result%2;
+                result = Math.floor(result/2);
+                rtext +=  result+"<TD>";
+                if (remainder==0)
+                    rtext += "<TD>เพราะหารลงตัว<TD>พยางค์ที่ " +(++i)+ "<TD> จึงเป็นลหุ<TD>(1)";
+                else {
+                    rtext += "เศษ 1<TD>เพราะเหลือเศษ<TD>พยางค์ที่ " +(++i)+ "<TD> จึงเป็นครุ<TD>(2)";
+                    rtext += "<TR  class='plus_one'><TD><TD><TD><TD>"+ (result) + "<TD>+ 1 = " + (++result);
+
+                    }
+
+
+            }
+            if (i < syl)
+                rtext += "<TR  style='color:cornflowerblue'><TD><TD><TD><TD><TD><TD><TD>พยางค์ที่เหลือ<TD colspan='2'> ย่อมเป็นครุ"
+
+
+            $("#naya").html(rtext);
+            $("#SummaryWindow").popup('open');
+
+        }
+
+        function rawrr (r) {
+
+            var kl = dec2bin(r-1), i= 0, j= 1,k=0;
+
+            while (kl.length<syl)
+                kl="0"+kl;
+
+            kl=kl.replace(/[0]/g,"2").split('').reverse();
+
+            var rtext = "<B class='bhead'>ครุลหุคือ "+kl.join(' ')+"</B><BR><TABLE border=1 cellpadding=5 cellspacing='0'><TR><TD>ครุลหุ", result=r, remainder, i=0;
+
+            for (;i<syl;i++)
+                rtext+= (kl[i]=="1")?  "<TD class='selected_lahu1'>1" : "<TD>2";
+
+            rtext += "<TR><TD>เลขกำลังสอง";
+
+
+
+            for (i=0, j=1;i<syl;i++,j+=j)
+                rtext+= (kl[i]=="1")? "<TD class='selected_lahu2'>"+sep(j) : "<TD>"+sep(j);
+
+            rtext += "<TR><TD>ผลรวมของเลขกำลังสองของพยางค์ที่เป็นลหุ";
+            rtext += "<TD colspan=" + syl + ">";
+
+            for (i=0, j=1;i<syl;i++,j+=j)
+                if (kl[i]=="1") {
+                    rtext+= "+"+sep(j);
+                    k+=j;
+                }
+
+            rtext += " = "+sep(k);
+
+            rtext += "<TR><TD>เพิ่มอีก 1 เป็น<TD colspan="+ syl + " class='combi'>"+ sep(++k);
+
+
+
+
+            $("#rawrr").html(rtext);
+            $("#SummaryWindow2").popup('open');
+
+        }
+
+
+        function dec2bin(dec){
+            return (dec >>> 0).toString(2);
+        }
+
+    </SCRIPT>
+</head>
+<body>
+
+<DIV id=Poem_6_1_Page data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" data-role="button" rel="external"  class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        ฉัปปัจจยวิภาค (วุตโตทัย)<BR />
+        <SPAN style="color:darkcyan;font-weight:normal;font-size:80%;">พิมพ์จำนวนพยางค์ในกล่องได้เลยครับ  <BR>
+             <SPAN style="color:darkviolet;font-size:80%;">(ถ้าใส่เลขเกิน 10 ท่านอาจต้องรอนาน หรือ เครื่องแฮงค์ได้)  </SPAN>
+             </SPAN>
+
+        <INPUT type="text" id="Q" value="4" style="text-align:center; color:darkblue;></INPUT>
+
+    </DIV>
+    <DIV role="main" style="overflow-x:scroll;background-color: #d3d3d3; text-shadow: 0px !important;">
+    </DIV>
+
+    <DIV role="main" style="overflow-x:scroll;background-color: #e9e9e9; text-shadow: 0px !important;">
+
+
+
+        <P style="font-weight:normal;"><B class="bhead">วุตตสังขยานัย:</B> 2<sup class="syl_2"></sup> = <SPAN id="show_pow"></SPAN> = <B class="show_n_row"></B> แถว
+
+        <TABLE id="show_n_row2" style="font-weight:normal;" border="1" cellpadding="5" cellspacing="0" align="center"></TABLE>
+
+
+        </P>
+
+        <P style="font-weight:normal;"><B class="bhead">วุตตอัทธานัย:</B> <SPAN class="syl_2"></SPAN> พยางค์ <SPAN class="bhead">--></SPAN> กว้าง (<SPAN class="syl_2"></SPAN>x2)-1 = <B id="show_width"></B> นิ้ว
+        <BR /><SPAN class="show_n_row"></SPAN> แถว <SPAN class="bhead">--></SPAN> ยาว (<SPAN class="show_n_row"></SPAN>x2)-1 = <B id="show_length"></B> นิ้ว</P>
+        <P style="font-weight:normal;"><B class="bhead">สัพพคลกริยานัย:</B>
+            <SPAN ID="combination"></SPAN>
+
+
+        <TABLE id="pascal" style="font-weight:normal;" align="center" cellpadding="5" cellspacing="0"></TABLE>
+        <BR>
+        <SPAN style="font-weight:normal;" ><SPAN id="sum_pascal"></SPAN> = <B class="show_n_row"></B></SPAN>
+
+        </P>
+
+
+
+
+        <B class="bhead">ปัตถารนัย:</B><BR />
+        <TABLE id="analysis" border="0" cellpadding="5" cellspacing="2" align="center" style="line-height:70%; ">
+        </TABLE>
+
+    </DIV>
+
+
+    <DIV id="SummaryWindow" data-role="popup" data-dismissible="true" data-history="false" data-overlay-theme="a" onclick="$(this).popup('close');">
+        <DIV data-role="header" class="ui-content">
+            นัฏฐนัย
+            </DIV>
+        <DIV role="main" id="naya">
+
+        </DIV>
+    </DIV>
+
+    <DIV id="SummaryWindow2" data-role="popup" data-dismissible="true" data-history="false" data-overlay-theme="a" onclick="$(this).popup('close');">
+        <DIV data-role="header" class="ui-content">
+            อุททิฏฐนัย
+        </DIV>
+        <DIV role="main" id="rawrr">
+
+        </DIV>
+    </DIV>
+
+</DIV>
+
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <TITLE>Pali Game</TITLE>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="เกมบาลี เรียนได้ เล่นได้ ความรู้ได้ ทักษะได้">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <link href="../_css/pali.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <script src=poem.js></script>
+
+    <STYLE>
+
+        BODY, TABLE, .ui-btn, textarea {
+            font-family: "Pai2", "Pali", "Verdana", "MS Sans Serif", "sans-serif", "Tahoma";
+            font-size: 14pt;
+        }
+        BODY {
+            text-align: center;
+            font-weight:normal;
+            background-color: #3c3c3c;
+
+            /*
+            font-size: 100%;
+            line-height: 100%;*/
+            /*-moz-transform-origin:0 0;*/
+        }
+
+        TABLE {
+            text-align: left;
+
+        }
+
+        .spell {
+            font-size:80%; color:#222222;
+        }
+        .karu {
+            font-size:80%; color:darkblue;
+        }
+        .lahu {
+            font-size:80%; color:darkgreen;
+        }
+
+
+
+    </STYLE>
+
+    <script>
+
+        var karu, kcomment, Syllable;
+        var is_En = false;
+
+
+        $(document).ready(function() {
+
+
+            example (Math.floor(Math.random()*4));
+
+
+            $("#Q").bind("input propertychange",analyse);
+
+
+        });
+
+    </script>
+</head>
+<body>
+
+<DIV id=MainPage data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" data-role="button" rel="external"  class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        วิเคราะห์ฉันท์ <SPAN style="color:darkcyan;font-weight:normal;font-size:80%;">(พิมพ์ข้อความในกล่องได้เลยจ้า)</SPAN>
+        <BR />
+        <SPAN style="font-size:80%;font-weight:normal;letter-spacing:-1px;">ตัวอย่าง:
+        <A href="javascript:example(0);" data-role="none">มงฺคลสุตฺต</A> |
+        <A href="javascript:example(1);" data-role="none">อภิธมฺมสงฺคโห</A> |
+        <A href="javascript:example(2);" data-role="none">อภิธานปฺปทีปิกา</A> |
+        <A href="javascript:example(3);" data-role="none">ปตฺติทานคาถา</A>
+            </SPAN>
+        <TEXTAREA id="Q" onfocus="if($(this).val().substring(0,1)=='*') this.value='';"></TEXTAREA>
+        <!--<BUTTON id="LangBttn" onclick="ChangeLang();" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-edit ui-alt-icon">อักขระไทย</BUTTON>-->
+    </DIV>
+    <DIV role="main" style="overflow-x:scroll;background-color: #d3d3d3; text-shadow: 0px !important;">
+        <TABLE id="analysis" border="0" cellpadding="5" cellspacing="0" align="center" style="line-height:120%; ">
+        </TABLE>
+
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>

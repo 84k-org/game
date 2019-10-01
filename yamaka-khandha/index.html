@@ -1,0 +1,377 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>โปรแกรมขันธยมก ปวัตติวาระ</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+        A {font-weight:normal !important;}
+        tr.top td {border-top:1pt solid black;}
+    </STYLE>
+    <SCRIPT>
+        var vara, mula, muli, kala, kala2;
+        var khan_brief = ["รุ", "เว", "สญฺ", "สงฺ", "วิญฺ"]
+
+        function selectvara (m) {
+            vara = m;
+
+            switch ($("#vara"+m).text()) {
+                case "ยสฺส": $("#show_vara").text("ยสฺส"); $("#show_vara2").text("ตสฺส"); $("#show2_vara").text("บุคคล"); break;
+
+                case "ยตฺถ": $("#show_vara").text("ยตฺถ"); $("#show_vara2").text("ตตฺถ"); $("#show2_vara").text("ภูมิ"); break;
+
+                case "ยสฺส ยตฺถ": $("#show_vara").text("ยสฺส ยตฺถ"); $("#show_vara2").text("ตสฺส ตตฺถ"); $("#show2_vara").text("บุคคล/ภูมิ"); break;
+            }
+
+            populate();
+        }
+
+        function selectmula (m) {
+            mula = m;
+            $("#show_mula").text( $("#mula"+m).text() );
+            populate();
+        }
+
+        function selectmuli (m) {
+            muli = m;
+            $("#show_muli").text( $("#muli"+m).text() );
+            populate();
+        }
+
+        function selectkala (m) {
+            kala = m;
+            $("#show_kala").text( $("#kala"+m).text() );
+            populate();
+        }
+
+        function selectkala2 (m) {
+            kala2 = m;
+            $("#show_kala2").text( $("#kala2"+m).text() );
+            populate();
+            //if (kala==1)
+        }
+
+        var pretext1 = "";
+        function push (id, text1, text2, text3, text4, text5, tick) {
+            $("#OT").append("<TR id=r"+id+
+                ((id==0 || text1!=pretext1)? " class=top":"")
+                +"><TD>"+text1+"<TD>"+text2+"<TD>"+text3+"<TD>"+text4+"<TD>"+text5+"<TD style=text-align:center;>"+tick);
+            pretext1 = text1;
+        }
+
+        function tick_o (bhumi, khan) { //ภูมิ   ขันธ์
+            if (bhumi == "ป" || bhumi == "ส") //ปัญจโว หรือ ระบุสุทธาวาส
+                return "/";
+            if (bhumi == "อ")
+                return (khan==0)? "X" : "/";
+            //if (bhumi == "ญ")
+                return (khan==0)? "/" : "X";
+
+        }
+
+        function nice (t) {
+            return t.replace(/\//g, "&radic;");
+        }
+
+        function supertick_o (bhumi) {
+            return nice(tick_o(bhumi,mula) + tick_o(bhumi,muli));
+        }
+
+        // ล กาล3 ต้องแยก  บุคคลที่จักเกิดในปัญจโว(รูป-นามจักเกิด), ฉิ (นาม-รูปจักไม่เกิด), เย อรูป (รูปจักไม่เกิด)
+
+        function tick_la (b, t, p, mul, tmul) {
+
+            if (tmul%3==1) //อดีต
+                return "/";
+
+            //ปัจจุบัน
+            if ((tmul == 0 && t == "ก")  //อุปฺปชฺชติ & กก
+                ||(tmul == 3 && t == "ต"))   //นิรุชฺฌติ & กต
+                return tick_o (b, mul);
+
+            if (tmul%3==0)
+                return "X";
+
+            // อนาคต
+            if (p == null)  //จักเกิดในปัญจโวชาติใดชาติหนึ่งในอนาคต
+                return "/";
+
+            if (p == "ฉ") //ฉิ
+                return (tmul == 5 && t == "ก")? tick_o (b, mul): "X";
+            //นิรุชฺฌิสฺสติ และ กก.
+
+            // เย.อ
+            return (tmul == 5 && t == "ก" && mul == 0 && b == "ป")? "/" : tick_o ("อ", mul);
+            //รูปกฺขนฺโธ นิรุชฺฌิสฺสติ และ กก. ใน ปญฺจโว
+
+            //return "?";
+        }
+
+        function supertick_la (b, t, p) {
+            return nice(tick_la (b, t, p, mula, kala) + tick_la (b, t, p, muli, kala2));
+        }
+
+        // โล กาล2 ต้องแยก สุท5 (รูป-นามไม่เคยเกิด)
+        // โล กาล3 ต้องแยก บุคคลที่จักเกิดซ้ำภูมิ, ฉิต ฉิอ (รูป-นามจักไม่เกิด)
+
+        function tick_lo (b, t, p, mul, tmul) {
+
+            //console.log ("lo");
+
+            if (tmul%3==0) //ปัจจุบัน
+                return tick_la (b, t, p, mul, tmul);
+
+            if (tmul%3==1) //อดีต
+                return (b=="ส")? "X" : tick_o (b, mul);
+                //ไม่เคยเกิดในสุทธาวาส
+
+            // อนาคต
+            if (p == null)  //จักเกิดซ้ำภูมิ
+                return tick_o (b, mul);
+
+            if (p == "ฉ") //ฉิตรง กับ ฉิอ้อม
+                return (tmul == 5 && t == "ก")? tick_o (b, mul): "X";
+            //นิรุชฺฌิสฺสติ และ กก.
+
+
+        }
+
+
+        function supertick_lo (b, t, p) {
+            return nice(tick_lo (b, t, p, mula, kala) + tick_lo (b, t, p, muli, kala2));
+        }
+
+
+
+        function populate () {
+
+            $("#TOT").hide();
+
+            if (vara==null || mula==null || muli==null || kala==null || kala2==null)
+                return;
+
+            $("#OT").html("");
+
+            $("#TOT").show();
+
+
+            $("#show_mul").html(khan_brief[mula] + " " + khan_brief[muli]);
+
+
+            if (vara==1) { // โอกาสวาระ
+                push (0, "", "ป 26", "", "", "", supertick_o ("ป"));
+                push (1, "", "อ 4", "", "", "", supertick_o ("อ"));
+                push (2, "", "ญฺ 1", "", "", "", supertick_o ("ญ"));
+            }
+
+
+            else if (vara==0) { //บุคคลวาระ
+                if (kala%3!=2 && kala2%3!=2) {//ไม่มีอนาคต
+                    push (0, "", "ป 26", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_la ("ป","ก"));
+                    push (1, "", "ป 26", "ปุ 4 ผ 4", "15.35 กํรุท้าย 20", "กต", supertick_la ("ป","ต"));
+                    push (2, "", "อ 4", "ปุ 1 ผต 3", "4.30", "กก", supertick_la ("อ","ก"));
+                    push (3, "", "อ 4", "ปุ 1 ผ 4", "4.30", "กต", supertick_la ("อ","ต"));
+                    push (4, "", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_la ("ญ","ก"));
+                    push (5, "", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_la ("ญ","ต"));
+                }
+                else { //มีอนาคต
+                    if ((kala%3==2&&mula==0) || (kala2%3==2&&muli==0)) { //มีอนาคต มีรูปขันธ์
+                        push (0, "จักเกิดในปัญจ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_la ("ป","ก"));
+                        push (1, "จักเกิดในปัญจ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_la ("ป","ต"));
+                        push (2, "จักเกิดในปัญจ", "อ 4", "ติปุ 1", "4.30", "กก", supertick_la ("อ","ก"));
+                        push (3, "จักเกิดในปัญจ", "อ 4", "ติปุ 1", "4.30", "กต", supertick_la ("อ","ต"));
+                        push (4, "จักเกิดในปัญจ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_la ("ญ","ก"));
+                        push (5, "จักเกิดในปัญจ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_la ("ญ","ต"));
+
+                        push (6, "ฉิ", "ป 22 (-อป 4)", "ติปุ 1 ผต 3", "15.35 ปกํ 20", "กก", supertick_la ("ป","ก","ฉ"));
+                        push (7, "ฉิ", "ป 22 (-อป 4)", "อรผ 1", "15.35 กํรุท้าย 20", "กต", supertick_la ("ป","ต","ฉ"));
+                        push (8, "ฉิ", "อ 4", "ผต 3", "4.30", "กก", supertick_la ("อ","ก","ฉ"));
+                        push (9, "ฉิ", "อ 4", "อรผ 1", "4.30", "กต", supertick_la ("อ","ต","ฉ"));
+
+                        push(10, "เย.อ", "ป 7+9 (-อป 4 เวห 1 สุท 5)", "ติปุ 1 ผบ 3", "15.35 ปกํ 20", "กก", supertick_la("ป", "ก", "ย"));
+                        push(11, "เย.อ", "ป 7+9 (-อป 4 เวห 1 สุท 5)", "ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_la("ป", "ต", "ย"));
+                        push(12, "เย.อ", "อ 4", "ผต 3", "4.30", "กก", supertick_la("อ", "ก", "ย"));
+                        push(13, "เย.อ", "อ 4", "ผต 3", "4.30", "กต", supertick_la("อ", "ต", "ย"));
+
+                    }
+                    else {
+                        push (0, "จักเกิดในปัญจ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_la ("ป","ก"));
+                        push (1, "จักเกิดในปัญจ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_la ("ป","ต"));
+                        push (2, "จักเกิดในปัญจ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_la ("อ","ก"));
+                        push (3, "จักเกิดในปัญจ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กต", supertick_la ("อ","ต"));
+                        push (4, "จักเกิดในปัญจ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_la ("ญ","ก"));
+                        push (5, "จักเกิดในปัญจ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_la ("ญ","ต"));
+
+                        push (6,  "ฉิ", "ป 22 (-อป 4)", "ติปุ 1 ผบ 3", "15.35 ปกํ 20", "กก", supertick_la ("ป","ก","ฉ"));
+                        push (7,  "ฉิ", "ป 22 (-อป 4)", "อรผ 1", "15.35 กํรุท้าย 20", "กต", supertick_la ("ป","ต","ฉ"));
+                        push (8,  "ฉิ", "อ 4", "ผต 3", "4.30", "กก", supertick_la ("อ","ก","ฉ"));
+                        push (9,  "ฉิ", "อ 4", "อรผ 1", "4.30", "กต", supertick_la ("อ","ต","ฉ"));
+                    }
+                }
+
+            }
+            else { //ปุคฺคโลกาส
+
+                if (kala%3==0 && kala2%3==0) {//ปัจจุบันล้วน
+                    push (0, "", "ป 26", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก"));
+                    push (1, "", "ป 26", "ปุ 4 ผ 4", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต"));
+                    push (2, "", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก"));
+                    push (3, "", "อ 4", "ติปุ 1 ผ 4", "4.30", "กต", supertick_lo ("อ","ต"));
+                    push (4, "", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก"));
+                    push (5, "", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต"));
+                }
+                else if (kala%3!=2 && kala2%3!=2) {//ไม่มีอนาคต มี ปัจจุบัน และ/หรือ อดีต
+                    push (0, "", "ป 21 (-สุท 5)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก"));
+                    push (1, "", "ป 21 (-สุท 5)", "ปุ 4 ผ 4", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต"));
+                    push (2, "", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก"));
+                    push (3, "", "อ 4", "ติปุ 1 ผ 4", "4.30", "กต", supertick_lo ("อ","ต"));
+                    push (4, "", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก"));
+                    push (5, "", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต"));
+
+                    push (6, "", "สุท 5", "อนผ 1", "รูปปัญจม.วิ 1.30 ปกํ 12", "กก", supertick_lo ("ส","ก"));
+                    push (7, "", "สุท 5", "ผบ 2", "รูปปัญจม.วิ 1.30 กํรุท้าย 12", "กต", supertick_lo ("ส","ต"));
+                }
+                else if (kala%3!=1 && kala2%3!=1) {//ไม่มีอดีต มี ปัจจุบัน และ/หรือ อนาคต
+                    push (0, "จักเกิดซ้ำภูมิ", "ป 21 (-สุท 5)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก"));
+                    push (1, "จักเกิดซ้ำภูมิ", "ป 21 (-สุท 5)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต"));
+                    push (2, "จักเกิดซ้ำภูมิ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก"));
+                    push (3, "จักเกิดซ้ำภูมิ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กต", supertick_lo ("อ","ต"));
+                    push (4, "จักเกิดซ้ำภูมิ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก"));
+                    push (5, "จักเกิดซ้ำภูมิ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต"));
+
+                    push (6,  "ฉิต", "ป 22 (-อป 4)", "ติปุ 1 ผบ 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก","ฉ"));
+                    push (7,  "ฉิต", "ป 22 (-อป 4)", "อรผ 1", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต","ฉ"));
+                    push (8,  "ฉิต", "อ 4", "ผต 3", "4.30", "กก", supertick_lo ("อ","ก","ฉ"));
+                    push (9,  "ฉิต", "อ 4", "อรผ 1", "4.30", "กต", supertick_lo ("อ","ต","ฉ"));
+
+                    push (10, "ฉิอ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก","ฉ"));
+                    push (11, "ฉิอ", "ป 25 (-อกนิ)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต","ฉ"));
+                    push (12, "ฉิอ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก","ฉ"));
+                    push (13, "ฉิอ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กต", supertick_lo ("อ","ต","ฉ"));
+                    push (14, "ฉิอ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก","ฉ"));
+                    push (15, "ฉิอ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต","ฉ"));
+                }
+                else { // อดีต ผสม อนาคต
+                    push (0, "จักเกิดซ้ำภูมิ", "ป 21 (-สุท 5)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก"));
+                    push (1, "จักเกิดซ้ำภูมิ", "ป 21 (-สุท 5)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต"));
+                    push (2, "จักเกิดซ้ำภูมิ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก"));
+                    push (3, "จักเกิดซ้ำภูมิ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กต", supertick_lo ("อ","ต"));
+                    push (4, "จักเกิดซ้ำภูมิ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก"));
+                    push (5, "จักเกิดซ้ำภูมิ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต"));
+
+                    push (6,  "ฉิต", "ป 17 (-อป 4 สุท 5)", "ติปุ 1 ผบ 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก","ฉ"));
+                    push (7,  "ฉิต", "ป 17 (-อป 4 สุท 5)", "อรผ 1", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต","ฉ"));
+                    push (8,  "ฉิต", "อ 4", "ผต 3", "4.30", "กก", supertick_lo ("อ","ก","ฉ"));
+                    push (9,  "ฉิต", "อ 4", "อรผ 1", "4.30", "กต", supertick_lo ("อ","ต","ฉ"));
+
+                    push (10, "ฉิอ", "ป 21 (-อกนิ 1 สุท 5)", "ปุ 4 ผต 3", "15.35 ปกํ 20", "กก", supertick_lo ("ป","ก","ฉ"));
+                    push (11, "ฉิอ", "ป 21 (-อกนิ 1 สุท 5)", "ปุ 4 ผต 3", "15.35 กํรุท้าย 20", "กต", supertick_lo ("ป","ต","ฉ"));
+                    push (12, "ฉิอ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กก", supertick_lo ("อ","ก","ฉ"));
+                    push (13, "ฉิอ", "อ 4", "ติปุ 1 ผต 3", "4.30", "กต", supertick_lo ("อ","ต","ฉ"));
+                    push (14, "ฉิอ", "ญ 1", "สุ.อเห 1", "ชีแรก 9", "กก", supertick_lo ("ญ","ก","ฉ"));
+                    push (15, "ฉิอ", "ญ 1", "สุ.อเห 1", "ชีท้าย 9", "กต", supertick_lo ("ญ","ต","ฉ"));
+
+                    push (16, "ฉิต/ฉิอ", "สุท 5", "อนผ 1", "รูปปัญจม.วิ 1.30 ปกํ 12", "กก", supertick_lo ("ส","ก","ฉ"));
+                    push (17, "ฉิต/ฉิอ", "สุท 5", "ผบ 2", "รูปปัญจม.วิ 1.30 กํรุท้าย 12", "กต", supertick_lo ("ส","ต","ฉ"));
+                }
+
+            }
+        }
+
+    </SCRIPT>
+
+</head>
+<body>
+
+
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        <SPAN style="color:darkblue;">โปรแกรมขันธยมก ปวัตติวาระ</SPAN>
+    </DIV>
+
+    <DIV role="main">
+
+
+
+
+        <SPAN></SPAN>
+
+        <TABLE id="Settings" style="font-size:90%;line-height:130%;" align=center border="1" cellpadding="7" cellspacing="0">
+
+            <TR valign=top>
+            <TD><A ID=vara0 href="javascript:selectvara(0);">ยสฺส</A><BR>
+                <A ID=vara1 href="javascript:selectvara(1);">ยตฺถ</A><BR>
+                <A ID=vara2 href="javascript:selectvara(2);">ยสฺส ยตฺถ</A>
+            </TD>
+            <TD>
+                <A ID=mula0 href="javascript:selectmula(0);">รูปกฺขนฺโธ</A><BR>
+                <A ID=mula1 href="javascript:selectmula(1);">เวทนากฺขนฺโธ</A><BR>
+                <A ID=mula2 href="javascript:selectmula(2);">สญฺญากฺขนฺโธ</A><BR>
+                <A ID=mula3 href="javascript:selectmula(3);">สงฺขารกฺขนฺโธ</A><BR>
+                <A ID=mula4 href="javascript:selectmula(4);">วิญฺญาณกฺขนฺโธ</A>
+            </TD>
+
+            <TD>
+                <A ID=kala0 href="javascript:selectkala(0);">อุปฺปชฺชติ</A><BR>
+                <A ID=kala1 href="javascript:selectkala(1);">อุปฺปชฺชิตฺถ</A><BR>
+                <A ID=kala2 href="javascript:selectkala(2);">อุปฺปชฺชิสฺสติ</A><BR>
+                <A ID=kala3 href="javascript:selectkala(3);">นิรุชฺฌติ</A><BR>
+                <A ID=kala4 href="javascript:selectkala(4);">นิรุชฺฌิตฺถ</A><BR>
+                <A ID=kala5 href="javascript:selectkala(5);">นิรุชฺฌิสฺสติ</A>
+            </TD>
+            <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+            <TD>
+                <A ID=muli0 href="javascript:selectmuli(0);">รูปกฺขนฺโธ</A><BR>
+                <A ID=muli1 href="javascript:selectmuli(1);">เวทนากฺขนฺโธ</A><BR>
+                <A ID=muli2 href="javascript:selectmuli(2);">สญฺญากฺขนฺโธ</A><BR>
+                <A ID=muli3 href="javascript:selectmuli(3);">สงฺขารกฺขนฺโธ</A><BR>
+                <A ID=muli4 href="javascript:selectmuli(4);">วิญฺญาณกฺขนฺโธ</A>
+            </TD>
+
+            <TD>
+                <A ID=kala20 href="javascript:selectkala2(0);">อุปฺปชฺชตีติ</A><BR>
+                <A ID=kala21 href="javascript:selectkala2(1);">อุปฺปชฺชิตฺถาติ</A><BR>
+                <A ID=kala22 href="javascript:selectkala2(2);">อุปฺปชฺชิสฺสตีติ</A><BR>
+                <A ID=kala23 href="javascript:selectkala2(3);">นิรุชฺฌตีติ</A><BR>
+                <A ID=kala24 href="javascript:selectkala2(4);">นิรุชฺฌิตฺถาติ</A><BR>
+                <A ID=kala25 href="javascript:selectkala2(5);">นิรุชฺฌิสฺสตีติ</A>
+            </TD>
+            </TR>
+
+            <TR valign=center><TH id="show_vara"><TH id="show_mula"><TH id="show_kala">
+                <TH id="show_vara2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <TH id="show_muli"><TH id="show_kala2"></TR>
+            </SELECT>
+
+        </TABLE>
+
+        <TABLE id=TOT align=center style="display:none; line-height:125%;" border="0" cellpadding="3" cellspacing="0">
+
+            <THEAD><TR valign=center style="text-align:center;"><TH id="show2_vara" colspan="5"></TH><TH id="show_mul"></TH></TR></THEAD>
+            <TBODY id="OT">
+            </TBODY>
+        </TABLE>
+
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+
+</body>
+</html>

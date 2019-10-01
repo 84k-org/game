@@ -1,0 +1,507 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <TITLE>เกมคำนาม</TITLE>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="เกมบาลี เรียนได้ เล่นได้ ความรู้ได้ ทักษะได้">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <link href="../_css/pali.css" rel="stylesheet">
+    <link href="../_css/paligame.css" rel="stylesheet">
+
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+    <script src=../_js/cookie.js></script>
+
+    <script src=noun.js?ver=2></script>
+    <script src=swap.js></script>
+
+
+<STYLE>
+
+
+    .ui-ans {
+        min-width:150px;
+        width:auto !important;
+    }
+    /*120px*//* */
+    .WrongBttn {
+        background-color: #941d1d !important; text-shadow: none !important; color: lightgrey !important; /*text-wrap:normal; max-width: 150px;*/
+    }
+    .RightBttn {
+        background-color: #4dc146 !important; text-shadow: none !important; color: black !important; /*max-width: 150px;*/
+    }
+    .emph {
+        color:darkblue;
+    }
+    .emph_k {
+        color:forestgreen;
+    }
+
+
+
+</STYLE>
+
+
+
+<SCRIPT>
+
+
+
+    $(document).keydown(function(event) {
+
+        if (start_timer==null ||  ($.mobile.pageContainer.pagecontainer( 'getActivePage' ).prop( 'id' )!="VibhattiGamePage"))
+            return;
+
+        //console.log('Handler for .keyboard() called. - ' + event.charCode);
+
+
+        //console.log('Handler for .keyboard() called. - ' + event.which);
+
+        switch (event.which) {
+            case 32: $("#SurrenderBttn").click();
+                break;
+            case 37: right_column=0;
+                break;
+            case 39: right_column=1;
+                break;
+            case 56: ans(0,right_column);
+                right_column=0;
+                break;
+
+            default: if (event.which > 48 && event.which < 56) {
+                ans(event.which - 48, right_column);
+                right_column = 0;
+            }
+
+
+
+        }
+
+    });
+
+
+    $(document).ready(function(){
+
+
+
+        $("#BttnNewGame_Again").click(NewGame);
+        $("#BttnNewMatchingGame_Again").click(prepareMatchingGame);
+        $("#NewGameLink").click(NewGame);
+
+
+
+        pattern_ID = Cookies.get("Stage");
+        mode_ID = Cookies.get("Mode");
+
+
+        if (pattern_ID ==null)
+            SelectStage(-1);
+        else
+            SelectStage(parseInt(pattern_ID));
+
+        if (mode_ID == null)
+            SelectMode (0,0);
+        else
+            SelectMode (parseInt(mode_ID)%10, Math.floor(parseInt(mode_ID)/10));
+
+
+
+
+        $(document).on("pagecontainershow", function () {
+
+            switch ($.mobile.pageContainer.pagecontainer( 'getActivePage' ).prop ( 'id' )) {
+
+                /*case "PoemPage":
+                    example (Math.floor(Math.random()*4));
+                    break;
+                */
+
+                case "NounPage":
+                    clearTimeout(Timer);
+                    start_timer = null;
+                    break;
+
+                case "MatchingGamePage":
+                    prepareMatchingGame();
+                    break;
+
+                case "VibhattiGamePage":
+
+                    //console.log (start_timer);
+                    if (start_timer==null)
+                        window.location.href = "#NounPage";//*/
+
+                    break;
+                case "SelectStagePage":
+
+                        if ($("#StageChoice").text().length)
+                            break;
+
+                        var  html_text='<SPAN style="color:darkred;font-weight:bold;">รวมมิตร</SPAN> <A href="#NounPage" onclick="SelectStage(-1);" data-role="button" style="height:7px;padding-top:6px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ">รวมมิตร</A>';
+
+
+                        for(var j=0; j<subpattern_list.length; j++) {
+
+
+                            if (j==0 || subpattern_list[j][2]!=subpattern_list[j-1][2]) // NEW ลิงค์
+                                html_text+=('<SPAN style="color:darkred;font-weight:bold;"><NOBR>'+subpattern_list[j][2]+'</NOBR></SPAN> ');
+
+                            //console.log(j);
+
+                            html_text+=('<A href="#NounPage" onclick="SelectStage('+j+');" data-role="button" style="height:7px;padding-top:6px; ');
+
+
+
+                            switch(subpattern_list[j][3]) {
+                                case "อ": html_text+=('background-color:#FFCDCB;'); break;
+                                case "อา": html_text+=('background-color:#FFDDBB;'); break;
+                                case "อิ": html_text+=('background-color:lightyellow;'); break;
+                                case "อี": html_text+=('background-color:#CCFFCC;'); break;
+                                case "อุ": html_text+=('background-color:#CCDEFF;'); break;
+                                case "อู": html_text+=('background-color:#CCAAFF;'); break;
+                                //case "เอ": html_text+=('background-color:#DDBBFF;'); break;
+                                case "โอ": html_text+=('background-color:#FFAAFF;');
+                            }
+
+
+                            html_text+=('" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ">'+ subpattern_list[j][4] +'</A>');
+
+                            /*if (j==25) {
+                                html_text += ('<A href="#NounPage" onclick="SelectStage(' + 19 + ');" data-role="button" style="height:4px;padding-top:2px; ');
+                                html_text+=('background-color:#FFAAFF;');
+                                html_text+=('" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ">'+ subpattern_list[19][4] +'</A>');
+                            }*/
+
+                        }
+
+                        $("#StageChoice").html(html_text);
+
+                    break;
+                case "SelectModePage":
+
+                    if ($("#ModeChoice").text().length)
+                        break;
+
+                        var html_text = '<TR><TD width="100px" valign=top align=center>ทายวิภัตติ'+
+                            '<P style="font-size:70%;color:grey;">โดยใช้สัมผัส (ทัชสกรีน) เม้าส์ หรือ <A href="" onclick="$(\'#KeyboardInstructions\').popup(\'open\');">คีย์บอร์ด</A></P>' +
+                            '<TD width=100px valign=top align=center>ทายศัพท์<P style="font-size:70%;color:grey;">โหมดทายศัพท์: จับคู่คำศัพท์กับคำแปล</P><TR><TD valign=top  align=center>';
+
+
+                        for(var j=0; j<mode_list.length; j++)
+                        html_text+=('<A href="#NounPage" onclick="SelectMode('+j+',0);" data-role="button" style="min-width:125px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-top ui-icon-clock">'+ mode_list[j] +'</A>');
+
+                        html_text += "<TD valign=top  align=center>";
+
+                        for(var j=0; j<swap_mode_list.length; j++)
+                        html_text+=('<A href="#NounPage" onclick="SelectMode('+j+',1);" data-role="button" style="min-width:125px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-top ui-icon-grid">จับคู่ '+ (swap_mode_list[j][0]) +'x'+swap_mode_list[j][1]+'</A>');
+
+                            $("#ModeChoice").html(html_text);
+
+                    break;
+
+                case "VerbPage":
+
+                    PrepareVerb();
+                        DoVerb();
+
+                    break;
+
+            }
+
+
+
+        });
+
+
+    });
+
+
+
+
+</SCRIPT>
+
+</HEAD>
+
+
+
+<BODY>
+
+
+
+
+
+
+<DIV id="NounPage" data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external" data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เกมคำนาม
+    </DIV>
+    <DIV role="main">
+
+
+
+        <P><SPAN style="font-size:80%;color:grey;">เลือกด่าน<BR /></SPAN>
+            <A href="#SelectStagePage" id="SelectStageLink" data-role="button" style="width:125px;" class="ui-btn ui-btn-inline ui-corner-all ui-icon-location ui-btn-icon-left"></A>
+        <BR/>
+            <SPAN style="font-size:80%;color:grey;">เลือกโหมด<BR /></SPAN>
+            <A href="#SelectModePage" id="SelectModeLink" data-role="button" style="width:125px;" class="ui-btn ui-btn-inline ui-corner-all ui-icon-clock ui-btn-icon-left"></A>
+
+        </P>
+
+        <A href="#VibhattiGamePage" id="NewGameLink" data-role="button" style="width:150px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-action ui-btn-icon-top">เล่นเกม!</A>
+
+
+        <BR><BR>
+        <A href="ปทมาลา.pdf" style="font-size:80%;" target="_blank"><IMG src="pdf.svg" width="40px"><DIV style="">ปทมาลา</DIV></A>
+
+
+
+
+
+    </DIV>
+
+</DIV>
+
+
+
+
+
+<DIV id="MatchingGamePage" data-role="page">
+
+    <DIV data-role="header">
+        <A href="#NounPage" data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+    </DIV>
+
+    <DIV role="main" id="MatchingPlatform">
+    </DIV>
+
+    <DIV id="MatchingSummaryWindow" data-role="popup" data-dismissible="false" data-history="false" data-overlay-theme="a">
+
+        <div data-role="header">
+            <h2>สถิติ</h2>
+        </div>
+        <div class="ui-content" role="main">
+
+            <TABLE align="center" cellpadding="5" cellspacing="5">
+                <TR>
+                    <TD>จำนวนคลิกที่ใช้</TD>
+                    <TD id="matching_click"></TD>
+                </TR>
+                <TR>
+                    <TD>เวลาที่ใช้</TD>
+                    <TD id="matching_time"></TD>
+                </TR>
+                <TR>
+                    <TD>ประสิทธิภาพ</TD>
+                    <TD id="matching_eff"></TD>
+                </TR>
+                <TR>
+                    <TD>ความเร็ว</TD>
+                    <TD id="matching_speed"></TD>
+                </TR>
+
+            </TABLE>
+
+            <A href="#MatchingGamePage" id="BttnNewMatchingGame_Again" data-role="button" style="width:150px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-action ui-btn-icon-top">เล่นอีก</A>
+
+            <A href="#NounPage" data-role="button" style="width:150px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-home ui-btn-icon-top">กลับเมนูหลัก</A>
+
+            <SPAN  style="display:none;"><IMG src="../_pic/favicon_dark.png" id="dark_source" width="15px" height="15px"/></SPAN>
+        </div>
+    </DIV>
+
+
+</DIV>
+
+<DIV id="VibhattiGamePage" data-role="page">
+
+    <DIV data-role="header">
+        <A href="#NounPage" id="GameToMenuBttn" data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+
+        <BUTTON id="SurrenderBttn" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-forward ui-alt-icon"></BUTTON>
+
+    </DIV>
+
+
+    <!--<DIV id="Debug"></DIV>-->
+    <DIV style="font-size:145%; font-weight:normal; color:darkblue; padding-top: 5px;"><SPAN id="Question"></SPAN> <SPAN id="Meaning"></SPAN>  <SPAN id="Gender"></SPAN></DIV>
+    <DIV id="Fan" style="font-size: 120%; position:absolute; top:20px; right:20px;"></DIV>
+
+    <DIV id="FanBar" style="z-index:0; font-size: 100%; position:absolute; top:120px; right:25px; background-color:red; width:10px; height:200px; border: lightgrey solid 2px; border-radius: 5px; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.1);"><DIV id="FanProgress" style="positon:relative; width:100%; height: 20%; background-color: white;"></DIV></DIV>
+
+
+    <TABLE id=stats cellpadding="2" cellspacing="2" align="right" style="font-size:80%;">
+
+        <TR>
+            <TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+        </TR>
+        <TR id="Mode_0">
+            <TD colspan="3" id="time_spent" style="width:55px;text-align:center;"></TD>
+        </TR>
+        <TR id="Mode_1_1" style="display:none;">
+            <TD>ถูก</TD><TD id="right_count" align="right">0</TD><TD>&nbsp;</TD>
+        </TR>
+        <TR id="Mode_1_2" style="display:none;">
+            <TD>ผิด</TD><TD id="wrong_count" align="right">0</TD><TD>&nbsp;</TD>
+        </TR>
+
+
+    </TABLE>
+
+<TABLE id="maingame" cellpadding="0" cellspacing="5" align="center" style="font-weight:normal;font-size:100%;">
+
+    <TR>
+        <TD>ปฐมา</TD>
+        <TD><BUTTON id="Key10" onclick="ans(1,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key11" onclick="ans(1,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>อาลป.&nbsp;&nbsp;</TD>
+        <TD><BUTTON id="Key00" onclick="ans(0,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key01" onclick="ans(0,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>ทุติยา</TD>
+        <TD><BUTTON id="Key20" onclick="ans(2,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key21" onclick="ans(2,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>ตติยา</TD>
+        <TD><BUTTON id="Key30" onclick="ans(3,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key31" onclick="ans(3,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>จตุตฺถี</TD>
+        <TD><BUTTON id="Key40" onclick="ans(4,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key41" onclick="ans(4,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>ปญฺจมี</TD>
+        <TD><BUTTON id="Key50" onclick="ans(5,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key51" onclick="ans(5,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>ฉฏฺฐี</TD>
+        <TD><BUTTON id="Key60" onclick="ans(6,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key61" onclick="ans(6,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+    <TR>
+        <TD>สตฺตมี</TD>
+        <TD><BUTTON id="Key70" onclick="ans(7,0)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">เอก</BUTTON></TD>
+        <TD><BUTTON id="Key71" onclick="ans(7,1)" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon">พหุ</BUTTON></TD>
+    </TR>
+
+</TABLE>
+
+
+
+
+    <DIV id="SummaryWindow" data-role="popup" data-dismissible="false" data-history="false" data-overlay-theme="a">
+
+        <div data-role="header">
+            <h2>สถิติ</h2>
+        </div>
+        <div class="ui-content" role="main">
+
+            <TABLE align="center" cellpadding="5" cellspacing="5">
+                <TR>
+                    <TD>ถูก</TD>
+                    <TD id="SumRight"></TD>
+                </TR>
+                <TR>
+                    <TD>ผิด</TD>
+                    <TD id="SumWrong"></TD>
+                </TR>
+                <TR>
+                    <TD>ความแม่นยำ</TD>
+                    <TD id="SumAccu"></TD>
+                </TR>
+                <TR>
+                    <TD>ความเร็ว</TD>
+                    <TD id="SumSpeed"></TD>
+                </TR>
+
+            </TABLE>
+
+            <A href="#VibhattiGamePage" id="BttnNewGame_Again" data-role="button" style="width:150px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-action ui-btn-icon-top">เล่นอีก</A>
+
+            <A href="#NounPage" data-role="button" style="width:150px;" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-home ui-btn-icon-top">กลับเมนูหลัก</A>
+
+        </div>
+    </DIV>
+</DIV>
+
+
+
+
+
+<DIV id="SelectStagePage" data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href="#NounPage" data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เลือกด่าน
+    </DIV>
+    <DIV role="main">
+        <DIV  align="center" id="StageChoice"></DIV>
+    </DIV>
+</DIV>
+
+<DIV id="SelectModePage" data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href="#NounPage" data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เลือกโหมด
+    </DIV>
+    <DIV role="main">
+        <TABLE align="center" id="ModeChoice" border="0" cellspacing="0" cellpadding="0"></TABLE>
+
+
+        <!--$('#KeyboardInstructions').toggle();return false;-->
+
+    </DIV>
+    <DIV id="KeyboardInstructions" data-role="popup" data-dismissible="true" data-history="false" data-overlay-theme="b" onclick="$(this).popup('close');">
+        <P>กดปุ่ม <SPAN class="emph_k">< (ซ้าย)</SPAN> หรือ ไม่กดอะไรก็ได้ เพื่อเลือก <SPAN class="emph">เอกวจนะ</SPAN></P>
+        <P>กด <SPAN class="emph_k">> (ขวา)</SPAN> เพื่อเลือก <SPAN class="emph">พหุวจนะ</SPAN></P>
+        <P>แล้ว กด <SPAN class="emph_k">1</SPAN> <SPAN class="emph">ปฐมาวิภัตติ</SPAN>, <SPAN class="emph_k">2</SPAN> <SPAN class="emph">ทุติยา</SPAN>, ... (<SPAN class="emph_k">8</SPAN> <SPAN class="emph">อาลปนะ</SPAN>)</P>
+        <P>กด <SPAN class="emph_k">คานเว้นวรรค (space bar)</SPAN> เพื่อ <SPAN class="emph">ดูเฉลย / ไปยังข้อต่อไป</SPAN></P>
+    </DIV>
+
+</DIV>
+
+<DIV id=PoemPage data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href="index.html" data-role="button" rel="external"  class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        วิเคราะห์ฉันท์ <SPAN style="color:#008b8b;font-weight:normal;font-size:80%;">(พิมพ์ข้อความในกล่องได้เลยจ้า)</SPAN>
+        <BR />
+        <SPAN style="font-size:50%;font-weight:normal;letter-spacing:-1px;">ตัวอย่าง:
+        <A href="javascript:example(0);" data-role="none">มงฺคลสุตฺต</A> |
+        <A href="javascript:example(1);" data-role="none">อภิธมฺมสงฺคโห</A> |
+        <A href="javascript:example(2);" data-role="none">อภิธานปฺปทีปิกา</A> |
+        <A href="javascript:example(3);" data-role="none">ปตฺติทานคาถา</A>
+            </SPAN>
+        <TEXTAREA id="Q" onfocus="if($(this).val().substring(0,1)=='*') this.value='';"></TEXTAREA>
+        <BUTTON id="LangBttn" onclick="ChangeLang();" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-edit ui-alt-icon">อักขระไทย</BUTTON>
+    </DIV>
+    <DIV role="main">
+        <TABLE id="analysis" border="0" cellpadding="5" cellspacing="0" align="center" style="line-height:70%;">
+
+        </TABLE>
+
+    </DIV>
+</DIV>
+
+
+
+
+<script src="../_js/offline.js"></script>
+
+<!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57125ef8740733bc"></script>-->
+
+
+</BODY>
+
+</HTML>

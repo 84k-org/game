@@ -1,0 +1,256 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>รูป - furoma</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+        A {font-weight:normal !important;}
+        tr.butt td {border-top:1pt solid black;}
+        .ui-ans {line-height:120%;width:auto !important;}
+        .WrongBttn {
+            background-color: #941d1d !important; text-shadow: none !important; color: lightgrey !important; /*text-wrap:normal; max-width: 150px;*/
+        }
+        .RightBttn {
+            background-color: #4dc146 !important; text-shadow: none !important; color: black !important; /*max-width: 150px;*/
+        }
+        .blu {color: blue;}
+    </STYLE>
+
+    <SCRIPT src="../_js/cice.js?ver=2"></SCRIPT>
+    <SCRIPT>
+
+        var nkey, expl, key, key1, key2, keyans;
+        var wrong_count = 0, right_count = 0;
+
+
+        function setup () {
+
+            nkey = -1, expl = "", key= [], keyans = -1;
+
+            $("#explain").html("");
+            $("#explain_details").html("");
+
+            $("#SurrenderBttn").text("เฉลย");
+            $("#SurrenderBttn").removeClass("ui-icon-forward");
+            $("#SurrenderBttn").addClass("ui-icon-search");
+
+
+            for (i = 0; i < 4; i++) {
+
+                if (!$("#a" + i ).hasClass("ui-icon-carat-r")) {
+                    $("#a" + i ).addClass("ui-icon-carat-r ui-alt-icon");
+                    $("#a" + i ).removeClass("ui-icon-delete ui-icon-check WrongBttn RightBttn");
+                }
+            }
+
+
+            var q1 = randomise(0,ru_set.length), q2,
+                noq1 = randomise(0,2)? true:false,
+                noq2 = randomise(0,2)? true:false,
+                ru_base1 = [true, true, true, true],
+                ru_base2 = [true, true, true, true], ru_base_all;
+
+
+
+
+            do {
+                q2 =  randomise(0,ru_set.length);
+            } while (q1==q2);
+
+            //q1=24, q2=25; //test
+
+            if (ru_set[q1].hasOwnProperty("noneg"))
+                noq1 = false;
+
+            if (ru_set[q2].hasOwnProperty("noneg"))
+                noq2 = false;
+
+            $("#boo").text((noq1==noq2)? "และ":"แต่")
+
+            $("#q1").text(ru_set[q1].name);
+            $("#q2").text(ru_set[q2].name);
+
+            $("#preq1").text(ru_set[q1].pre); //( (ru_set[q1].name.substr(-4, 4)=="กลาป")?"อยู่ใน":"เป็น" ) ;
+            $("#preq2").text(ru_set[q2].pre); // ( (ru_set[q2].name.substr(-4, 4)=="กลาป")?"อยู่ใน":"เป็น" ) ;
+
+            $("#postq1").html( (noq1)? "<SPAN style='color:red'>ไม่ได้</SPAN>" :   (ru_set[q1].hasOwnProperty("post")? ru_set[q1].post:""));
+            $("#postq2").html( (noq2)? "<SPAN style='color:red'>ไม่ได้</SPAN>" :   (ru_set[q2].hasOwnProperty("post")? ru_set[q2].post:""));
+
+            key1 = countin (ru_set[q1].mem, 28, -1, noq1);
+            key2 = countin (ru_set[q2].mem, 28, -1, noq2);
+
+            /*
+            if (ru_set[q1].name == "อุปาทินฺน" || ru_set[q1].name =="กมฺมช")
+                ru_base1 = [!noq1, noq1, noq1, noq1];
+            if (ru_set[q2].name == "อุปาทินฺน" || ru_set[q2].name =="กมฺมช")
+                ru_base2 = [!noq2, noq2, noq2, noq2];
+
+            if (ru_set[q1].name == "อนุปาทินฺน")
+                ru_base1 = [noq1, !noq1, !noq1, !noq1];
+            if (ru_set[q2].name == "อนุปาทินฺน")
+                ru_base2 = [noq2, !noq2, !noq2, !noq2];
+
+            if (ru_set[q1].name == "จิตฺตช")
+                ru_base1 = [noq1, !noq1, noq1, noq1];
+            if (ru_set[q2].name == "จิตฺตช")
+                ru_base2 = [noq2, !noq2, noq2, noq2];
+
+            if (ru_set[q1].name == "อุตุช")
+                ru_base1 = [noq1, noq1, !noq1, noq1];
+            if (ru_set[q2].name == "อุตุช")
+                ru_base2 = [noq2, noq2, !noq2, noq2];
+
+            if (ru_set[q1].name == "อาหารช")
+                ru_base1 = [noq1, noq1, noq1, !noq1];
+            if (ru_set[q2].name == "อาหารช")
+                ru_base2 = [noq2, noq2, noq2, !noq2];
+
+            //console.log (key1);
+            //console.log (key2);
+            //console.log (explain(key1, ru));
+            //console.log (explain(key2, ru));*/
+
+            key = intersect (key1, key2);
+
+            /*ru_base_all = intersect (ru_base1, ru_base2);
+            if (ru_base_all.length == 0)
+                key = []; */
+
+
+
+            nkey =  key.length;
+
+            //console.log (nkey);
+
+            keyans = randomise(0,4);
+            $("#a" + keyans).text(nkey);
+            expl = explain(key, ru);
+
+
+            var qmax, randy;
+            qmax = 28;
+
+
+            for (i = 0; i < 4; i++) {
+                if (i!=keyans) {
+                    var doagain;
+                    do {
+                        doagain = false;
+                        randy = randomise(0,qmax+1);
+                        //console.log (randy);
+                        if (randy==nkey)
+                            doagain = true;
+                        else {
+                            for (j = 0; j < i; j++) {
+                                //console.log ("j="+j+" : "+parseInt($("#a" + j).text()));
+                                if (randy == parseInt($("#a" + j).text())) {
+                                    doagain = true;
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+                    while (doagain);
+
+                    $("#a" + i ).text(randy);
+                }
+            }
+
+
+        }
+
+        function ans (i) {
+            if (!$("#a" + i).hasClass("ui-icon-carat-r"))
+                return;
+
+            $("#a" + i).removeClass("ui-icon-carat-r ui-alt-icon");
+
+            if (keyans==i) {
+                $("#a" + i).addClass("RightBttn ui-icon-check");
+                $("#SurrenderBttn").removeClass("ui-icon-search");
+                $("#SurrenderBttn").addClass("ui-icon-forward");
+                $("#SurrenderBttn").text("ข้อต่อไป");
+                $("#explain").html("<SPAN style='color:magenta;'>เฉลย</SPAN>: "+expl);
+                $("#explain_details").html(
+                    "<BR/>รูปที่"+$("#preq1").text()+" <SPAN class=blu>"+$("#q1").text()+"</SPAN> "+$("#postq1").html()+": "+explain(key1,ru,", ")+
+                    "<BR/><BR/>รูปที่"+$("#preq2").text()+" <SPAN class=blu>"+$("#q2").text()+"</SPAN> "+$("#postq2").html()+": "+explain(key2,ru,", "));
+
+                $("#right_count").html(++right_count);
+            }
+            else {
+                $("#a" + i).addClass("WrongBttn ui-icon-delete");
+                //$("#explain").html("เฉลย: "+nkey+" ครับ!");
+
+                $("#wrong_count").html(++wrong_count);
+            }
+
+        }
+
+        function surrender () {
+
+            if ($("#SurrenderBttn").text()=="เฉลย") {
+                ans(0);
+                ans(1);
+                ans(2);
+                ans(3);
+                return;
+            }
+            setup ();
+
+        }
+
+        $(document).ready(function() {
+
+            setup();
+            $("#SurrenderBttn").click(surrender);
+
+        });
+    </SCRIPT>
+
+</head>
+<body>
+
+
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        <TABLE align="right" style="font-weight:normal; position:absolute; top:5px; right:120px; line-height:150%;" border="0" padding="0" spacing="0"><TR><TD>ถูก: <SPAN id="right_count" style="color:darkgreen">0</SPAN><BR/>ผิด: <SPAN id="wrong_count" style="color:red">0</SPAN></TABLE>
+
+        <DIV align="left" style="margin-right:125px; text-align:center;">รูป 28</DIV><BUTTON id="SurrenderBttn" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-search ui-alt-icon">เฉลย</BUTTON>
+
+    </DIV>
+
+    <DIV role="main">
+
+        รูปที่<SPAN id="preq1">เป็น</SPAN> <SPAN id="q1" class="blu">Q1</SPAN> <SPAN id="postq1">ได้</SPAN> <SPAN id="boo">และ</SPAN><SPAN id="preq2">เป็น</SPAN> <SPAN id="q2" class="blu">Q1</SPAN>  <SPAN id="postq2">ได้</SPAN>  มีกี่รูป? <BR />
+
+        <BUTTON id="a0" onclick="ans(0);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon"></BUTTON>
+        <BUTTON id="a1" onclick="ans(1);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon"></BUTTON>
+        <BUTTON id="a2" onclick="ans(2);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon"></BUTTON>
+        <BUTTON id="a3" onclick="ans(3);" class="ui-ans ui-mini ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-left ui-alt-icon"></BUTTON>
+        <DIV id="explain"></DIV>
+        <DIV id="explain_details"></DIV>
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>

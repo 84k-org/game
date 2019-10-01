@@ -1,0 +1,238 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <title>แนะนำยมก</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+    <link href="../_css/pali.css" rel="stylesheet">
+    <STYLE>
+        A {font-weight:normal !important;}
+        tr.butt td {border-top:1pt solid black;}
+        .ui-ans {line-height:120%;width:auto !important;}
+        .WrongBttn {
+            background-color: #941d1d !important; text-shadow: none !important; color: lightgrey !important; /*text-wrap:normal; max-width: 150px;*/
+        }
+        .RightBttn {
+            background-color: #4dc146 !important; text-shadow: none !important; color: black !important; /*max-width: 150px;*/
+        }
+    </STYLE>
+
+    <SCRIPT src="../_js/cice.js"></SCRIPT>
+    <SCRIPT>
+
+
+        function randomise(minNumber, maxNumber) {
+
+            return Math.floor(Math.random() * (maxNumber-minNumber) + minNumber); // la fonction magique
+
+        }
+
+        function search_in_array (ar, v) {
+
+            //console.log(ar);
+            for (var i=0; i<ar.length; i++) {
+                if (ar[i]==v)
+                    return true;
+            }
+            return false;
+        }
+
+        var key, expl;
+
+        function setup () {
+
+            var q = randomise(0,3), pdie, pborn, bdie, bborn;
+            key=0, expl="";
+
+            //q=2;
+
+            if (q==0)  { //ถามบุคคลตาย
+                //pdie = -1;
+                $("#pdie").text("กี่บุคคล");
+                pborn = -99;
+                $("#pborn").text("");
+                bdie = randomise(0, 16);
+                $("#bdie").text("จาก"+_b[bdie].e[randomise(0,_b[bdie].e.length)]);
+                bborn = randomise(0, 16);
+                if (bdie == bborn)
+                    $("#bborn").text("ซ้ำภูมิ");
+                else
+                    $("#bborn").text("ใน"+_b[bborn].e[randomise(0,_b[bborn].e.length)]);
+
+                if (search_in_array(_b[bdie].ahepu_to, bborn)) {
+                    key += 1;
+                    expl += (bdie==0)? "<BR>ทุคติอเหตุกปุถุชน 1" : "<BR>รูปอเหตุกปุถุชน 1";
+                }
+                if (search_in_array(_b[bdie].dvipu_to, bborn)) {
+                    if (bdie==1) { // มนุส จาตุม
+                        key += 2;
+                        expl += "<BR>สุคติอเหตุกปุถุชน 1<BR>ทวิเหตุกปุถุชน 1";
+                    }
+                    else {
+                        key++;
+                        expl += "<BR>ทวิเหตุกปุถุชน 1";
+                    }
+                }
+                if (search_in_array(_b[bdie].tipu_to, bborn)) {
+                    key++;
+                    expl += "<BR>ติเหตุกปุถุชน 1";
+                }
+                if (search_in_array(_b[bdie].s_to, bborn)) {
+                    key += 2;
+                    expl += "<BR>โสตาปัตติผลบุคคล 1<BR>สกทาคามิผลบุคคล 1";
+                }
+                if (search_in_array(_b[bdie].ana_to, bborn)) {
+                    key++;
+                    expl += "<BR>อนาคามิผลบุคคล 1";
+                }
+            }
+            else if (q==11) { //ถามบุคคลเกิด
+                pdie = -99;
+                $("#pdie").text("");
+                //pborn = -1;
+                $("#pborn").text("เป็นกี่บุคคล ");
+                bdie = randomise(0, 16);
+                $("#bdie").text("จาก"+_b[bdie].e[randomise(0,_b[bdie].e.length)]);
+                bborn = randomise(0, 16);
+                if (bdie == bborn)
+                    $("#bborn").text("ซ้ำภูมิ");
+                else
+                    $("#bborn").text("ใน"+_b[bborn].e[randomise(0,_b[bborn].e.length)]);
+
+
+            }
+            else if (q==1) { //ถามภูมิตาย
+                pdie = randomise(0, 7);
+                pborn = randomise(0, 7);
+                bborn = randomise(0, 17);
+                var prand = randomise(0,5);
+
+                if (prand==0) {
+                    pborn = -99;
+                    pdie = -99;
+                    $("#pborn").text("");
+                    $("#pdie").text("");
+                }
+                else if (prand<3) {
+                    pdie = -99;
+                    $("#pdie").text("");
+                    $("#pborn").text("เป็น"+_per[pborn]+" ");
+                }
+                else {
+                    pborn = -99;
+                    $("#pborn").text("");
+                    $("#pdie").text(_per[pdie]);
+                }
+
+                $("#bborn").text("ใน"+_b[bborn].e[randomise(0,_b[bborn].e.length)]);
+
+                //bdie = -1;
+                $("#bdie").text("จากกี่ภูมิ");
+            }
+            else if (q==2) { //ถามภูมิเกิด
+                pdie = randomise(0, 7);
+                pborn = randomise(0, 7);
+                bdie = randomise(0, 17);
+                var prand = randomise(0,5);
+
+                if (prand==0) {
+                    pborn = -99;
+                    pdie = -99;
+                    $("#pborn").text("");
+                    $("#pdie").text("บุคคลทั้งหลาย");
+                }
+                else if (prand<3) {
+                    pdie = -99;
+                    $("#pdie").text("");
+                    $("#pborn").text("เป็น"+_per[pborn]+" ");
+                }
+                else {
+                    pborn = -99;
+                    $("#pborn").text("");
+                    $("#pdie").text(_per[pdie]);
+                }
+
+                $("#bdie").text("จาก"+_b[bdie].e[randomise(0,_b[bdie].e.length)]);
+
+                //bborn = -1;
+                $("#bborn").text("ในกี่ภูมิ");
+            }
+            //console.log (q);
+
+
+
+            setTimeout(function(){
+                $("#ans").focus();
+            },0);
+        }
+
+        function surrender () {
+
+            if ($("#SurrenderBttn").hasClass("ui-icon-forward")) {
+                $("#SurrenderBttn").text("ส่งคำตอบ");
+                $("#SurrenderBttn").removeClass("ui-icon-forward");
+                $("#SurrenderBttn").addClass("ui-icon-search");
+                setup();
+                $("#explain").html("");
+                $("#ans").val("");
+
+                return;
+            }
+
+            if (parseInt($("#ans").val())==key)
+                $("#explain").html("ถูกต้องครับ!")
+            else
+                $("#explain").html("ขอเฉลยว่า: "+key+" ครับ!"+expl)
+
+            //console.log ($("#ans").val())
+
+            $("#SurrenderBttn").removeClass("ui-icon-search");
+            $("#SurrenderBttn").addClass("ui-icon-forward");
+            $("#SurrenderBttn").text("ข้อต่อไป");
+        }
+
+        $(document).ready(function() {
+
+            setup();
+            $("#SurrenderBttn").click(surrender);
+
+
+        });
+    </SCRIPT>
+
+</head>
+<body>
+
+
+
+<DIV id="MainPage"  data-role="page">
+
+    <DIV data-role="header" class="ui-content">
+        <A href=".." id="tohome" rel="external"  data-role="button" class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        <SPAN style="color:darkblue;"><SPAN id="pdie"></SPAN> ตาย<SPAN id="bdie">จาก</SPAN> แล้วไปเกิด<SPAN id="pborn">เป็น</SPAN><SPAN id="bborn">ใน</SPAN>?</SPAN>
+
+        <BUTTON id="SurrenderBttn" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-icon-left ui-icon-search ui-alt-icon">ส่งคำตอบ</BUTTON>
+
+    </DIV>
+
+    <DIV role="main">
+        <INPUT type="number" id="ans"></INPUT>
+        <DIV id="explain"></DIV>
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>

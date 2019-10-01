@@ -1,0 +1,118 @@
+/*@media only screen and (min-width: 600px) {
+    .ui-page {
+        width: 600px !important;
+        margin: 0 auto !important;
+        position: relative !important;
+        border-right: 1px #666666 solid !important;
+        border-left: 1px #666666 solid !important;
+        background-color: #d3d3d3;
+        text-shadow: none !important;
+    }
+}*/
+
+#loader{
+    width: 64px;
+    height: 64px;
+    left: 50%;
+
+    position: absolute;
+    z-index: 99999;
+    display: block;
+}
+
+@font-face {
+    font-family: "Pali";
+    src: url(http://furoma.com/_css/BuddhawajanaPali.otf) format("truetype");
+}
+
+@font-face {
+    font-family: "Pali2";
+    src: url(../../_css/BuddhawajanaPali.otf) format("truetype");
+}
+/*
+@font-face {
+    font-family: "Bro1";
+    src: url(http://pali.peterthinks.com/game/css/browa.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "Bro2";
+    src: url(browa.ttf) format("truetype");
+}*/
+
+BODY, TABLE, .ui-btn, textarea, select option {
+    font-family: "Pali2", "Pali", "Verdana", "MS Sans Serif", "sans-serif", "Tahoma";
+    font-size: 14pt;
+}
+
+H1 {text-align: center;}
+
+.lastpaccaya {color:yellow;background-color: #333333;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding-top:1px; padding-bottom:1px;padding-left: 3px; padding-right:3px;}
+
+dump {background-color: #564564;}
+
+.tika2 {color:purple;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding-top:1px; padding-bottom:1px;padding-left: 3px; padding-right:3px;}
+
+.ui-page-theme-a a {
+    font-weight: normal;
+}
+
+.ui-overlay-a {
+    background-color: #999999;
+}
+
+.ui-page-theme-a .ui-btn {
+    font-size: 80%;
+    line-height: 80%;
+    font-weight: normal;
+}
+
+
+.ui-select .ui-btn, select option {
+    color: green;
+    line-height:150%;
+}
+
+
+.d0 {font-weight:bold;color:blue;background-color:lightblue;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding-top:1px; padding-bottom:1px;padding-left: 3px; padding-right:3px;}
+
+.d1 {font-weight:bold;color:red;background-color:pink;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding-top:1px; padding-bottom:1px;padding-left: 3px; padding-right:3px;}
+
+.d2 {font-weight:bold;color:green;background-color:lightgreen;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding-top:1px; padding-bottom:1px;padding-left: 3px; padding-right:3px;}
+
+
+BODY {
+    text-align: center;
+    font-weight:normal;
+    background-color: #3c3c3c;
+
+
+    /*font-size: 100%;*/
+    line-height: 200%;
+    /*-moz-transform-origin:0 0;*/
+}
+
+TABLE {
+    text-align: left;
+
+}

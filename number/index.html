@@ -1,0 +1,480 @@
+<!doctype html>
+<HTML lang="th">
+
+<HEAD>
+    <TITLE>เกมสังขยา</TITLE>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="เกมบาลี เรียนได้ เล่นได้ ความรู้ได้ ทักษะได้">
+
+    <link href="../_pic/favicon.png" rel="shortcut icon">
+    <link href="../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <link href="../_css/pali.css" rel="stylesheet">
+    <link href="../_css/paligame.css" rel="stylesheet">
+
+    <SCRIPT src=../_js/jquery-2.1.1.min.js></SCRIPT>
+    <script src=../_js/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js></script>
+
+
+
+    <STYLE>
+        .choice {cursor: pointer; padding-left: 10px; padding-right: 10px; padding-top: 7px; padding-bottom: 7px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            font-family: Pali, Pali2; font-size:16pt;
+        border:2px solid black;}
+        .tlink {text-decoration:underline; color: blue; cursor: pointer;}
+        .tlink:hover {color: red;}
+    </STYLE>
+
+    <script>
+
+        function page_change() {
+
+            switch ($.mobile.pageContainer.pagecontainer('getActivePage').prop('id')) {
+
+
+                case "Sort":
+
+                    gen_q();
+                    break;
+
+                case "Horo":
+
+                    $("#phone_no").focus();
+
+                    break;
+            }
+
+        }
+
+        $(document).ready(function() {
+
+            page_change();
+
+            $(document).on("pagecontainershow", page_change);
+
+        });
+
+        var N_text = [["เอก"], ["ทฺวิ"], ["ติ"], ["จตุ"], ["ปญฺจ"], ["ฉ"], ["สตฺต"], ["อฏฺฐ"], ["นว"], ["ทส"],
+            ["เอกาทส","เอการส"], ["ทฺวาทส","พารส"], ["เตรส","เตฬส"], ["จตุทฺทส", "จุทฺทส", "โจทฺทส"], ["ปญฺจทส", "ปณฺณรส", "ปนฺนรส"], ["โสฬส","โสรส"], ["สตฺตรส"], ["อฏฺฐารส"], ["เอกูนวีสติ", "อูนวีส"], ["วีส", "วีสติ"],
+            ["เอกวีสติ"], ["ทฺวาวีสติ","พาวีสติ"], ["เตวีสติ"], ["จตุวีสติ"], ["ปญฺจวีสติ"], ["ฉพฺพีสติ"], ["สตฺตวีสติ"], ["อฏฺฐวีสติ"], ["เอกูนตฺตึส", "อูนตฺตึส", "เอกูนตึส", "อูนตึส"], ["ตึส", "ตึสติ"],
+            ["เอกตฺตึส"], ["ทฺวตฺตึส","พาตฺตึส","พาตฺตึสติ","พตฺตึส","พตฺตึสติ"], ["เตตฺตึส"], ["จตุตฺตึส"], ["ปญฺจตฺตึส"], ["ฉตฺตึส"], ["สตฺตตฺตึส"], ["อฏฺฐตฺตึส"], ["เอกูนจตฺตาฬีส", "อูนจตฺตาฬีส"], ["จตฺตาฬีส","จตฺตาลีส","จุตฺตาลีส","โจตฺตาลีส","ตาลีส"],
+            ["เอกจตฺตาฬีส"], ["เทฺวจตฺตาฬีส", "ทฺวิจตฺตาฬีส", "ทฺวาจตฺตาฬีส"], ["ติจตฺตาลีสํ", "เตจตฺตาลาสํ", "เตจตฺตาฬีส"], ["จตุจตฺตาฬีส"], ["ปญฺจจตฺตาฬีส"], ["ฉจตฺตาฬีส"], ["สตฺตจตฺตาฬีส"], ["อฏฺฐจตฺตาฬีส"], ["เอกูนปญฺญาส", "อูนปญฺญาส"], ["ปญฺญาส","ปณฺณาส"],
+            ["เอกปญฺญาส"], ["เทฺวปญฺญาส", "ทฺวิปญฺญาส", "ทฺวาปญฺญาส"], ["ติปญฺญาส", "เตปญฺญาส","เตปณฺณาส"], ["จตุปฺปญฺญาส","จตุปญฺญาส","จตุปณฺณาส"], ["ปญฺจปญฺญาส","ปญฺจปณฺณาส"], ["ฉปฺปญฺญาส","ฉปญฺญาส","ฉปณฺณาส"], ["สตฺตปญฺญาส","สตฺตปณฺณาส"], ["อฏฺฐปญฺญาส","อฏฺฐปณฺณาส"], ["เอกูนสฏฺฐิ","อูนสฏฺฐิ"], ["สฏฺฐิ"],
+            ["เอกสฏฺฐิ"], ["เทฺวสฏฺฐิ","ทฺวิสฏฺฐิ"], ["ติสฏฺฐิ", "เตสฏฺฐิ"], ["จตุสฺสฏฺฐิ", "จตุสฏฺฐิ"], ["ปญฺจสฏฺฐิ"], ["ฉสฺสฏฺฐิ","ฉสฏฺฐิ"], ["สตฺตสฏฺฐิ"], ["อฏฺฐสฏฺฐิ"], ["เอกูนสตฺตติ","อูนสตฺตติ"], ["สตฺตติ"],
+            ["เอกสตฺตติ"], ["ทฺวาสตฺตติ", "เทฺวสตฺตติ", "ทฺวิสตฺตติ"], ["ติสตฺตติ", "เตสตฺตติ"], ["จตุสตฺตติ"], ["ปญฺจสตฺตติ"], ["ฉสฺสตฺตติ", "ฉสตฺตติ"], ["สตฺตสตฺตติ"], ["อฏฺฐสตฺตติ"], ["เอกูนาสีติ", "อูนาสีติ"], ["อสีติ"],
+            ["เอกาสีติ"], ["ทฺวาสีติ", "ทฺวิยาสีติ"], ["เตอสีติ","ติยาสีติ","ตฺยาสีติ"], ["จตุราสีติ", "จตุรสีติ"], ["ปญฺจาสีติ"], ["ฉฬาสีติ", "ฉอสีติ"], ["สตฺตาสีติ"], ["อฏฺฐาสีติ"], ["เอกูนนวุติ", "อูนนวุติ"], ["นวุติ"],
+            ["เอกนวุติ"], ["ทฺวานวุติ", "เทฺวนวุติ", "ทฺวินวุติ"], ["ตินวุติ", "เตนวุติ"], ["จตุนฺนวุติ", "จตุนวุติ"], ["ปญฺจนวุติ"], ["ฉนฺนวุติ", "ฉนวุติ"], ["สตฺตนวุติ"], ["อฏฺฐนวุติ"], ["เอกูนสตํ"], ["สตํ"]
+        ];
+
+        var curr_or;
+        var choice_size = 5;
+
+        function gen_q() {
+
+            var i, j, tmp, a_tmp, a=[], b=[];
+
+            choice_size = 3 + randommax(8);
+            curr_or = 0;
+
+            for (i=0; i<N_text.length; i++)
+                a.push(i);
+
+            for (i=0; i<choice_size; i++) {
+                tmp = randommax(N_text.length);
+                a_tmp = a[tmp];
+
+                a[tmp] = a[i];
+                a[i] = a_tmp;
+            }
+
+
+            for (i=0; i<choice_size; i++) {
+                b.push([a[i]+1,i]);
+            }
+
+            for (i=0; i<choice_size; i++) {
+                for (j=i; j>0 && b[j-1][0]>b[j][0]; j--) {
+                    tmp = b[j-1];
+                    b[j-1] = b[j];
+                    b[j] = tmp;
+                }
+            }
+
+            for (i=0; i<choice_size; i++) {
+                //console.log (a[i]+1);
+                b[b[i][1]].push(i);
+            }
+
+
+            $("#choice").html("");
+
+            for (i=0; i<choice_size; i++) {
+                //console.log (b[i]);
+                gen_choice(a[i], b[i][2]);
+            }
+
+
+        }
+
+        function gen_choice(n, k) {
+            var choice = document.createElement("button");
+            choice.innerHTML = "<nobr>" + N_text [n][randommax(N_text[n].length)] + "</nobr>";
+            var red=randommax(256), green=randommax(256), blue=randommax(256);
+            choice.style.backgroundColor = "rgb("+red+","+green+","+blue+")";
+            choice.setAttribute("num", n+1);
+            choice.setAttribute("key_or", k);
+            choice.setAttribute("class", "choice");
+            if ((Math.round(red * 299) + Math.round(green * 587) + Math.round(blue * 114))/1000 < 128)
+                choice.style.color = "white";
+            $("#choice").append(choice);
+            $("#choice").append(" ");
+
+            choice.onclick = function () {if (curr_or != parseInt(this.getAttribute("key_or"))) {add_wrong_count(this); return;} if(++curr_or==choice_size) gen_q(); $(this).css('visibility', 'hidden');  add_right_count(); status_bar_html(parseInt(this.getAttribute("num"))); };
+        }
+
+        function randommax (n) {
+            return Math.floor(Math.random()*n);
+        }
+
+        function status_bar_html (n) {
+            //console.log(n)
+            if (curr_or==1)
+                $("#status_bar").html ("");
+            $("#status_bar").prepend(n + " = " + N_text[n-1]+"<br>");
+        }
+
+        var wrong_count = 0, right_count = 0;
+
+        function add_wrong_count (obj) {
+            $("#wrong_count").html(++wrong_count);
+            $(obj).css("color", "white");
+            setTimeout(function () {blink(obj, 6);}, 100);
+        }
+
+        function blink (obj, n) {
+            if (n==0) {
+                var red=randommax(256), green=randommax(256), blue=randommax(256);
+                $(obj).css ("background", "rgb("+red+","+green+","+blue+")");
+                if ((Math.round(red * 299) + Math.round(green * 587) + Math.round(blue * 114))/1000 < 128)
+                    $(obj).css("color", "white");
+                else
+                    $(obj).css("color", "black");
+                return;
+            }
+
+            if (n%2) {
+                $(obj).css("background", "red");
+            }
+            else {
+                $(obj).css("background", "black");
+            }
+            setTimeout(function () {blink(obj, --n);}, 100);
+
+        }
+
+        function add_right_count () {
+            $("#right_count").html(++right_count);
+        }
+
+        function getnumtext_e (n) {
+
+            var p = n - 1;
+
+            if (isNaN(p) || p==-1)   return "";
+
+            return N_text [p][randommax(N_text[p].length)];
+
+        }
+
+        function getnumtext (n) {
+
+
+
+
+            if (n.length==0 || n=="0")   return "";
+
+            var m , p, q, l, ll,  t = "", i, j,  pf, pq;
+
+            m = n.toString();
+
+            while (m.charAt(0)=="0")
+                m = m.substring(1, m.length);
+
+            if (m.length<3) {
+                p = parseInt (m);
+                if (p==1)
+                    $("#gender").html("สามลิงค์ เอกวจนะ");
+                else if (p<19)
+                    $("#gender").html("สามลิงค์ พหูวจนะ");
+                else
+                    $("#gender").html("อิตถีลิงค์ เอกวจนะ");
+
+
+                return getnumtext_e (p);
+            }
+
+
+            //console.log(n);
+
+
+
+            if (m.length==0)   return "";
+
+            //console.log(m);
+
+            if (m.length<3) {
+                p = parseInt(m) - 1;
+                return N_text [p][randommax(N_text[p].length)];
+            }
+
+            m = m.split('');
+            for (i=0; i<m.length; i++)
+                m[i] = parseInt (m[i]);
+
+            p = m[m.length-2]*10 + m[m.length-1] - 1;
+
+
+            // check for 99999... first
+
+            if (p!=-1 && p!=98) {
+                t = N_text [p][randommax(N_text[p].length)];
+                if (t.charAt(t.length-1) == "ิ")
+                    t = t.substring(0, t.length-1).concat("ยุตฺตร");
+                else if (p==3) //จตุ
+                    t = t.concat("ตฺตร");
+                else
+                    t = t.concat("ุตฺตร");
+
+
+            }
+
+
+
+
+
+            l = ["", "", "เทฺว", "เต", "จตุ", "ปญฺจ", "ฉ", "สตฺต", "อฏฺฐ", "นว"];    // เทฺวภาวะ 4, 6
+            ll = ["", "", "ทฺวิ", "ติ", "จตุ", "ปญฺจ", "ฉ", "สตฺต", "อฏฺฐ", "นว"];    // เทฺวภาวะ 4, 6
+
+
+            q = ["สต", "สหสฺส", "ทสสหสฺส", "สตสหสฺส", "ทสสตสหสฺส", "โกฏ", "", "โกฏิสต", "โกฏิสหสฺส", "โกฏิทสสหสฺส", "โกฏิสตสหสฺส", "โกฏิทสสตสหสฺส", "ปโกฏ"];
+            pq = ["สฺ", "สฺ", "ทฺ", "สฺ", "ทฺ", "กฺ", "", "กฺ", "กฺ", "กฺ", "กฺ", "กฺ", "ปฺ"];
+
+
+
+            if ((m.length==8 || m.length==15) && m[0]==1) {              // female singular
+                p = "าธิกา";
+                pf = "ิ";
+                $("#gender").html("อิตถีลิงค์ เอกวจนะ");
+            }
+
+            else if ((m[0]==1 && m.length!=9) || (m.length==9 && m[0]==9 && m[1]==9)) {             // neutral singular
+                p = "าธิกํ";
+                pf = "ํ";
+                $("#gender").html("นปุงสกลิงค์ เอกวจนะ");
+            }
+
+            else if ((m.length>7 && m.length<10) || m.length==15) {
+                p = "าธิกาโย ";                  // female plural
+                pf = "ิโย";
+                $("#gender").html("อิตถีลิงค์ พหูวจนะ");
+            }
+
+            else {                      // neutral plural
+                p = "าธิกานิ";
+                pf = "านิ";
+                $("#gender").html("นปุงสกลิงค์ พหูวจนะ");
+            }
+
+            for (i=m.length-1; i>-1 && m[i]==9; i--);
+
+            //console.log (m+" "+i);
+
+            if (i<m.length-2) {
+                if (i==-1 && m[0]==9) {
+
+
+
+                    if (m.length==7) {
+                        $("#gender").html("อิตถีลิงค์ เอกวจนะ");
+                        return "เอกูนโกฏิ";
+                    }
+                    if (m.length==8) {
+                        $("#gender").html("อิตถีลิงค์ พหูวจนะ");
+                        return "เอกูนโกฏยาธิกาโย นวโกฏิโย";
+                    }
+                    if (m.length==14) {
+                        $("#gender").html("อิตถีลิงค์ เอกวจนะ");
+                        return "เอกูนปฺปโกฏิ";
+                    }
+                    if (m.length==15) {
+                        $("#gender").html("อิตถีลิงค์ พหูวจนะ");
+                        return "เอกูนปฺปโกฏยาธิกาโย นวปฺปโกฏิโย";
+                    }
+
+                    $("#gender").html("นปุงสกลิงค์ เอกวจนะ");
+                    return "เอกูน".concat (q[m.length-3-i], "ํ");
+                }
+                else {
+
+                    if (i==m.length-3) {
+                        t = "เอกูนสต".concat(p, " ");
+                        i=m.length-3;
+                        j=0;
+                    }
+
+                    else {
+                        if (i==m.length-8)
+                            t= "<nobr>".concat ("เอกูนโกฏย", p, "</nobr> ");
+                        else if (i==m.length-9) {
+                            t = "<nobr>".concat("เอกูนโกฏย", p, "</nobr> ");
+                            if (m[m.length-9]!=0) {
+                                t = t.concat("<nobr>", getnumtext_e (m[m.length - 9] * 10 + m[m.length - 8]), "โกฏย", p, "</nobr> ");
+                                if (m.length==9) {
+                                    $("#gender").html("อิตถีลิงค์ พหูวจนะ");
+                                    return t;
+                                }
+
+                            }
+                        }
+                        else if (i==m.length-15)
+                            t= "<nobr>".concat ("เอกูนปฺปโกฏย", p, "</nobr> ");
+                        else
+                            t= "<nobr>".concat ("เอกูน", q[m.length-3-i], p, "</nobr> ");
+                        j=m.length-3-i;
+                    }
+                }
+
+            }
+            else {
+                i=m.length-3;
+                j=0;
+            }
+
+
+
+
+            for (; i>0 && j<5;i--, j++) {
+                if (m[i]==0)
+                    continue;
+
+
+                if (m[i]==4 || m[i]==6)
+                    q[j] =  pq[j].concat(q[j]);
+
+
+
+                t = t.concat("<nobr>", l[m[i]], q[j], p, "</nobr> ");
+            }
+
+            if (j<5) {
+                if (m[i]==4 || m[i]==6)
+                    q[j] =  pq[j].concat(q[j]);
+                return t.concat("<nobr>", l[m[i]], q[j], pf, "</nobr> ");
+            }
+
+
+            else if (j==5) {
+
+                if ( (m[i]==4 || m[i]==6) && (m.length == 8 || m[m.length-9]==0) )
+                    q[j] =  pq[j].concat(q[j]);
+
+                if (m.length>9)
+                    q[5] = q[5].concat("ย");
+
+                if (m.length == 8)
+                    return t.concat("<nobr>", l[m[i]], q[j], pf, "</nobr> ");
+
+                else if (m.length==9) {
+                    if (m[m.length-8]==9 && m[m.length-9]==9)
+                        return t.concat("<nobr>เอกูนโกฏิสตํ</nobr> ");
+                    return t.concat("<nobr>", getnumtext_e (m[m.length - 9] * 10 + m[m.length - 8]), "โกฎิโย", "</nobr> ");
+                }
+
+                else if (m[m.length-8]==9 && m[m.length-9]==9)
+                    t = t.concat("<nobr>เอกูนโกฏิสต", p, "</nobr> ");
+
+                else if (m[m.length-8]!=0 && m[m.length-9]==0)
+                    t = t.concat("<nobr>", l[m[i]], q[j], p, "</nobr> ");
+
+                else if (m[m.length-9]!=0)
+                    t = t.concat("<nobr>", getnumtext_e (m[m.length-9]*10 + m[m.length-8]), q[j], p, "</nobr> ");
+
+            }
+
+            if (j<8)
+            for (i = m.length - 10, j = 7; i>0 && j<12; i--, j++) {
+                if (m[i]==0)
+                    continue;
+
+                if (m[i]==4 || m[i]==6)
+                    q[j] =  pq[j].concat(q[j]);
+
+                t = t.concat("<nobr>", l[m[i]], q[j], p, "</nobr> ");
+            }
+
+
+            if  ((m[i]==4 || m[i]==6) && j<12)
+                q[j] =  pq[j].concat(q[j]);
+            else if (m[i]>1 && j==12) {
+                q[j] =  pq[j].concat(q[j]);
+                l[m[i]] = ll[m[i]];
+            }
+
+
+            t = t.concat("<nobr>", l[m[i]], q[j], pf, "</nobr> ");
+
+
+            return t;
+        }
+
+
+
+        function show_horo () {
+
+            $("#gender").html("");
+
+            $("#horo_field").html(getnumtext($("#phone_no").val()));
+
+        }
+
+
+    </script>
+</head>
+<body>
+
+
+
+<DIV id=Sort data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <TABLE align="right" style="font-weight:normal; position:absolute; right:10px;" border="0" padding="0" spacing="0"><TR><TD>ถูก: <SPAN id="right_count" style="color:darkgreen">0</SPAN> ผิด: <SPAN id="wrong_count" style="color:red">0</SPAN></TABLE>
+        <A href=".." id="tohome" data-role="button" rel="external"  class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เกมสังขยา <SPAN style="font-weight:normal;">(เรียงเลข<!-- | <A href="#Horo" data-role="none">ดูดวงจากเบอร์มือถือ</A>-->)</SPAN>
+    </DIV>
+    <DIV role="main" style="overflow-x:none;background-color: #d3d3d3; text-shadow: 0px !important; font-size:120%;">
+        <DIV id="choice"></DIV>
+        <DIV id="status_bar" style="padding-top: 5px;">วิธีเล่น: คลิกเลขน้อยไปหามากครับ</DIV>
+    </DIV>
+</DIV>
+
+<DIV id=Horo data-role="page">
+    <DIV data-role="header" class="ui-content">
+        <A href="index.html" data-role="button" rel="external"  class="ui-btn  ui-btn-inline ui-shadow ui-corner-all ui-btn-left ui-icon-home ui-btn-icon-notext "></A>
+        เกมสังขยา <SPAN style="font-weight:normal;">(<A href="#Sort" data-role="none">เรียงเลข</A> | ดูดวงจากเบอร์มือถือ)</SPAN>
+    </DIV>
+    <DIV role="main" style="overflow-x:none;background-color:seagreen; color:white; text-shadow: 0px !important;" >
+        <DIV><INPUT type="text" id="phone_no" maxlength="15"></DIV>
+        <DIV ID="horo_field">(ใส่เบอร์มือถือของคุณในกล่องข้างบนได้เลยครับ)</DIV>
+        <DIV style="background-color: #CCCCCC; color: black; ">คำทำนาย: เบอร์มือถือของคุณ เป็น <SPAN ID="gender">...</SPAN></DIV>
+    </DIV>
+</DIV>
+
+
+<script src="../_js/offline.js"></script>
+
+
+</body>
+</html>
