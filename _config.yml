@@ -1,1 +1,1 @@
-include _js, _css
+include: _js, _css
