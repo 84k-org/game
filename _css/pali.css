@@ -2,17 +2,17 @@
 
 @font-face {
     font-family: "Pali";
-    src: url(http://furoma.com/_css/BuddhawajanaPali.otf) format("truetype");
+    src: url(https://furoma.com/_css/BuddhawajanaPali.otf) format("truetype");
 }
 
 @font-face {
     font-family: "Pali2";
-    src: url(BuddhawajanaPali.otf) format("truetype");
+    src: url(../_css/BuddhawajanaPali.otf) format("truetype");
 }
 
 @font-face {
     font-family: "Thai";
-    src: url(http://furoma.com/_css/Buddhawajana.otf) format("truetype");
+    src: url(https://furoma.com/_css/Buddhawajana.otf) format("truetype");
 }
 
 @font-face {
