@@ -431,13 +431,26 @@
 
 
                 for (k=0, tt=""; k<_mulaMode-1; k++) {
+
                     tt += (_paccayaMode[0]=='น')? no_SATTI[(_sattiMode + k) % 24] : _SATTI[(_sattiMode + k) % 24];
                     tt +=  "ปจฺจยา ";
                 }
                 tt += "<SPAN class=lastpaccaya>";
 
-                tt += (_paccayaMode[1]=='น')? no_SATTI[(_sattiMode+k)%24] : _SATTI[(_sattiMode+k)%24];
-                tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
+
+                i=0;
+                if (_sattiMode==0)
+                    i=_mulaMode-1;
+                if (_sattiMode+k > 23)
+                    i= (_sattiMode+k)%24;
+                k=i;
+
+
+                tt += (_paccayaMode[1]=='น')? no_SATTI[i] : _SATTI[i];
+                tt += "ปจฺจยา</SPAN>?";
+                //tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
+
+
 
 
                 for (i=0; i<MulaOrder.length; i++)
@@ -456,10 +469,11 @@
                     for (i=_mulaMode;i<24;i++)
                         $('#setX').append($('#set0').clone());
 
-                    if (_sattiMode+k>23)
+                    /*if (_sattiMode+k>23)
                         i=(_sattiMode+k)-24;
                     else
-                        i=0;
+                        i=0;*/
+                    i = k;
 
                     var ii=1;
 
@@ -488,7 +502,7 @@
                     else
                         i=0;
 
-                    $('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]: _SATTI[i]) +"ปจฺจยา");
+                    //$('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]: _SATTI[i]) +"ปจฺจยา");
 
                 }
 
@@ -651,15 +665,25 @@
 
 
                 tt += "<SPAN class=lastpaccaya>";
-                tt += (_paccayaMode[1]=='น') ? no_SATTI[(_sattiMode+k)%24] : _SATTI[(_sattiMode+k)%24];
-                tt += (_mulaMode==1)? "ปจฺจเยน</SPAN>" : "^</SPAN>";
+
+
+                i=0;
+                if (_sattiMode==0)
+                    i=_mulaMode-1;
+                if (_sattiMode+k > 23)
+                    i= (_sattiMode+k)%24;
+                k=i;
+
+
+                tt += (_paccayaMode[1]=='น')? no_SATTI[i] : _SATTI[i];
+                tt += "ปจฺจเยน</SPAN> ปจฺจโย?";
 
 
                 for (i=0; i<MulaOrder.length; i++)
                     for (j=0; j<MuliOrder.length; j++) {
 
                         t = "สิยา " + MulaOrder [i] + MuliOrder [ MMOrder[i][j] ];
-                        t += tt + " ปจฺจโย?";
+                        t += tt;
 
                         $('#set0').append($('<li>').html(t));
                     }
@@ -670,10 +694,7 @@
                     for (i=_mulaMode;i<24;i++)
                         $('#setX').append($('#set0').clone());
 
-                    if (_sattiMode+k>23)
-                        i=(_sattiMode+k)-24;
-                    else
-                        i=0;
+                    i=k;
 
                     var ii=1;
 
@@ -702,7 +723,7 @@
                         i=0;
 
                     //$('#set0').html( $('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k)%24]+"ปจฺจเยน") );
-                    $('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i]:_SATTI[i]) +"ปจฺจเยน");
+                    //$('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i]:_SATTI[i]) +"ปจฺจเยน");
 
                 }
 
