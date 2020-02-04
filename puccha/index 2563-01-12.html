@@ -430,31 +430,23 @@
                 $('#set0').html("<H1>" + ((_tika2Mode==0)? "1<H1>": _tika2PadaHeader[0]+"ปท/1</H1>"));
 
 
-                tt = (_paccayaMode[0]=='น')? no_SATTI[_sattiMode] : _SATTI[_sattiMode];
-                tt +=  "ปจฺจยา ";
+                for (k=0, tt=""; k<_mulaMode-1; k++) {
 
-                for (k=0; k<_mulaMode-2; k++) {
-
-                    if (k==_sattiMode)
-                      k++;
-                    tt += (_paccayaMode[0]=='น')? no_SATTI[k] : _SATTI[k];
+                    tt += (_paccayaMode[0]=='น')? no_SATTI[(_sattiMode + k) % 24] : _SATTI[(_sattiMode + k) % 24];
                     tt +=  "ปจฺจยา ";
                 }
-
-                //tt+= " _sattiMode=" + _sattiMode +" _mulaMode="+_mulaMode;
-
-                if (_sattiMode < _mulaMode-3) {
-                    tt += (_paccayaMode[0]=='น')? no_SATTI[_mulaMode-2] : _SATTI[_mulaMode-2];
-                    tt +=  "ปจฺจยา ";
-                }
-
                 tt += "<SPAN class=lastpaccaya>";
 
 
-                k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
+                i=0;
+                if (_sattiMode==0)
+                    i=_mulaMode-1;
+                if (_sattiMode+k > 23)
+                    i= (_sattiMode+k)%24;
+                k=i;
 
 
-                tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
+                tt += (_paccayaMode[1]=='น')? no_SATTI[i] : _SATTI[i];
                 tt += "ปจฺจยา</SPAN>?";
                 //tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
 
@@ -477,10 +469,11 @@
                     for (i=_mulaMode;i<24;i++)
                         $('#setX').append($('#set0').clone());
 
-
-
+                    /*if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;*/
                     i = k;
-
 
                     var ii=1;
 
@@ -491,7 +484,7 @@
                         //$(this).html ($('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k+i)%24]+"ปจฺจยา"));
 
                         if (i==_sattiMode)
-                            i++;
+                            i+=_mulaMode-1;
 
                         $(this).find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]:_SATTI[i%24]) + "ปจฺจยา");
 
@@ -504,7 +497,10 @@
 
                     //$('#set0').html( $('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k)%24]+"ปจฺจยา") );
 
-
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
 
                     //$('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i%24]: _SATTI[i]) +"ปจฺจยา");
 
@@ -661,29 +657,25 @@
 
                 $('#set0').html("<H1>" + ((_tika2Mode==0)? "1<H1>": _tika2PadaHeader[0]+"ปท/1</H1>"));
 
-                tt = (_paccayaMode[0]=='น')? no_SATTI[_sattiMode] : _SATTI[_sattiMode];
-                tt +=  "ปจฺจเยน ";
 
-                for (k=0; k<_mulaMode-2; k++) {
-                    if (k==_sattiMode)
-                        k++;
-                    tt += (_paccayaMode[0]=='น')? no_SATTI[k] : _SATTI[k];
+                for (k=0, tt=""; k<_mulaMode-1; k++) {
+                    tt += (_paccayaMode[0]=='น')? no_SATTI[(_sattiMode + k) % 24] : _SATTI[(_sattiMode + k) % 24] ;
                     tt += "ปจฺจเยน ";
-                }
-
-                if (_sattiMode < _mulaMode-3) {
-                    tt += (_paccayaMode[0]=='น')? no_SATTI[_mulaMode-2] : _SATTI[_mulaMode-2];
-                    tt +=  "ปจฺจเยน ";
                 }
 
 
                 tt += "<SPAN class=lastpaccaya>";
 
 
-                k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
+                i=0;
+                if (_sattiMode==0)
+                    i=_mulaMode-1;
+                if (_sattiMode+k > 23)
+                    i= (_sattiMode+k)%24;
+                k=i;
 
 
-                tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
+                tt += (_paccayaMode[1]=='น')? no_SATTI[i] : _SATTI[i];
                 tt += "ปจฺจเยน</SPAN> ปจฺจโย?";
 
 
@@ -695,8 +687,6 @@
 
                         $('#set0').append($('<li>').html(t));
                     }
-
-
 
                 if (_mulaMode!=1) {
 
@@ -717,7 +707,7 @@
                         //$(this).html ($('#set0').html());
 
                         if (i==_sattiMode)
-                            i++;
+                            i+=_mulaMode-1;
 
                         ii++;
 
@@ -727,7 +717,10 @@
                         ); // change header
                     });
 
-
+                    if (_sattiMode+k>23)
+                        i=(_sattiMode+k)-24;
+                    else
+                        i=0;
 
                     //$('#set0').html( $('#set0').html().replace(/\^/g,_SATTI[(_sattiMode+k)%24]+"ปจฺจเยน") );
                     //$('#set0').find(".lastpaccaya").text( ((_paccayaMode[1]=='น')? no_SATTI[i]:_SATTI[i]) +"ปจฺจเยน");
