@@ -431,34 +431,38 @@
 
 
                 tt = (_paccayaMode[0]=='น')? no_SATTI[_sattiMode] : _SATTI[_sattiMode];
-                tt +=  "ปจฺจยา ";
+                tt +=  "ปจฺจยา";
 
                 for (k=0; k<_mulaMode-2; k++) {
 
                     if (k==_sattiMode)
                       k++;
+                    tt += " ";
                     tt += (_paccayaMode[0]=='น')? no_SATTI[k] : _SATTI[k];
-                    tt +=  "ปจฺจยา ";
+                    tt +=  "ปจฺจยา";
                 }
 
                 //tt+= " _sattiMode=" + _sattiMode +" _mulaMode="+_mulaMode;
 
+
                 if (_sattiMode < _mulaMode-3) {
-                    tt += (_paccayaMode[0]=='น')? no_SATTI[_mulaMode-2] : _SATTI[_mulaMode-2];
-                    tt +=  "ปจฺจยา ";
+                        tt += " ";
+                        tt += (_paccayaMode[0]=='น')? no_SATTI[_mulaMode-2] : _SATTI[_mulaMode-2];
+                        tt +=  "ปจฺจยา";
+                    }
+
+                if (_mulaMode!=1) {
+                    tt += " <SPAN class=lastpaccaya>";
+
+
+                    k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
+
+
+                    tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
+                    tt += "ปจฺจยา</SPAN>?";
+                    //tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
                 }
-
-                tt += "<SPAN class=lastpaccaya>";
-
-
-                k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
-
-
-                tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
-                tt += "ปจฺจยา</SPAN>?";
-                //tt += (_mulaMode==1)?  "ปจฺจยา</SPAN>?" : "^</SPAN>?";
-
-
+                else tt+= "?";
 
 
                 for (i=0; i<MulaOrder.length; i++)
@@ -677,14 +681,19 @@
                 }
 
 
-                tt += "<SPAN class=lastpaccaya>";
+                if (_mulaMode!=1) {
+                    tt += "<SPAN class=lastpaccaya>";
 
 
-                k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
+                    k = (_sattiMode > _mulaMode-2)? _mulaMode - 2 : _mulaMode - 1;
 
 
-                tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
-                tt += "ปจฺจเยน</SPAN> ปจฺจโย?";
+                    tt += (_paccayaMode[1]=='น')? no_SATTI[k] : _SATTI[k];
+                    tt += "ปจฺจเยน</SPAN> ปจฺจโย?";
+                  }
+                else
+                    tt += "ปจฺจโย?";
+
 
 
                 for (i=0; i<MulaOrder.length; i++)
